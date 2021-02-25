@@ -32,3 +32,15 @@ mybatis:
 pagehelper:
   helper-dialect: mysql
 
+# 日志
+logging:
+  level:
+    org:
+      springframework: INFO
+      mybatis:
+        spring: DEBUG
+    com:
+      fasterxml:
+        jackson: INFO
+      zero:
+        travel: DEBUG
