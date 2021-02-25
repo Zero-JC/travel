@@ -14,6 +14,15 @@ spring:
     minIdle: 3
     maxWait: 50000
 
+# redis
+  redis:
+    host: 139.198.178.72
+    port: 6379
+    #连接超时时间（毫秒）
+    timeout: 0
+    #缓存中Key过时时间-单位为s
+    expire: 1800
+
 
 # my batis 的配置
 mybatis:
@@ -22,3 +31,4 @@ mybatis:
 # 分页插件配置
 pagehelper:
   helper-dialect: mysql
+
