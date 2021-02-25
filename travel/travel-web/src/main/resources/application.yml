@@ -1,0 +1,4 @@
+server:
+  servlet:
+    context-path: /travel
+  port: 8080
