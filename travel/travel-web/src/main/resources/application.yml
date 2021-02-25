@@ -23,6 +23,7 @@ spring:
     #开发时关闭缓存,不然没法看到实时页面
     cache: false
 
+
 # redis
   redis:
     host: 139.198.178.72
