@@ -14,7 +14,10 @@ spring:
     minIdle: 3
     maxWait: 50000
 
-# thymeleaf
+  resources:
+    static-locations: classpath:/static
+
+  # thymeleaf
   thymeleaf:
     mode: HTML5
     encoding: utf-8
@@ -22,6 +25,7 @@ spring:
       content-type: text/html
     #开发时关闭缓存,不然没法看到实时页面
     cache: false
+
 
 
 # redis
