@@ -1,6 +1,7 @@
 server:
-  servlet:
-    context-path: /travel
+# 设置上下文之后 favicon.ico 无法正常显示， 默认加载的地址 http://127.0.0.1:8080/favicon.ico
+#  servlet:
+#    context-path: /travel
   port: 8080
 
 spring:
@@ -14,8 +15,8 @@ spring:
     minIdle: 3
     maxWait: 50000
 
-  resources:
-    static-locations: classpath:/static
+#  resources:
+#    static-locations: classpath:/static
 
   # thymeleaf
   thymeleaf:
