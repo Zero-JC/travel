@@ -1,6 +1,5 @@
 package com.zero.travel.controller.backend;
 
-import com.sun.javafx.fxml.expression.KeyPath;
 import com.zero.travel.pojo.dto.SysUserDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +19,9 @@ public class SysUserController {
 
     @RequestMapping("login")
     public String login(SysUserDTO sysUserDTO){
+        if (true){
+
+        }
         //TODO:登录验证
         System.out.println(sysUserDTO);
         return "/backend/main";
@@ -37,6 +39,6 @@ public class SysUserController {
 
         map.addAttribute("lists",list);
 
-        return "/backend/Test";
+        return "Test";
     }
 }
