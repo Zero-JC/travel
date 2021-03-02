@@ -7,6 +7,7 @@ import com.zero.travel.pojo.entity.SysUser;
 import com.zero.travel.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,8 +35,8 @@ public class SysUserController extends CommonController {
      * @return
      */
     @PostMapping ("login")
-    public String login(@Valid SysUserDTO sysUserDTO, BindingResult bindingResult,ModelMap modelMap){
-        //TODO:表单校验
+    public String login(@Valid SysUserDTO sysUserDTO, BindingResult bindingResult, Model modelMap){
+        //TODO:服务端表单校验
         if (bindingResult.hasErrors()){
             String checkResult = ValidateUtils.checkResult(bindingResult);
             modelMap.addAttribute("errorMsg",checkResult);
@@ -43,8 +44,6 @@ public class SysUserController extends CommonController {
         }
         try {
             //TODO:登录验证
-            //验证码
-
             SysUser sysUser = sysUserService.loginValidate(sysUserDTO);
             modelMap.addAttribute("currentUser",sysUser);
             return "/backend/main";

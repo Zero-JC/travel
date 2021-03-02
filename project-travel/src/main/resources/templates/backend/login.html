@@ -7,9 +7,64 @@
 	<link rel="stylesheet" href="/css/mycss.css" />
 	<script type="text/javascript" src="/js/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-	<script>
+	<!--表单校验-->
+	<script src="/js/bootstrapValidator.js"></script>
+	<link rel="stylesheet"  href="/css/bootstrapValidator.css" />
+	<!--弹窗-->
+	<link rel="stylesheet" href="/css/zero.css" />
+	<script type="text/javascript" src="/layer/layer.js"></script>
+  	<script th:inline="javascript">
+		$(function (){
+			$("#loginForm").bootstrapValidator({
+				feedbackIcons:{
+					valid:'glyphicon glyphicon-ok',
+					invalid:'glyphicon glyphicon-remove',
+					validating:'glyphicon glyphicon-refresh'
+				},
+				//校验规则
+				fields:{
+					username: {
+						validators:{
+							//非空校验
+							notEmpty:{
+								message:'用户名不能为空'
+							}
+						}
+					},
+					password: {
+						validators: {
+							//非空校验
+							notEmpty:{
+								message:'密码不能为空'
+							}
+						}
+					},
+					code: {
+						validators: {
+							//非空校验
+							notEmpty:{
+								message:'请输入验证码'
+							},
+							//发送ajax请求(默认GET请求)进行校验,将表单项当做参数传递到后台
+							remote:{
+								url:'/code/checkCode',
+								message: '验证码错误'
+							}
+						}
+					}
+				}
+			});
 
-	</script>
+			//登录失败提示消息
+			let errorMsg = [[${errorMsg}]];
+			if (errorMsg!=null){
+				layer.msg(errorMsg,{
+					time: 2000
+				});
+			}
+
+		});
+  	</script>
   </head>
   <body>
   	<!-- 使用自定义css样式 div-signin 完成元素居中-->
@@ -18,11 +73,11 @@
       	<!-- h3标签加载自定义样式，完成文字居中和上下间距调整 -->
 	    <div class="panel-heading">
 	    	<h3>后台管理系统</h3>
-	    	<span id="errorInfo" style="color: maroon" th:text="${errorMsg}"></span>
+	    	<span>Manager System</span>
 	    </div>
 	    <div class="panel-body">
 	      <!-- login form start -->
-	      <form action="/backend/sysUser/login" class="form-horizontal" method="post">
+	      <form id="loginForm" action="/backend/sysUser/login" class="form-horizontal" method="post">
 		     <div class="form-group">
 		       <label class="col-sm-3 control-label">用户名：</label>
 		       <div class="col-sm-9">
@@ -42,7 +97,7 @@
 		       </div>
 		       <div class="col-sm-2">
 		       	  <!-- 验证码 -->
-			      <img class="img-rounded" src="/images/image.jpg" style="height: 32px; width: 70px;"/>
+			      <img class="img-rounded" src="/code/image" style="height: 32px; width: 70px;"/>
 		       </div>
 		       <div class="col-sm-2">
 		         <button type="button" class="btn btn-link">看不清</button>
