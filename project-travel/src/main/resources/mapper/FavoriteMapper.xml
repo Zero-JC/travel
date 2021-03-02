@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zero.travel.mapper.FavoriteMapper" >
+  <resultMap id="BaseResultMap" type="com.zero.travel.pojo.entity.Favorite" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <id column="route_id" property="routeId" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    user_id, route_id, time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.zero.travel.pojo.entity.FavoriteKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from favorite
+    where user_id = #{userId,jdbcType=INTEGER}
+      and route_id = #{routeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.zero.travel.pojo.entity.FavoriteKey" >
+    delete from favorite
+    where user_id = #{userId,jdbcType=INTEGER}
+      and route_id = #{routeId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.zero.travel.pojo.entity.Favorite" >
+    insert into favorite (user_id, route_id, time
+      )
+    values (#{userId,jdbcType=INTEGER}, #{routeId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zero.travel.pojo.entity.Favorite" >
+    insert into favorite
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="routeId != null" >
+        route_id,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="routeId != null" >
+        #{routeId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zero.travel.pojo.entity.Favorite" >
+    update favorite
+    <set >
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+      and route_id = #{routeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zero.travel.pojo.entity.Favorite" >
+    update favorite
+    set time = #{time,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=INTEGER}
+      and route_id = #{routeId,jdbcType=INTEGER}
+  </update>
+</mapper>
