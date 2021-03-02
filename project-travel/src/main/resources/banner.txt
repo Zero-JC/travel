@@ -7,5 +7,5 @@ ${AnsiColor.BRIGHT_RED}
  |_____/| .__/|_|  |_|_| |_|\__, |____/ \___/ \___/ \__|
         | |                  __/ |                      
         |_|                 |___/
-
+${AnsiColor.BLACK}
 <Zero>:Project (version:${application.version})::  Spring Boot ${spring-boot.formatted-version}
