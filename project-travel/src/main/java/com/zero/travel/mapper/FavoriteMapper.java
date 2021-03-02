@@ -3,10 +3,15 @@ package com.zero.travel.mapper;
 import com.zero.travel.pojo.entity.Favorite;
 
 import com.zero.travel.pojo.entity.FavoriteKey;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * @author LJC
+ */
+@Mapper
 public interface FavoriteMapper {
 
 
@@ -15,7 +20,6 @@ public interface FavoriteMapper {
     int insert(Favorite record);
 
     int insertSelective(Favorite record);
-
 
 
     Favorite selectByPrimaryKey(FavoriteKey key);

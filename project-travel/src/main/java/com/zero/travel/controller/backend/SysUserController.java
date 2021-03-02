@@ -1,7 +1,9 @@
 package com.zero.travel.controller.backend;
 
 import com.zero.travel.common.util.ValidateUtils;
+import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.SysUserDTO;
+import com.zero.travel.pojo.entity.SysUser;
 import com.zero.travel.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,7 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping("/backend/sysUser")
-public class SysUserController {
+public class SysUserController extends CommonController {
 
     @Autowired
     private SysUserService sysUserService;
@@ -41,11 +43,13 @@ public class SysUserController {
         }
         try {
             //TODO:登录验证
-            sysUserService.loginValidate(sysUserDTO);
+            //验证码
 
+            SysUser sysUser = sysUserService.loginValidate(sysUserDTO);
+            modelMap.addAttribute("currentUser",sysUser);
             return "/backend/main";
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("登录验证异常:{}",e.getMessage());
             modelMap.addAttribute("errorMsg",e.getMessage());
             return "/backend/login";
         }

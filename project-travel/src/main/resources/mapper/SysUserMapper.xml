@@ -21,6 +21,12 @@
     from sys_user
     where sys_id = #{sysId,jdbcType=INTEGER}
   </select>
+  <select id="selectByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from sys_user
+    where username = #{username}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_user
     where sys_id = #{sysId,jdbcType=INTEGER}

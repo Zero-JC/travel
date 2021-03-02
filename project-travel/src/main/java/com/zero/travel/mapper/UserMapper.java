@@ -1,10 +1,13 @@
 package com.zero.travel.mapper;
 
 import com.zero.travel.pojo.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 
 
-import java.util.List;
-
+/**
+ * @author LJC
+ */
+@Mapper
 public interface UserMapper {
 
 

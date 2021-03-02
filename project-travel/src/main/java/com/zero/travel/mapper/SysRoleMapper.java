@@ -1,10 +1,15 @@
 package com.zero.travel.mapper;
 
 import com.zero.travel.pojo.entity.SysRole;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * @author LJC
+ */
+@Mapper
 public interface SysRoleMapper {
 
 
