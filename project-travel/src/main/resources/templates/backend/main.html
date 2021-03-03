@@ -13,17 +13,17 @@
     <script type="text/javascript">
     $(function(){
     	// 点击切换页面
-	     $("#product-type-set").click(function() {
-            $("#frame-id").attr("src", "productTypeManager.html");
+	     $("#route-set").click(function() {
+            $("#frame-id").attr("src", "/backend/");
         });
-        $("#product-set").click(function() {
-            $("#frame-id").attr("src", "productManager.html");
+        $("#seller-set").click(function() {
+            $("#frame-id").attr("src", "/backend/seller/findAll");
         });
         $("#user-set").click(function() {
-            $("#frame-id").attr("src", "customerManager.html");
+            $("#frame-id").attr("src", "/backend/");
         });
-        $("#manager-set").click(function() {
-            $("#frame-id").attr("src", "sysuserManager.html");
+        $("#sysUser-set").click(function() {
+            $("#frame-id").attr("src", "/backend/sysUser");
         });
     });
     </script>
@@ -49,16 +49,16 @@
                 <div class="row user-setting">
                     <div class="col-xs-2 user-wrap">
                         <ul class="list-group">
-                            <li class="list-group-item active" name="userSet" id="product-type-set">
-                                <i class="glyphicon glyphicon-lock"></i> &nbsp;商品类型管理
+                            <li class="list-group-item active" name="userSet" id="route-set">
+                                <i class="glyphicon glyphicon-lock"></i> &nbsp;旅游线路管理
                             </li>
-                            <li class="list-group-item" name="userPic" id="product-set">
-                                <i class="glyphicon glyphicon-facetime-video"></i> &nbsp;商品管理
+                            <li class="list-group-item" name="userPic" id="seller-set">
+                                <i class="glyphicon glyphicon-facetime-video"></i> &nbsp;商家管理
                             </li>
                             <li class="list-group-item" name="userInfo" id="user-set">
                                 <i class="glyphicon glyphicon-user"></i> &nbsp;客户管理
                             </li>
-                            <li class="list-group-item" name="adminSet" id="manager-set">
+                            <li class="list-group-item" name="adminSet" id="sysUser-set">
                                 <i class="glyphicon glyphicon-globe"></i> &nbsp;系统用户管理
                             </li>
                         </ul>
