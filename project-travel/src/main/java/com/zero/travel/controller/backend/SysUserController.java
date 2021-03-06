@@ -54,5 +54,16 @@ public class SysUserController extends CommonController {
         }
     }
 
+    /**
+     * 退出登录
+     * @return
+     */
+    @RequestMapping("logout")
+    public String logout(){
+
+        return "/backend/login";
+    }
+
+
 
 }

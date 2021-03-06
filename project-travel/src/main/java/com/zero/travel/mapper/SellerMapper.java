@@ -3,6 +3,8 @@ package com.zero.travel.mapper;
 import com.zero.travel.pojo.entity.Seller;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 
 /**
  * @author LJC
@@ -21,4 +23,10 @@ public interface SellerMapper {
     int updateByPrimaryKeySelective(Seller record);
 
     int updateByPrimaryKey(Seller record);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<Seller> selectAll();
 }

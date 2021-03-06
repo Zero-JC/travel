@@ -19,6 +19,13 @@
     from seller
     where seller_id = #{sellerId,jdbcType=INTEGER}
   </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from seller
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from seller
     where seller_id = #{sellerId,jdbcType=INTEGER}

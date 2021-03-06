@@ -10,12 +10,19 @@
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/userSetting.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" th:inline="javascript">
+    let currUser = [[${currentUser.name}]];
     $(function(){
+        //TODO:遗留问题
+        //退出登录之后，点击浏览器回退按钮返回到登录后的页面
+        if (currUser==null){
+            location.href="/showLogin";
+        }
+
         //TODO:切换页面时将当前用户的id作为参数，在后端判断是否具有相关的操作权限，如果没有则跳转到提示页面，提示内容:当前用户没有操作权限
     	// 点击切换页面
         $("#welcome-set").click(function() {
-            $("#frame-id").attr("src", "/welcome");
+            $("#frame-id").attr("src", "/index");
         });
 	    $("#route-set").click(function() {
             $("#frame-id").attr("src", "/backend/");
@@ -30,10 +37,42 @@
             $("#frame-id").attr("src", "/backend/sysUser");
         });
     });
+
+    //显示登出确认框
+    function showLogOut() {
+        $("#logout").modal("show");
+    }
+    function logout() {
+        location.href="/backend/sysUser/logout";
+    }
     </script>
 </head>
 
 <body>
+    <!-- 确认登出 start -->
+    <div class="modal fade" tabindex="-1" id="logout">
+        <!-- 窗口声明 -->
+        <div class="modal-dialog modal-lg">
+            <!-- 内容声明 -->
+            <div class="modal-content">
+                <!-- 头部、主体、脚注 -->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">信息提示</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <h4>您确认要退出吗?</h4>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="deleteProductTypeId">
+                    <button class="btn btn-primary addProductType" onclick="logout()" data-dismiss="modal">退出</button>
+                    <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 确认登出 end -->
+
     <div class="wrapper-cc clearfix">
         <div class="content-cc">
             <!-- header start -->
@@ -43,7 +82,7 @@
                     <div class="welcome">
                         <div class="left">欢迎您：</div>
                         <div class="right" th:text="${currentUser.name}"></div>
-                        <div class="exit">退出</div>
+                        <div class="exit" onclick="showLogOut()"><i class="glyphicon glyphicon-off"></i></div>
                     </div>
                 </div>
             </div>
@@ -54,24 +93,24 @@
                     <div class="col-xs-2 user-wrap">
                         <ul class="list-group">
                             <li class="list-group-item active" name="welcomeSet" id="welcome-set">
-                                <i class="glyphicon glyphicon-lock"></i> &nbsp;首页
+                                <i class="glyphicon glyphicon-home"></i> &nbsp;首页
                             </li>
                             <li class="list-group-item" name="userSet" id="route-set">
-                                <i class="glyphicon glyphicon-lock"></i> &nbsp;旅游线路管理
+                                <i class="glyphicon glyphicon-globe"></i> &nbsp;旅游线路管理
                             </li>
                             <li class="list-group-item" name="userPic" id="seller-set">
-                                <i class="glyphicon glyphicon-facetime-video"></i> &nbsp;商家管理
+                                <i class="glyphicon glyphicon-shopping-cart"></i> &nbsp;商家管理
                             </li>
                             <li class="list-group-item" name="userInfo" id="user-set">
                                 <i class="glyphicon glyphicon-user"></i> &nbsp;客户管理
                             </li>
                             <li class="list-group-item" name="adminSet" id="sysUser-set">
-                                <i class="glyphicon glyphicon-globe"></i> &nbsp;系统用户管理
+                                <i class="glyphicon glyphicon-cog"></i> &nbsp;系统用户管理
                             </li>
                         </ul>
                     </div>
                     <div class="col-xs-10" id="userPanel">
-                        <iframe id="frame-id" src="/welcome" width="100%" height="100%" frameborder="0" scrolling="no">
+                        <iframe id="frame-id" src="/index" width="100%" height="100%" frameborder="0" scrolling="no">
                         </iframe>
                     </div>
 
