@@ -1,6 +1,5 @@
 package com.zero.travel.config;
 
-import com.sun.xml.internal.ws.client.HandlerConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/showLogin").setViewName("/backend/login");
+        registry.addViewController("/showLogin").setViewName("backend/login");
         registry.addViewController("/welcome").setViewName("welcome");
         registry.addViewController("/index").setViewName("index");
     }

@@ -26,8 +26,6 @@ public class SellerService {
     public List<Seller> findAll() {
         List<Seller> sellerList = sellerMapper.selectAll();
 
-        int i = 10/0;
-
         return sellerList;
     }
 }

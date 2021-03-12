@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 /**
- *
+ * 商家
  * @author LJC
  * @version 1.0
  * @date 2021/3/3 22:20
@@ -33,6 +33,11 @@ public class SellerController extends CommonController {
         List<Seller> sellerList = sellerService.findAll();
 
         model.addAttribute("sellers",sellerList);
-        return "/backend/sellerManager";
+        return "backend/sellerManager";
+    }
+
+
+    public void add(){
+
     }
 }

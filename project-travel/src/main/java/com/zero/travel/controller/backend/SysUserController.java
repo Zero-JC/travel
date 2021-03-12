@@ -39,17 +39,17 @@ public class SysUserController extends CommonController {
         if (bindingResult.hasErrors()){
             String checkResult = ValidateUtils.checkResult(bindingResult);
             modelMap.addAttribute("errorMsg",checkResult);
-            return "/backend/login";
+            return "backend/login";
         }
         try {
             //TODO:登录验证
             SysUser sysUser = sysUserService.loginValidate(sysUserDTO);
             modelMap.addAttribute("currentUser",sysUser);
-            return "/backend/main";
+            return "backend/main";
         } catch (Exception e) {
             log.error("登录验证异常:{}",e.getMessage());
             modelMap.addAttribute("errorMsg",e.getMessage());
-            return "/backend/login";
+            return "backend/login";
         }
     }
 
@@ -60,7 +60,7 @@ public class SysUserController extends CommonController {
     @RequestMapping("logout")
     public String logout(){
 
-        return "/backend/login";
+        return "backend/login";
     }
 
 
