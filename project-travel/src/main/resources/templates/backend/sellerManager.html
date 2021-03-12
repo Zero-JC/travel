@@ -10,6 +10,58 @@
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/userSetting.js"></script>
+    <script type="text/javascript" src="/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/zero.css" />
+    <!--弹窗-->
+    <script type="text/javascript" src="/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/zero.css" />
+    <script type="text/javascript">
+
+        $(function () {
+
+            $("#doAddSeller").on("click", function() {
+                _this = this; //this是事件源
+                $("#addSellerModal").modal("show");
+            });
+
+            $(".doSellerModify").on("click", function() {
+                $("#addSellerModal").modal("hide");
+            });
+        });
+
+        /*添加用户 $("#addSellerForm").serialize()*/
+        function addSeller() {
+            $.post(
+                'http://127.0.0.1:8080/backend/seller/add',
+                {
+                    sellerId:$("#sellerId").val(),
+                    sellerName:$("#sellerName").val(),
+                    phone:$("#phone").val(),
+                    address:$("#address").val(),
+                },
+                function (result) {
+                    alert(result.msg);
+                    /*if (result.status==200){
+                        layer.msg(result.message,
+                            {time:1000,skin:'successMsg'},
+                            function (){
+                                location.href = '/backend/seller/findAll';
+                            }
+                        );
+                    }
+                    if (result.status==500){
+                        layer.msg(result.msg,
+                            {time:5000,skin:'errorMsg'},
+                            function (){
+                                location.href = '/backend/seller/findAll';
+                            }
+                        );
+                    }*/
+                }
+            );
+
+        }
+    </script>
 </head>
 
 <body>
@@ -18,7 +70,7 @@
             <h3 class="panel-title">商家管理</h3>
         </div>
         <div class="panel-body">
-            <input type="button" value="新增" class="btn btn-primary" id="doAddProTpye">
+            <input type="button" value="新增" class="btn btn-primary" id="doAddSeller">
             <br>
             <br>
             <div class="show-list">
@@ -39,7 +91,7 @@
                             <td th:text="${seller.getPhone()}"></td>
                             <td th:text="${seller.getAddress()}"></td>
                             <td class="text-center">
-                                <input type="button" class="btn btn-warning btn-sm doProTypeModify" value="修改">
+                                <input type="button" class="btn btn-warning btn-sm doSellerModify" value="修改">
                                 <input type="button" class="btn btn-warning btn-sm doProTypeDelete" value="删除">
                             </td>
                         </tr>
@@ -49,52 +101,54 @@
         </div>
     </div>
     
-    <!-- 添加商品类型 start -->     
-    <div class="modal fade" tabindex="-1" id="ProductType">
+    <!-- 添加商家 start -->
+    <div class="modal fade" tabindex="-1" id="addSellerModal">
         <!-- 窗口声明 -->
         <div class="modal-dialog modal-lg">
-            <!-- 内容声明 -->
-            <div class="modal-content">
-                <!-- 头部、主体、脚注 -->
-                <div class="modal-header">
-                    <button class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">新增商家</h4>
+            <form id="addSellerForm">
+                <!-- 内容声明 -->
+                <div class="modal-content">
+                    <!-- 头部、主体、脚注 -->
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">新增商家</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="row text-right">
+                            <label for="sellerID" class="col-sm-4 control-label">商家编号：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="sellerId" name="sellerId">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="sellerName" class="col-sm-4 control-label">商家名称：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="sellerName" name="sellerName">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="phone" class="col-sm-4 control-label">联系电话：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="phone" name="phone">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="address" class="col-sm-4 control-label">商家地址：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="address" name="address">
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary addProductType" onclick="addSeller()">新增</button>
+                        <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
+                    </div>
                 </div>
-                <div class="modal-body text-center">
-                    <div class="row text-right">
-                        <label for="sellerID" class="col-sm-4 control-label">商家编号：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="sellerId">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="sellerName" class="col-sm-4 control-label">商家名称：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="sellerName">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="phone" class="col-sm-4 control-label">联系电话：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="phone">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="address" class="col-sm-4 control-label">商家地址：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="address">
-                        </div>
-                    </div>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary addProductType">新增</button>
-                    <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
     <!-- 添加商品类型 end -->

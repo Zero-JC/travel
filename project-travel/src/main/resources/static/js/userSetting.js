@@ -89,7 +89,7 @@ $(function(){
     });
 
     // 商品类型管理 添加商品类型
-    $("#doAddProTpye").on("click", function() {
+    $("#doAddProType").on("click", function() {
         _this = this; //this是事件源
         $("#ProductType").modal("show");
     });

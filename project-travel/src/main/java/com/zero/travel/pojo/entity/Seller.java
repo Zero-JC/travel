@@ -2,6 +2,9 @@ package com.zero.travel.pojo.entity;
 
 import java.util.Date;
 
+/**
+ * @author LJC
+ */
 public class Seller {
     private Integer sellerId;
 
