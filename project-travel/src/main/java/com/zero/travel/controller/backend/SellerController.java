@@ -2,6 +2,7 @@ package com.zero.travel.controller.backend;
 
 import com.zero.travel.common.enums.StatusCode;
 import com.zero.travel.common.response.BaseResponse;
+import com.zero.travel.common.util.ValidateUtils;
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.mapper.SellerMapper;
 import com.zero.travel.pojo.dto.SellerDTO;
@@ -10,6 +11,8 @@ import com.zero.travel.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +38,7 @@ public class SellerController extends CommonController {
      * @param model
      * @return
      */
-    @GetMapping("/findAll")
+    @RequestMapping("/findAll")
     public String findAll(Model model){
         List<Seller> sellerList = sellerService.findAll();
 
@@ -58,21 +61,24 @@ public class SellerController extends CommonController {
     /**
      * 新增
      * @param sellerDTO
+     * @param result
      * @return
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String add(SellerDTO sellerDTO,Model model){
+    @ResponseBody
+    public BaseResponse add(@Validated SellerDTO sellerDTO, BindingResult result){
         try {
+            if (result.hasErrors()){
+                String checkResult = ValidateUtils.checkResult(result);
+
+                return new BaseResponse(StatusCode.Fail.getCode(),checkResult);
+            }
             log.info(sellerDTO.toString());
             sellerService.add(sellerDTO);
-
-            model.addAttribute("successMsg","添加成功");
+            return new BaseResponse(StatusCode.Success);
         } catch (Exception e) {
-            model.addAttribute("errorMsg","添加失败");
-            e.printStackTrace();
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
         }
-
-        return "redirect:findAll";
     }
 
     /**
@@ -81,16 +87,31 @@ public class SellerController extends CommonController {
      * @return
      */
     @RequestMapping(value = "/modify",method = RequestMethod.POST)
-    public @ResponseBody BaseResponse modify(SellerDTO sellerDTO){
-        BaseResponse response = new BaseResponse(StatusCode.Success);
+    public String modify(SellerDTO sellerDTO,Model model){
         try {
             sellerService.modify(sellerDTO);
-            response.setMsg("修改成功!");
+            model.addAttribute("successMsg","修改成功");
+            return "forward:findAll";
         } catch (Exception e) {
             log.error(e.getMessage());
-            response.setCode(StatusCode.Fail.getCode());
-            response.setMsg(e.getMessage());
+            model.addAttribute("errorMsg","修改失败");
+            return "forward:findAll";
         }
-        return response;
+    }
+
+    /**
+     * 删除用户
+     * @param sellerId
+     * @return
+     */
+    @RequestMapping("/remove")
+    @ResponseBody
+    public BaseResponse remove(Integer sellerId){
+        try{
+            sellerService.remove(sellerId);
+            return new BaseResponse(StatusCode.Success);
+        }catch (Exception e){
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
     }
 }

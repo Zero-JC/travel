@@ -10,11 +10,10 @@
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <!--表单校验-->
     <script src="/js/bootstrapValidator.js"></script>
-    <!--<script src="/js/userSetting.js"></script>-->
     <link rel="stylesheet"  href="/css/bootstrapValidator.css" />
     <!--弹窗-->
-    <!--<script type="text/javascript" src="/layer/layer.js"></script>
-    <link rel="stylesheet" href="/css/zero.css" />-->
+    <script type="text/javascript" src="/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/zero.css" />
 
     <script type="text/javascript" th:inline="javascript">
         $(function () {
@@ -26,9 +25,10 @@
                 $("#addSellerModal").modal("show");
             });
 
-            $("#addSeller").on("click", function() {
+            $("#addSellerBut").on("click", function() {
                 $("#addSellerModal").modal("hide");
             });
+
             //修改
             $(".doUpdateSeller").on("click", function() {
                 _this = this; //this是事件源
@@ -58,6 +58,8 @@
                 });*/
                 alert(errorMsg);
             };
+
+
         });
 
         //商家信息回显
@@ -74,22 +76,57 @@
             );
         };
 
-        //修改
-        function modifySeller(){
+        //异步新增
+        function addSheller() {
             $.post(
-                '/backend/seller/modify',
-                $("#updateSellerForm").serialize(),
+                '/backend/seller/add',
+                $("#addSellerForm").serialize(),
                 function (result) {
                     if (result.code == 200){
-                        alert(result.msg);
+                        layer.msg(result.msg,{
+                            time: 3000
+                        });
+                        //alert(result.msg);
+                        location.href = '/backend/seller/findAll';
                     }
                     if (result.code == 500){
-                        alert(result.msg);
+                        /*layer.msg(result.msg,{
+                            time: 3000
+                        });*/
+                        layer.open({
+                            title: '异常信息'
+                            ,content: result.msg
+                        });
+                        location.href = '/backend/seller/findAll';
+                    }
+                }
+            )
+        };
+
+        //删除确认模态框
+        function showRemoveModal(sellerId) {
+            $("#removeSellerId").val(sellerId);
+            $("#removeSellerModel").modal("show");
+        }
+
+        //删除
+        function removeSeller() {
+            let sellerId = $("#removeSellerId").val();
+            $("#removeSellerModel").modal("hide");
+            $.post(
+                '/backend/seller/remove',
+                {sellerId:sellerId},
+                function (result) {
+                    if (result.code == 200){
+                        layer.msg("删除成功!",{
+                            time: 5000
+                        });
+                        location.href = '/backend/seller/findAll';
                     }
                 }
             );
-        }
 
+        }
     </script>
 </head>
 
@@ -121,7 +158,7 @@
                             <td th:text="${seller.getAddress()}"></td>
                             <td class="text-center">
                                 <input type="button" class="btn btn-warning btn-sm doUpdateSeller"  th:onclick="showSellerMsg([[${seller.getSellerId()}]]);" value="修改"/>
-                                <input type="button" class="btn btn-warning btn-sm doProTypeDelete" id="doDeleteSeller" value="删除"/>
+                                <input type="button" class="btn btn-warning btn-sm doProTypeDelete" id="doDeleteSeller" th:onclick="showRemoveModal([[${seller.getSellerId()}]]);" value="删除"/>
                             </td>
                         </tr>
                     </tbody>
@@ -129,12 +166,37 @@
             </div>
         </div>
     </div>
+
+    <!-- 确认删除商家 start -->
+    <div class="modal fade" tabindex="-1" id="removeSellerModel">
+        <!-- 窗口声明 modal-lg-->
+        <div class="modal-dialog ">
+            <!-- 内容声明 -->
+            <div class="modal-content">
+                <!-- 头部、主体、脚注 -->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">信息提示</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <h4>您确认要删除吗?</h4>
+                </div>
+                <div class="modal-footer">
+                    <!--隐藏域存储商品id-->
+                    <input type="hidden" id="removeSellerId">
+                    <button class="btn btn-primary addProductType" onclick="removeSeller()" data-dismiss="modal">删除</button>
+                    <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 确认删除商家 end -->
     
     <!-- 添加商家 start -->
     <div class="modal fade" tabindex="-1" id="addSellerModal">
         <!-- 窗口声明 -->
         <div class="modal-dialog modal-lg">
-            <form id="addSellerForm" action="/backend/seller/add" method="post">
+            <form id="addSellerForm">
                 <!-- 内容声明 -->
                 <div class="modal-content">
                     <!-- 头部、主体、脚注 -->
@@ -173,8 +235,7 @@
                         <br>
                     </div>
                     <div class="modal-footer">
-                        <!--<button class="btn btn-primary addProductType" onclick="addSeller()">新增</button>-->
-                        <button id="addSeller" type="submit" class="btn btn-primary">新增</button>
+                        <button id="addSellerBut" type="button" class="btn btn-primary" onclick="addSheller()">新增</button>
                         <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
                     </div>
                 </div>
@@ -187,7 +248,7 @@
     <div class="modal fade" tabindex="-1" id="updateSellerModal">
         <!-- 窗口声明 -->
         <div class="modal-dialog modal-lg">
-            <form id="updateSellerForm">
+            <form id="updateSellerForm" action="/backend/seller/modify" method="post">
                 <!-- 内容声明 -->
                 <div class="modal-content">
                     <!-- 头部、主体、脚注 -->
@@ -226,7 +287,7 @@
                         <br>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-warning updateProType" id="updateSeller" onclick="modifySeller()">修改</button>
+                        <button class="btn btn-warning updateProType" type="submit" id="updateSeller">修改</button>
                         <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
                     </div>
                 </div>

@@ -2,6 +2,10 @@ package com.zero.travel.pojo.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 /**
  * 商家数据对象
  * @author LJC
@@ -11,11 +15,16 @@ import lombok.Data;
 @Data
 public class SellerDTO {
 
+    @Min(value = 0,message = "商家编号格式不正确(2~4个字符,仅限数组)")
     private Integer sellerId;
 
+    @NotBlank(message = "商家名称不能为空")
     private String sellerName;
 
+    @NotBlank(message = "联系电话不能为空")
+    @Pattern(regexp = "^[0-9]{11}$",message = "联系电话格式不正确(11个数字字符)")
     private String phone;
 
+    @NotBlank(message = "商家地址不能为空")
     private String address;
 }

@@ -64,4 +64,16 @@ public class SellerService {
             throw new RuntimeException("商家信息修改失败");
         }
     }
+
+    /**
+     * 删除
+     * @param sellerId
+     */
+    public void remove(Integer sellerId) {
+
+        int num = sellerMapper.deleteByPrimaryKey(sellerId);
+        if (num != 1){
+            throw new RuntimeException("删除失败，当前用户可能不存在");
+        }
+    }
 }
