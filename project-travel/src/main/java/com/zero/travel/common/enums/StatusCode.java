@@ -1,10 +1,12 @@
 package com.zero.travel.common.enums;
 
+import java.io.Serializable;
+
 /**
  * 统一的响应状态码
  * @author LJC
  */
-public enum StatusCode {
+public enum StatusCode implements Serializable {
 
     //
     Success(200,"成功"),

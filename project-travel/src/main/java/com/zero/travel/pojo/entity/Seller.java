@@ -1,11 +1,12 @@
 package com.zero.travel.pojo.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author LJC
  */
-public class Seller {
+public class Seller implements Serializable {
     private Integer sellerId;
 
     private String sellerName;

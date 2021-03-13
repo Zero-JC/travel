@@ -3,20 +3,22 @@ package com.zero.travel.common.response;
 
 import com.zero.travel.common.enums.StatusCode;
 
+import java.io.Serializable;
+
 /**
  * 统一的响应消息模型
  * @author LJC
  * @version 1.0
  */
-public class BaseResponse<T> {
+public class BaseResponse implements Serializable {
 
     private Integer code;
 
     private String msg;
 
-    private T data;
+    private Object data;
 
-    public BaseResponse(Integer code, String msg, T data) {
+    public BaseResponse(Integer code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -28,7 +30,7 @@ public class BaseResponse<T> {
         this.data = null;
     }
 
-    public BaseResponse(StatusCode statusCode, T data) {
+    public BaseResponse(StatusCode statusCode, Object data) {
         this.code = statusCode.getCode();
         this.msg = statusCode.getMsg();
         this.data = data;
@@ -58,11 +60,11 @@ public class BaseResponse<T> {
         this.msg = msg;
     }
 
-    public T getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

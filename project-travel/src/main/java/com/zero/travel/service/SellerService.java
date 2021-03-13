@@ -49,4 +49,19 @@ public class SellerService {
             throw new RuntimeException("添加失败");
         }
     }
+
+    /**
+     * 修改
+     * @param sellerDTO
+     * @throws Exception
+     */
+    public void modify(SellerDTO sellerDTO) throws Exception{
+        Seller seller = new Seller();
+        BeanUtils.copyProperties(sellerDTO,seller);
+
+        int num = sellerMapper.updateByPrimaryKeySelective(seller);
+        if (num != 1){
+            throw new RuntimeException("商家信息修改失败");
+        }
+    }
 }

@@ -12,7 +12,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/3/12 9:11
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class ErrorController extends CommonController{
 
     @ExceptionHandler(Exception.class)
