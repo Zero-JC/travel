@@ -40,26 +40,6 @@
             });
 
 
-            //提示消息
-            let successMsg = [[${successMsg}]];
-            let errorMsg = [[${errorMsg}]];
-            if (successMsg!=null){
-                alert(successMsg);
-                /*layer.msg(successMsg,{
-                    skin:"successMsg",
-                    time: 3000
-                });*/
-            }
-
-            if (errorMsg!=null){
-                /*layer.msg(errorMsg,{
-                    skin:"errorMsg",
-                    time: 3000
-                });*/
-                alert(errorMsg);
-            };
-
-
         });
 
         //商家信息回显
@@ -75,6 +55,31 @@
                 }
             );
         };
+        //修改商家信息
+        function modifySeller(){
+            $.post(
+                '/backend/seller/modify',
+                $("#updateSellerForm").serialize(),
+                function (result) {
+                    if (result.code == 200){
+                        layer.msg(result.msg,{
+                            time: 3000
+                        });
+                        window.setTimeout(function () {
+                            location.href = '/backend/seller/findAll';
+                        }, 3000);
+                    }
+                    if (result.code == 500){
+                        layer.msg(result.msg,{
+                            time: 3000
+                        });
+                        window.setTimeout(function () {
+                            location.href = '/backend/seller/findAll';
+                        }, 3000);
+                    }
+                }
+            );
+        }
 
         //异步新增
         function addSheller() {
@@ -86,18 +91,17 @@
                         layer.msg(result.msg,{
                             time: 3000
                         });
-                        //alert(result.msg);
-                        location.href = '/backend/seller/findAll';
+                        window.setTimeout(function () {
+                            location.href = '/backend/seller/findAll';
+                        }, 3000);
                     }
                     if (result.code == 500){
-                        /*layer.msg(result.msg,{
+                        layer.msg(result.msg,{
                             time: 3000
-                        });*/
-                        layer.open({
-                            title: '异常信息'
-                            ,content: result.msg
                         });
-                        location.href = '/backend/seller/findAll';
+                        window.setTimeout(function () {
+                            location.href = '/backend/seller/findAll';
+                        }, 3000);
                     }
                 }
             )
@@ -248,7 +252,7 @@
     <div class="modal fade" tabindex="-1" id="updateSellerModal">
         <!-- 窗口声明 -->
         <div class="modal-dialog modal-lg">
-            <form id="updateSellerForm" action="/backend/seller/modify" method="post">
+            <form id="updateSellerForm">
                 <!-- 内容声明 -->
                 <div class="modal-content">
                     <!-- 头部、主体、脚注 -->
@@ -287,7 +291,7 @@
                         <br>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-warning updateProType" type="submit" id="updateSeller">修改</button>
+                        <button class="btn btn-warning updateProType" type="button" onclick="modifySeller()" id="updateSeller">修改</button>
                         <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
                     </div>
                 </div>

@@ -87,15 +87,19 @@ public class SellerController extends CommonController {
      * @return
      */
     @RequestMapping(value = "/modify",method = RequestMethod.POST)
-    public String modify(SellerDTO sellerDTO,Model model){
+    @ResponseBody
+    public BaseResponse modify(@Validated SellerDTO sellerDTO,BindingResult result){
         try {
+            if (result.hasErrors()){
+                String checkResult = ValidateUtils.checkResult(result);
+                return new BaseResponse(StatusCode.Fail.getCode(),checkResult);
+            }
+
             sellerService.modify(sellerDTO);
-            model.addAttribute("successMsg","修改成功");
-            return "forward:findAll";
+            return new BaseResponse(StatusCode.Success);
         } catch (Exception e) {
             log.error(e.getMessage());
-            model.addAttribute("errorMsg","修改失败");
-            return "forward:findAll";
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
         }
     }
 
