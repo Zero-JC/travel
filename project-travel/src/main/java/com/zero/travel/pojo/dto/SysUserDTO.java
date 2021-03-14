@@ -1,30 +1,33 @@
 package com.zero.travel.pojo.dto;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+import java.util.Date;
 
 /**
- * 用户登录的传输对象
+ * 系统用户-数据传输对象
  * @author LJC
  * @version 1.0
- * @date 2021/2/28 19:04
+ * @date 2021/3/14 16:58
  */
 @Data
-public class SysUserDTO implements Serializable {
+public class SysUserDTO {
 
-    @NotBlank(message = "用户名不能为空")
-    @Length(min=1,max=30,message = "用户名长度超限")
+    private Integer sysId;
+
+    private String name;
+
     private String username;
 
-    @NotBlank(message = "密码不能为空")
-    @Length(min=1,max=30,message = "密码长度超限")
-    private String password;
+    ///private String password;
 
-    @NotBlank(message = "验证码不能为空")
-    private String code;
+    private String email;
 
+    private Integer isActive;
+
+    private Integer roleId;
+
+    private Date createTime;
+
+    ///private Date updateTime;
 }

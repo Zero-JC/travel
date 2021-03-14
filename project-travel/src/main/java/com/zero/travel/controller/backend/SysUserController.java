@@ -1,10 +1,14 @@
 package com.zero.travel.controller.backend;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.zero.travel.common.enums.SystemConstant;
 import com.zero.travel.common.util.ValidateUtils;
 import com.zero.travel.controller.CommonController;
-import com.zero.travel.pojo.dto.SysUserDTO;
+import com.zero.travel.pojo.dto.LoginDTO;
 import com.zero.travel.pojo.entity.SysUser;
 import com.zero.travel.service.SysUserService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author LJC
@@ -28,13 +33,13 @@ public class SysUserController extends CommonController {
 
     /**
      * 登录
-     * @param sysUserDTO
+     * @param loginDTO
      * @param bindingResult
      * @param modelMap
      * @return
      */
     @PostMapping ("login")
-    public String login(@Valid SysUserDTO sysUserDTO, BindingResult bindingResult, Model modelMap){
+    public String login(@Valid LoginDTO loginDTO, BindingResult bindingResult, Model modelMap){
         //TODO:服务端表单校验
         if (bindingResult.hasErrors()){
             String checkResult = ValidateUtils.checkResult(bindingResult);
@@ -43,7 +48,7 @@ public class SysUserController extends CommonController {
         }
         try {
             //TODO:登录验证
-            SysUser sysUser = sysUserService.loginValidate(sysUserDTO);
+            SysUser sysUser = sysUserService.loginValidate(loginDTO);
             modelMap.addAttribute("currentUser",sysUser);
             return "backend/main";
         } catch (Exception e) {
@@ -64,5 +69,26 @@ public class SysUserController extends CommonController {
     }
 
 
+    /**
+     * 系统用户信息列表展示
+     * @param pageNum
+     * @param model
+     * @return
+     */
+    @RequestMapping("/findAll")
+    public String findAll(Integer pageNum,Model model){
+        if (ObjectUtils.isEmpty(pageNum)){
+            pageNum = SystemConstant.PAGE_NUM;
+        }
+        PageHelper.startPage(pageNum,SystemConstant.PAGE_SIZE);
+        List<SysUser> sysUserList = sysUserService.findAll();
+
+        sysUserList.forEach(sysUser -> System.out.println(sysUser.toString()));
+
+        PageInfo<SysUser> pageInfo = new PageInfo<>(sysUserList);
+        model.addAttribute("pageInfo",pageInfo);
+
+        return "backend/sysUserManager";
+    }
 
 }

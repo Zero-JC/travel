@@ -1,8 +1,11 @@
 package com.zero.travel.mapper;
 
+import com.zero.travel.pojo.dto.SysUserDTO;
 import com.zero.travel.pojo.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**
@@ -30,4 +33,11 @@ public interface SysUserMapper {
      * @return
      */
     SysUser selectByUsername(@Param("username") String username);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<SysUser> selectAll();
+
 }

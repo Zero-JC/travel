@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>backend</title>
-    <link rel="stylesheet"  href="/css/bootstrap.css" />
-    <link rel="stylesheet"  href="/css/index.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <script src="/js/jquery-3.5.1.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    <script src="/js/userSetting.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-paginator.js"></script>
+    <script src="/js/bootstrapValidator.js"></script>
+    <link rel="stylesheet"  href="/css/bootstrapValidator.css" />
+    <script type="text/javascript" src="/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/zero.css" />
 </head>
 
 <body>
@@ -59,10 +62,9 @@
                 <table class="table table-bordered table-hover" style='text-align: center;'>
                     <thead>
                         <tr class="text-danger">
-                            <th class="text-center">序号</th>
+                            <th class="text-center">编号</th>
                             <th class="text-center">姓名</th>
                             <th class="text-center">帐号</th>
-                            <th class="text-center">电话</th>
                             <th class="text-center">邮箱</th>
                             <th class="text-center">状态</th>
                             <th class="text-center">注册时间</th>
@@ -71,48 +73,27 @@
                         </tr>
                     </thead>
                     <tbody id="tb">
-                        <tr>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>admin</td>
-                            <td>15996868058</td>
-                            <td>admin@itany.com</td>
-                            <td>有效</td>
-                            <td>2018-2-14</td>
-                            <td>超级管理员</td>
+                        <tr th:each="sysUser:${pageInfo.getList()}">
+                            <td th:text="${sysUser.getSysId()}"></td>
+                            <td th:text="${sysUser.getName()}"></td>
+                            <td th:text="${sysUser.getUsername()}"></td>
+                            <td th:text="${sysUser.getEmail()}"></td>
+
+                            <td th:if="${sysUser.getIsActive()==1}">有效</td>
+                            <td th:if="${sysUser.getIsActive()==0}">无效</td>
+                            <td th:text="${#dates.format(sysUser.getCreateTime(),'yyyy-MM-dd HH:mm:ss')}"></td>
+
+                            <td th:if="${sysUser.getRoleId()==1}">超级管理员</td>
+                            <td th:if="${sysUser.getRoleId()==2}">客户专员</td>
+                            <td th:if="${sysUser.getRoleId()==3}">服务商</td>
+
                             <td class="text-center">
                                 <input type="button" class="btn btn-warning btn-sm doMangerModify" value="修改">
-                                <input type="button" class="btn btn-danger btn-sm doMangerDisable" value="禁用">
+                                <input th:if="${sysUser.getIsActive()==1}" type="button" class="btn btn-danger btn-sm doMangerDisable" value="禁用">
+                                <input th:if="${sysUser.getIsActive()==0}" type="button" class="btn btn-success btn-sm doMangerDisable" value="启用">
                             </td>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>admin</td>
-                            <td>15996868058</td>
-                            <td>admin@itany.com</td>
-                            <td>有效</td>
-                            <td>2018-2-14</td>
-                            <td>超级管理员</td>
-                            <td class="text-center">
-                                <input type="button" class="btn btn-warning btn-sm doMangerModify" value="修改">
-                                <input type="button" class="btn btn-danger btn-sm doMangerDisable" value="禁用">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>admin</td>
-                            <td>15996868058</td>
-                            <td>admin@itany.com</td>
-                            <td>有效</td>
-                            <td>2018-2-14</td>
-                            <td>超级管理员</td>
-                            <td class="text-center">
-                                <input type="button" class="btn btn-warning btn-sm doMangerModify" value="修改">
-                                <input type="button" class="btn btn-danger btn-sm doMangerDisable" value="禁用">
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>

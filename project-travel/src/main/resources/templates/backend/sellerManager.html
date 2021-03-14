@@ -184,10 +184,11 @@
                         <tr th:each="seller:${pageInfo.getList()}">
                             <td th:text="${seller.getSellerId()}"></td>
                             <td th:text="${seller.getSellerName()}"></td>
+
                             <td th:text="${seller.getPhone()}"></td>
                             <td th:text="${seller.getAddress()}"></td>
                             <td class="text-center">
-                                <input type="button" class="btn btn-warning btn-sm doUpdateSeller"  th:onclick="showSellerMsg([[${seller.getSellerId()}]]);" value="修改"/>
+                                <input type="button" class="btn btn-warning btn-sm doUpdateSeller"  th:onclick="showSellerMsg([[${seller.getSellerId()}]]);"  value="修改"/>
                                 <input type="button" class="btn btn-warning btn-sm doProTypeDelete" id="doDeleteSeller" th:onclick="showRemoveModal([[${seller.getSellerId()}]]);" value="删除"/>
                             </td>
                         </tr>
