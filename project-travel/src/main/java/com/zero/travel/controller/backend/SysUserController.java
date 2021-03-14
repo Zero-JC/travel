@@ -83,7 +83,7 @@ public class SysUserController extends CommonController {
         PageHelper.startPage(pageNum,SystemConstant.PAGE_SIZE);
         List<SysUser> sysUserList = sysUserService.findAll();
 
-        sysUserList.forEach(sysUser -> System.out.println(sysUser.toString()));
+        /*sysUserList.forEach(sysUser -> System.out.println(sysUser.toString()));*/
 
         PageInfo<SysUser> pageInfo = new PageInfo<>(sysUserList);
         model.addAttribute("pageInfo",pageInfo);
