@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
 /**
  * 商家数据对象
@@ -13,7 +14,7 @@ import javax.validation.constraints.Pattern;
  * @date 2021/3/12 19:22
  */
 @Data
-public class SellerDTO {
+public class SellerDTO implements Serializable {
 
     @Min(value = 0,message = "商家编号格式不正确(2~4个字符,仅限数组)")
     private Integer sellerId;

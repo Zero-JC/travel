@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <script src="/js/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-paginator.js"></script>
     <!--表单校验-->
     <script src="/js/bootstrapValidator.js"></script>
     <link rel="stylesheet"  href="/css/bootstrapValidator.css" />
@@ -39,6 +40,31 @@
                 $("#updateSellerModal").modal("hide");
             });
 
+            //设置分页，往无序列表中加入分页条
+            $("#paginator").bootstrapPaginator({
+                bootstrapMajorVersion: 3,  //版本
+                currentPage:[[${pageInfo.getPageNum()}]],   //当前页码
+                totalPages:[[${pageInfo.getPages()}]],    //总页数
+                itemTexts:function (type, page, current) {  //设置显示样式
+                    switch (type) {
+                        case 'first':
+                            return '首页';
+                        case 'prev':
+                            return '上一页';
+                        case 'next':
+                            return '下一页';
+                        case 'last':
+                            return '尾页';
+                        case 'page':
+                            return page;
+                    }
+                },
+                pageUrl:function (type, page, current) {  //设置分页的超链接
+                    return '/backend/seller/findAll?pageNum='+page;
+                }
+
+            });
+
 
         });
 
@@ -66,7 +92,7 @@
                             time: 3000
                         });
                         window.setTimeout(function () {
-                            location.href = '/backend/seller/findAll';
+                            location.href = '/backend/seller/findAll?pageNum='+[[${pageInfo.getPageNum()}]];
                         }, 3000);
                     }
                     if (result.code == 500){
@@ -74,7 +100,7 @@
                             time: 3000
                         });
                         window.setTimeout(function () {
-                            location.href = '/backend/seller/findAll';
+                            location.href = '/backend/seller/findAll?pageNum='+[[${pageInfo.getPageNum()}]];
                         }, 3000);
                     }
                 }
@@ -92,7 +118,7 @@
                             time: 3000
                         });
                         window.setTimeout(function () {
-                            location.href = '/backend/seller/findAll';
+                            location.href = '/backend/seller/findAll?pageNum='+[[${pageInfo.getPageNum()}]];
                         }, 3000);
                     }
                     if (result.code == 500){
@@ -100,7 +126,7 @@
                             time: 3000
                         });
                         window.setTimeout(function () {
-                            location.href = '/backend/seller/findAll';
+                            location.href = '/backend/seller/findAll?pageNum='+[[${pageInfo.getPageNum()}]];
                         }, 3000);
                     }
                 }
@@ -155,7 +181,7 @@
                         </tr>
                     </thead>
                     <tbody id="tb">
-                        <tr th:each="seller:${sellers}">
+                        <tr th:each="seller:${pageInfo.getList()}">
                             <td th:text="${seller.getSellerId()}"></td>
                             <td th:text="${seller.getSellerName()}"></td>
                             <td th:text="${seller.getPhone()}"></td>
@@ -168,7 +194,13 @@
                     </tbody>
                 </table>
             </div>
+            <!-- 分页条 使用前端的分页js插件 -->
+            <div class="text-center">
+                <ul id="paginator"></ul>
+                <div class=""><strong>共[[${pageInfo.getTotal()}]]条记录</strong></div>
+            </div>
         </div>
+
     </div>
 
     <!-- 确认删除商家 start -->

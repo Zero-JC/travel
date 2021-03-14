@@ -1,6 +1,9 @@
 package com.zero.travel.controller.backend;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zero.travel.common.enums.StatusCode;
+import com.zero.travel.common.enums.SystemConstant;
 import com.zero.travel.common.response.BaseResponse;
 import com.zero.travel.common.util.ValidateUtils;
 import com.zero.travel.controller.CommonController;
@@ -8,6 +11,7 @@ import com.zero.travel.mapper.SellerMapper;
 import com.zero.travel.pojo.dto.SellerDTO;
 import com.zero.travel.pojo.entity.Seller;
 import com.zero.travel.service.SellerService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,10 +43,16 @@ public class SellerController extends CommonController {
      * @return
      */
     @RequestMapping("/findAll")
-    public String findAll(Model model){
-        List<Seller> sellerList = sellerService.findAll();
+    public String findAll(Integer pageNum,Model model){
+        if (ObjectUtils.isEmpty(pageNum)){
+            pageNum = SystemConstant.PAGE_NUM;
+        }
 
-        model.addAttribute("sellers",sellerList);
+        PageHelper.startPage(pageNum,SystemConstant.PAGE_SIZE);
+        List<Seller> sellerList = sellerService.findAll();
+        PageInfo<Seller> pageInfo = new PageInfo<>(sellerList);
+
+        model.addAttribute("pageInfo",pageInfo);
         return "backend/sellerManager";
     }
 
