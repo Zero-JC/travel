@@ -11,7 +11,7 @@ public enum StatusCode implements Serializable {
     //
     Success(200,"操作成功"),
     Fail(500,"失败"),
-    InvalidParams(500,"请求参数不合法"),
+    InvalidParams(500,"参数不合法"),
     UserNamePasswordNotBlank(500,"用户名或密码不能为空");
 
     StatusCode(Integer code, String msg) {

@@ -15,7 +15,7 @@ public class ValidateUtils {
 
     public static String checkResult(BindingResult result){
         StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append("【参数不合法】:");
+        errorMessage.append("【错误】:");
         if (result!=null&& result.hasErrors()){
             List<ObjectError> allErrors = result.getAllErrors();
             //遍历数组，存储错误信息

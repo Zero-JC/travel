@@ -117,11 +117,19 @@ public class SysUserController extends CommonController {
         return response;
     }
 
+    /**
+     * 多条件搜索
+     * @param pageNum
+     * @param sysUserDTO
+     * @param modelMap
+     * @return
+     */
     @RequestMapping("/search")
     public String search(Integer pageNum, SysUserDTO sysUserDTO, ModelMap modelMap){
         if (ObjectUtils.isEmpty(pageNum)){
             pageNum = SystemConstant.PAGE_NUM;
         }
+
         PageHelper.startPage(pageNum,SystemConstant.PAGE_SIZE);
         List<SysUser> sysUserList = sysUserService.findByParam(sysUserDTO);
         PageInfo<SysUser> pageInfo = new PageInfo<>(sysUserList);
@@ -130,6 +138,28 @@ public class SysUserController extends CommonController {
         modelMap.addAttribute("sysUserDTO",sysUserDTO);
 
         return "backend/sysUserManager";
+    }
+
+    /**
+     * 新增
+     * @param sysUserDTO
+     * @param result
+     * @return
+     */
+    @RequestMapping("/add")
+    @ResponseBody
+    public BaseResponse add(@Valid SysUserDTO sysUserDTO,BindingResult result){
+        try {
+            if (result.hasErrors()){
+                String checkResult = ValidateUtils.checkResult(result);
+                return new BaseResponse(StatusCode.InvalidParams.getCode(),checkResult);
+            }
+            sysUserService.add(sysUserDTO);
+            return new BaseResponse(StatusCode.Success);
+        }catch (Exception e){
+            log.error(e.toString());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
     }
 
 }

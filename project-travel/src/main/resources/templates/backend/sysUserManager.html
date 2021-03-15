@@ -81,6 +81,31 @@
             );
         }
 
+        //TODO:新增用户
+        function addSysUser() {
+            $.post(
+                '/backend/sysUser/add',
+                $("#addSysUserFrom").serialize(),
+                function (result) {
+                    if (result.code == 500){
+                        layer.alert(result.msg);
+                    }
+                    if (result.code == 200){
+                        layer.msg(result.msg,{
+                            time: 3000,
+                            skin: "successMsg"
+                        });
+                        window.setTimeout(function () {
+                            location.href = '/backend/sysUser/findAll';
+                        }, 3000);
+                    }
+                }
+            );
+        }
+
+        //TODO:修改用户
+
+
     </script>
 </head>
 
@@ -180,59 +205,62 @@
     <div class="modal fade" tabindex="-1" id="addSysUserModal">
         <!-- 窗口声明 -->
         <div class="modal-dialog">
-            <!-- 内容声明 -->
-            <div class="modal-content">
-                <!-- 头部、主体、脚注 -->
-                <div class="modal-header">
-                    <button class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">添加系统用户</h4>
+            <form id="addSysUserFrom">
+                <!-- 内容声明 -->
+                <div class="modal-content">
+                    <!-- 头部、主体、脚注 -->
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">添加系统用户</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="row text-right">
+                            <label for="add-sys-name" class="col-sm-4 control-label">用户姓名：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="add-sys-name" name="name" placeholder="不能为空">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="add-sys-username" class="col-sm-4 control-label">登录帐号：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="add-sys-username" name="username" placeholder="不能为空">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="add-sys-password" class="col-sm-4 control-label">登录密码：</label>
+                            <div class="col-sm-4">
+                                <input type="password" class="form-control" id="add-sys-password" name="password" placeholder="密码长度限制(6~20)">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="add-sys-email" class="col-sm-4 control-label">电子邮箱：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="add-sys-email" name="email" placeholder="xxxx@xxx.xxx">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="add-sys-role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
+                            <div class=" col-sm-4">
+                                <select id="add-sys-role" class="form-control" name="roleId">
+                                    <option value="2">客户专员</option>
+                                    <option value="1">超级管理员</option>
+                                    <option value="3">服务商</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary add-Button" type="button" onclick="addSysUser()">添加</button>
+                        <button class="btn btn-primary cancel" data-dismiss="modal" type="button">取消</button>
+                    </div>
                 </div>
-                <div class="modal-body text-center">
-                    <div class="row text-right">
-                        <label for="add-sys-name" class="col-sm-4 control-label">用户姓名：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="add-sys-name" name="name">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="add-sys-username" class="col-sm-4 control-label">登录帐号：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="add-sys-username" name="username" >
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="add-sys-password" class="col-sm-4 control-label">登录密码：</label>
-                        <div class="col-sm-4">
-                            <input type="password" class="form-control" id="add-sys-password" name="password">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="add-sys-email" class="col-sm-4 control-label">电子邮箱：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="add-sys-email" name="email">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="add-sys-role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
-                        <div class=" col-sm-4">
-                            <select id="add-sys-role" class="form-control" name="roleId">
-                                <option value="2">客户专员</option>
-                                <option value="1">超级管理员</option>
-                                <option value="3">服务商</option>
-                            </select>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary add-Button" type="button">添加</button>
-                    <button class="btn btn-primary cancel" data-dismiss="modal" type="button">取消</button>
-                </div>
-            </div>
+            </form>
+
         </div>
     </div>
     <!-- 添加系统用户 end -->

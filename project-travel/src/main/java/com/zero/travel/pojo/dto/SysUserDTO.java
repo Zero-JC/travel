@@ -1,7 +1,10 @@
 package com.zero.travel.pojo.dto;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 /**
@@ -15,12 +18,17 @@ public class SysUserDTO {
 
     private Integer sysId;
 
+    @NotBlank(message = "用户姓名不能为空")
     private String name;
 
+    @NotBlank(message = "登录账户不能为空")
     private String username;
 
-    ///private String password;
+    @NotBlank(message = "密码不能为空")
+    @Length(min = 6,max = 20,message = "密码长度限制(6~20)")
+    private String password;
 
+    @Pattern(regexp = "^[A-Za-z0-9]+([_\\.][A-Za-z0-9]+)*@([A-Za-z0-9\\-]+\\.)+[A-Za-z]{2,6}$",message = "邮箱格式不合法")
     private String email;
 
     private Integer isActive;

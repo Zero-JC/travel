@@ -58,6 +58,11 @@ public class SysUserService {
         return list;
     }
 
+    /**
+     * 条件查询
+     * @param sysUserDTO
+     * @return
+     */
     public List<SysUser> findByParam(SysUserDTO sysUserDTO) {
         if (ObjectUtils.isNotEmpty(sysUserDTO)){
             SysUser sysUser = new SysUser();
@@ -67,5 +72,22 @@ public class SysUserService {
             return list;
         }
         return null;
+    }
+
+    /**
+     * 新增用户
+     * @param sysUserDTO
+     */
+    public void add(SysUserDTO sysUserDTO) throws Exception{
+        SysUser regSysUser = sysUserMapper.selectByUsername(sysUserDTO.getUsername());
+        if (regSysUser!=null){
+            throw new RuntimeException("账号已存在");
+        }
+        SysUser sysUser = new SysUser();
+        BeanUtils.copyProperties(sysUserDTO,sysUser);
+        //默认有效状态
+        sysUser.setIsActive(1);
+
+        sysUserMapper.insertSelective(sysUser);
     }
 }
