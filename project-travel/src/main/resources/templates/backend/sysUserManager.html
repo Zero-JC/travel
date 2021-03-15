@@ -36,13 +36,13 @@
                             return page;
                     }
                 },
-                pageUrl:function (type, page, current) {  //设置分页的超链接
+                /*pageUrl:function (type, page, current) {  //设置分页的超链接
                     return '/backend/sysUser/findAll?pageNum='+page;
-                }
-                /*onPageClicked: function (event,originalEvent,type,page) {
-                    $("#pageNum").val(page);
-                    $("#frmSearch").submit();
                 }*/
+                onPageClicked: function (event,originalEvent,type,page) {
+                    $("#pageNum").val(page);
+                    $("#sysUserSearchForm").submit();
+                }
 
             });
 
@@ -94,15 +94,15 @@
             <div class="showSearch">
                 <form class="form-inline" id="sysUserSearchForm" action="/backend/sysUser/search" method="post">
                     <!--当前页码-->
-                    <input id="pageNum" type="hidden" name="pageNum" th:value="${pageInfo.getPageNum()}">
+                    <!--<input id="pageNum" type="hidden" name="pageNum" th:value="${pageInfo.getPageNum()}">-->
                     <div class="form-group">
                         <label for="name">姓名:</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="请输入用户姓名">
+                        <input type="text" class="form-control" id="name" name="name" th:value="${sysUserDTO.getName()}" placeholder="请输入用户姓名">
 				    </div>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="form-group">
                         <label for="username">帐号:</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="请输入帐号">
+                        <input type="text" class="form-control" id="username" th:value="${sysUserDTO.getUsername()}" name="username" placeholder="请输入帐号">
                     </div>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="form-group">

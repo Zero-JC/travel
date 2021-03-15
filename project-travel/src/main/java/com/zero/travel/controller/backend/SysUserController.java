@@ -95,6 +95,9 @@ public class SysUserController extends CommonController {
         PageInfo<SysUser> pageInfo = new PageInfo<>(sysUserList);
         model.addAttribute("pageInfo",pageInfo);
 
+        SysUserDTO sysUserDTO = new SysUserDTO();
+        model.addAttribute("sysUserDTO",sysUserDTO);
+
         return "backend/sysUserManager";
     }
 
@@ -124,7 +127,7 @@ public class SysUserController extends CommonController {
         PageInfo<SysUser> pageInfo = new PageInfo<>(sysUserList);
 
         modelMap.addAttribute("pageInfo",pageInfo);
-        //modelMap.addAttribute("sysUserDTO",sysUserDTO);
+        modelMap.addAttribute("sysUserDTO",sysUserDTO);
 
         return "backend/sysUserManager";
     }
