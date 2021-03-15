@@ -94,7 +94,7 @@
             <div class="showSearch">
                 <form class="form-inline" id="sysUserSearchForm" action="/backend/sysUser/search" method="post">
                     <!--当前页码-->
-                    <!--<input id="pageNum" type="hidden" name="pageNum" th:value="${pageInfo.getPageNum()}">-->
+                    <input id="pageNum" type="hidden" name="pageNum" th:value="${pageInfo.getPageNum()}">
                     <div class="form-group">
                         <label for="name">姓名:</label>
                         <input type="text" class="form-control" id="name" name="name" th:value="${sysUserDTO.getName()}" placeholder="请输入用户姓名">
@@ -108,10 +108,10 @@
                     <div class="form-group">
                         <label for="role">角色</label>
                             <select class="form-control" name="roleId" id="role">
-                                <option value="-1">全部</option>
-                                <option value="1">超级管理员</option>
-                                <option value="2">客户专员</option>
-                                <option value="3">服务商</option>
+                                <option value="-1" >全部</option>
+                                <option th:selected="${sysUserDTO.getRoleId() == 1}" value="1">超级管理员</option>
+                                <option th:selected="${sysUserDTO.getRoleId() == 2}" value="2">客户专员</option>
+                                <option th:selected="${sysUserDTO.getRoleId() == 3}" value="3">服务商</option>
                             </select>
                     </div>
                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -119,8 +119,8 @@
                         <label for="status">状态</label>
                             <select class="form-control" name="isActive" id="status">
                                 <option value="-1">全部</option>
-                                <option value="1">有效</option>
-                                <option value="0">无效</option>
+                                <option th:selected="${sysUserDTO.getIsActive() == 1}" value="1">有效</option>
+                                <option th:selected="${sysUserDTO.getIsActive() == 0}" value="0">无效</option>
                             </select>
                     </div>
                         &nbsp;&nbsp;&nbsp;&nbsp;
