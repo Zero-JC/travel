@@ -2,9 +2,12 @@ package com.zero.travel.controller.backend;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zero.travel.common.enums.StatusCode;
 import com.zero.travel.common.enums.SystemConstant;
+import com.zero.travel.common.response.BaseResponse;
 import com.zero.travel.common.util.ValidateUtils;
 import com.zero.travel.controller.CommonController;
+import com.zero.travel.mapper.SysUserMapper;
 import com.zero.travel.pojo.dto.LoginDTO;
 import com.zero.travel.pojo.entity.SysUser;
 import com.zero.travel.service.SysUserService;
@@ -15,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -30,6 +34,9 @@ public class SysUserController extends CommonController {
 
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
     /**
      * 登录
@@ -87,6 +94,17 @@ public class SysUserController extends CommonController {
         model.addAttribute("pageInfo",pageInfo);
 
         return "backend/sysUserManager";
+    }
+
+    @RequestMapping("/findById")
+    @ResponseBody
+    public BaseResponse findById(Integer sysId){
+        BaseResponse response = new BaseResponse(StatusCode.Success);
+
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(sysId);
+        response.setData(sysUser);
+
+        return response;
     }
 
 }

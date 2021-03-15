@@ -72,6 +72,7 @@
                     $("#update-sys-password").val(result.data.password);
                     $("#update-sys-email").val(result.data.email);
                     $("#update-sys-phone").val(result.data.phone);
+                    $("#update-sys-role").val(result.data.roleId);
                 }
             );
         }
@@ -208,20 +209,13 @@
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="add-sys-phone" class="col-sm-4 control-label">联系电话：</label>
-                        <div class="col-sm-4">
-                            <input type="email" class="form-control" id="add-sys-phone" name="phone">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
+                        <label for="add-sys-role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
                         <div class=" col-sm-4">
                             <select id="add-sys-role" class="form-control" name="roleId">
-                                <option>请选择</option>
-                                <option>超级管理员</option>
-                                <option>商品专员</option>
-                                <option>服务商</option>
+                                <option>---请选择---</option>
+                                <option value="1">超级管理员</option>
+                                <option value="2">商品专员</option>
+                                <option value="3">服务商</option>
                             </select>
                         </div>
                     </div>
@@ -277,20 +271,13 @@
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="update-sys-phone" class="col-sm-4 control-label">联系电话：</label>
-                        <div class="col-sm-4">
-                            <input type="email" class="form-control" id="update-sys-phone" name="phone">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
                         <label for="role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
                         <div class=" col-sm-4">
                             <select id="update-sys-role" class="form-control" name="roleId">
-                                <option>请选择</option>
-                                <option>超级管理员</option>
-                                <option>商品专员</option>
-                                <option>服务商</option>
+                                <option>---请选择---</option>
+                                <option value="1">超级管理员</option>
+                                <option value="2">商品专员</option>
+                                <option value="3">服务商</option>
                             </select>
                         </div>
                     </div>
