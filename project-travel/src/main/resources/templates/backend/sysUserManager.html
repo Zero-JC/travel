@@ -43,7 +43,38 @@
             });
 
             //TODO:模态框
+            $(".showAddModal").on("click", function() {
+                _this = this;
+                $("#addSysUserModal").modal("show");
+            });
+            $(".add-Button").on("click", function() {
+                $("#addSysUserModal").modal("hide");
+            });
+
+            $(".showUpdateModal").on("click", function() {
+                _this = this;
+                $("#updateSysUserModal").modal("show");
+            });
+            $(".update-Button").on("click", function() {
+                $("#updateSysUserModal").modal("hide");
+            });
+
         });
+
+        //TODO:回显系统用户信息
+        function showSysUserInfo(sysId) {
+            $.post(
+                '/backend/sysUser/findById',
+                {sysId: sysId},
+                function (result) {
+                    $("#update-sys-name").val(result.data.name);
+                    $("#update-sys-username").val(result.data.username);
+                    $("#update-sys-password").val(result.data.password);
+                    $("#update-sys-email").val(result.data.email);
+                    $("#update-sys-phone").val(result.data.phone);
+                }
+            );
+        }
     </script>
 </head>
 
@@ -88,14 +119,14 @@
 				</form>
             </div>
             <br>
-            <input type="button" value="添加系统用户" class="btn btn-primary" id="doAddManger">
+            <input type="button" value="添加系统用户" class="btn btn-primary showAddModal" id="addBtn">
             <div class="show-list" style="position: relative; top: 10px;">
                 <table class="table table-bordered table-hover" style='text-align: center;'>
                     <thead>
                         <tr class="text-danger">
                             <th class="text-center">编号</th>
-                            <th class="text-center">姓名</th>
-                            <th class="text-center">帐号</th>
+                            <th class="text-center">用户姓名</th>
+                            <th class="text-center">登录帐号</th>
                             <th class="text-center">邮箱</th>
                             <th class="text-center">状态</th>
                             <th class="text-center">注册时间</th>
@@ -119,7 +150,7 @@
                             <td th:if="${sysUser.getRoleId()==3}">服务商</td>
 
                             <td class="text-center">
-                                <input type="button" class="btn btn-warning btn-sm doMangerModify" value="修改">
+                                <input type="button" class="btn btn-warning btn-sm showUpdateModal" th:onclick="showSysUserInfo([[${sysUser.getSysId()}]])" value="修改">
                                 <input th:if="${sysUser.getIsActive()==1}" type="button" class="btn btn-danger btn-sm doMangerDisable" value="禁用">
                                 <input th:if="${sysUser.getIsActive()==0}" type="button" class="btn btn-success btn-sm doMangerDisable" value="启用">
                             </td>
@@ -137,7 +168,7 @@
     </div>
 
     <!-- 添加系统用户 start -->
-    <div class="modal fade" tabindex="-1" id="myMangerUser">
+    <div class="modal fade" tabindex="-1" id="addSysUserModal">
         <!-- 窗口声明 -->
         <div class="modal-dialog">
             <!-- 内容声明 -->
@@ -149,54 +180,55 @@
                 </div>
                 <div class="modal-body text-center">
                     <div class="row text-right">
-                        <label for="marger-username" class="col-sm-4 control-label">用户姓名：</label>
+                        <label for="add-sys-name" class="col-sm-4 control-label">用户姓名：</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="marger-username">
+                            <input type="text" class="form-control" id="add-sys-name" name="name">
                         </div>
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="marger-loginName" class="col-sm-4 control-label">登录帐号：</label>
+                        <label for="add-sys-username" class="col-sm-4 control-label">登录帐号：</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="marger-loginName">
+                            <input type="text" class="form-control" id="add-sys-username" name="username" >
                         </div>
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="marger-password" class="col-sm-4 control-label">登录密码：</label>
+                        <label for="add-sys-password" class="col-sm-4 control-label">登录密码：</label>
                         <div class="col-sm-4">
-                            <input type="password" class="form-control" id="marger-password">
+                            <input type="password" class="form-control" id="add-sys-password" name="password">
                         </div>
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="marger-phone" class="col-sm-4 control-label">联系电话：</label>
+                        <label for="add-sys-email" class="col-sm-4 control-label">电子邮箱：</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="marger-phone">
+                            <input type="text" class="form-control" id="add-sys-email" name="email">
                         </div>
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="marger-adrees" class="col-sm-4 control-label">联系邮箱：</label>
+                        <label for="add-sys-phone" class="col-sm-4 control-label">联系电话：</label>
                         <div class="col-sm-4">
-                            <input type="email" class="form-control" id="marger-email">
+                            <input type="email" class="form-control" id="add-sys-phone" name="phone">
                         </div>
                     </div>
                     <br>
                     <div class="row text-right">
                         <label for="role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
                         <div class=" col-sm-4">
-                            <select class="form-control">
+                            <select id="add-sys-role" class="form-control" name="roleId">
                                 <option>请选择</option>
-                                <option>超级系统用户</option>
-                                <option>商品系统用户</option>
+                                <option>超级管理员</option>
+                                <option>商品专员</option>
+                                <option>服务商</option>
                             </select>
                         </div>
                     </div>
                     <br>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary add-Manger" type="button">添加</button>
+                    <button class="btn btn-primary add-Button" type="button">添加</button>
                     <button class="btn btn-primary cancel" data-dismiss="modal" type="button">取消</button>
                 </div>
             </div>
@@ -205,7 +237,7 @@
     <!-- 添加系统用户 end -->
 
     <!-- 修改系统用户 start -->
-    <div class="modal fade" tabindex="-1" id="myModal-Manger">
+    <div class="modal fade" tabindex="-1" id="updateSysUserModal">
         <!-- 窗口声明 -->
         <div class="modal-dialog">
             <!-- 内容声明 -->
@@ -217,54 +249,55 @@
                 </div>
                 <div class="modal-body text-center">
                     <div class="row text-right">
-                        <label for="MargerUsername" class="col-sm-4 control-label">用户编号：</label>
+                        <label for="update-sys-name" class="col-sm-4 control-label">用户姓名：</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="MargerStaffId" readonly="readonly">
+                            <input type="text" class="form-control" id="update-sys-name" name="name">
                         </div>
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="MargerUsername" class="col-sm-4 control-label">用户姓名：</label>
+                        <label for="update-sys-username" class="col-sm-4 control-label">登录帐号：</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="MargerStaffname">
+                            <input type="text" class="form-control" id="update-sys-username" name="username" readonly>
                         </div>
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="MargerLoginName" class="col-sm-4 control-label">登录帐号：</label>
+                        <label for="update-sys-password" class="col-sm-4 control-label">登录密码：</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="MargerLoginName" readonly="readonly">
+                            <input type="password" class="form-control" id="update-sys-password" name="password">
                         </div>
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="MargerPhone" class="col-sm-4 control-label">联系电话：</label>
+                        <label for="update-sys-email" class="col-sm-4 control-label">电子邮箱：</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="MargerPhone">
+                            <input type="text" class="form-control" id="update-sys-email" name="email">
                         </div>
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="MargerAdrees" class="col-sm-4 control-label">联系邮箱：</label>
+                        <label for="update-sys-phone" class="col-sm-4 control-label">联系电话：</label>
                         <div class="col-sm-4">
-                            <input type="email" class="form-control" id="MargerAdrees">
+                            <input type="email" class="form-control" id="update-sys-phone" name="phone">
                         </div>
                     </div>
                     <br>
                     <div class="row text-right">
-                        <label for="MargerRole" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
+                        <label for="role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
                         <div class=" col-sm-4">
-                            <select class="form-control" id="MargerRole">
+                            <select id="update-sys-role" class="form-control" name="roleId">
                                 <option>请选择</option>
-                                <option>超级系统用户</option>
-                                <option>商品系统用户</option>
+                                <option>超级管理员</option>
+                                <option>商品专员</option>
+                                <option>服务商</option>
                             </select>
                         </div>
                     </div>
                     <br>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary doMargerModal">修改</button>
+                    <button class="btn btn-primary update-Button">修改</button>
                     <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
                 </div>
             </div>
