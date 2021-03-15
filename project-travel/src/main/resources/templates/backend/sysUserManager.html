@@ -39,6 +39,10 @@
                 pageUrl:function (type, page, current) {  //设置分页的超链接
                     return '/backend/sysUser/findAll?pageNum='+page;
                 }
+                /*onPageClicked: function (event,originalEvent,type,page) {
+                    $("#pageNum").val(page);
+                    $("#frmSearch").submit();
+                }*/
 
             });
 
@@ -76,6 +80,7 @@
                 }
             );
         }
+
     </script>
 </head>
 
@@ -86,37 +91,40 @@
             <h3 class="panel-title">系统用户管理</h3>
         </div>
         <div class="panel-body">
-            <div class="showmargersearch">
-                <form class="form-inline">
-				  <div class="form-group">
-				    <label for="userName">姓名:</label>
-				    <input type="text" class="form-control" id="userName" placeholder="请输入姓名">
-				  </div>
-				  <div class="form-group">
-				    <label for="loginName">帐号:</label>
-				    <input type="text" class="form-control" id="loginName" placeholder="请输入帐号">
-				  </div>
-				  <div class="form-group">
-				    <label for="phone">电话:</label>
-				    <input type="text" class="form-control" id="phone" placeholder="请输入电话">
-				  </div>
-				  <div class="form-group">
-				    <label for="role">角色</label>
-	                    <select class="form-control" name="role" id="role">
-	                        <option value="-1">全部</option>
-	                        <option value="1">商品专员</option>
-	                        <option value="0">营销经理</option>
-	                    </select>
-				  </div>
-				  <div class="form-group">
-				    <label for="status">状态</label>
-	                    <select class="form-control" name="isValid" id="status">
-	                        <option value="-1">全部</option>
-	                        <option value="1">---有效---</option>
-	                        <option value="0">---无效---</option>
-	                    </select>
-				  </div>
-				  <input type="button" value="查询" class="btn btn-primary" id="doSearch">
+            <div class="showSearch">
+                <form class="form-inline" id="sysUserSearchForm" action="/backend/sysUser/search" method="post">
+                    <!--当前页码-->
+                    <input id="pageNum" type="hidden" name="pageNum" th:value="${pageInfo.getPageNum()}">
+                    <div class="form-group">
+                        <label for="name">姓名:</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="请输入用户姓名">
+				    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="form-group">
+                        <label for="username">帐号:</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="请输入帐号">
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="form-group">
+                        <label for="role">角色</label>
+                            <select class="form-control" name="roleId" id="role">
+                                <option value="-1">全部</option>
+                                <option value="1">超级管理员</option>
+                                <option value="2">客户专员</option>
+                                <option value="3">服务商</option>
+                            </select>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="form-group">
+                        <label for="status">状态</label>
+                            <select class="form-control" name="isActive" id="status">
+                                <option value="-1">全部</option>
+                                <option value="1">有效</option>
+                                <option value="0">无效</option>
+                            </select>
+                    </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type="submit" value="查询" class="btn btn-primary" id="doSearch">
 				</form>
             </div>
             <br>
@@ -212,9 +220,8 @@
                         <label for="add-sys-role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
                         <div class=" col-sm-4">
                             <select id="add-sys-role" class="form-control" name="roleId">
-                                <option>---请选择---</option>
+                                <option value="2">客户专员</option>
                                 <option value="1">超级管理员</option>
-                                <option value="2">商品专员</option>
                                 <option value="3">服务商</option>
                             </select>
                         </div>
@@ -274,9 +281,8 @@
                         <label for="role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
                         <div class=" col-sm-4">
                             <select id="update-sys-role" class="form-control" name="roleId">
-                                <option>---请选择---</option>
                                 <option value="1">超级管理员</option>
-                                <option value="2">商品专员</option>
+                                <option value="2">客户专员</option>
                                 <option value="3">服务商</option>
                             </select>
                         </div>

@@ -9,12 +9,14 @@ import com.zero.travel.common.util.ValidateUtils;
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.mapper.SysUserMapper;
 import com.zero.travel.pojo.dto.LoginDTO;
+import com.zero.travel.pojo.dto.SysUserDTO;
 import com.zero.travel.pojo.entity.SysUser;
 import com.zero.travel.service.SysUserService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,6 +98,11 @@ public class SysUserController extends CommonController {
         return "backend/sysUserManager";
     }
 
+    /**
+     * 单查询
+     * @param sysId
+     * @return
+     */
     @RequestMapping("/findById")
     @ResponseBody
     public BaseResponse findById(Integer sysId){
@@ -105,6 +112,21 @@ public class SysUserController extends CommonController {
         response.setData(sysUser);
 
         return response;
+    }
+
+    @RequestMapping("/search")
+    public String search(Integer pageNum, SysUserDTO sysUserDTO, ModelMap modelMap){
+        if (ObjectUtils.isEmpty(pageNum)){
+            pageNum = SystemConstant.PAGE_NUM;
+        }
+        PageHelper.startPage(pageNum,SystemConstant.PAGE_SIZE);
+        List<SysUser> sysUserList = sysUserService.findByParam(sysUserDTO);
+        PageInfo<SysUser> pageInfo = new PageInfo<>(sysUserList);
+
+        modelMap.addAttribute("pageInfo",pageInfo);
+        //modelMap.addAttribute("sysUserDTO",sysUserDTO);
+
+        return "backend/sysUserManager";
     }
 
 }

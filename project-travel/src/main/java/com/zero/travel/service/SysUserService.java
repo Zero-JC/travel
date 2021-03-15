@@ -5,6 +5,8 @@ import com.zero.travel.mapper.SysUserMapper;
 import com.zero.travel.pojo.dto.LoginDTO;
 import com.zero.travel.pojo.dto.SysUserDTO;
 import com.zero.travel.pojo.entity.SysUser;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -54,5 +56,16 @@ public class SysUserService {
         List<SysUser> list = sysUserMapper.selectAll();
 
         return list;
+    }
+
+    public List<SysUser> findByParam(SysUserDTO sysUserDTO) {
+        if (ObjectUtils.isNotEmpty(sysUserDTO)){
+            SysUser sysUser = new SysUser();
+            BeanUtils.copyProperties(sysUserDTO,sysUser);
+
+            List<SysUser> list = sysUserMapper.selectByParam(sysUser);
+            return list;
+        }
+        return null;
     }
 }

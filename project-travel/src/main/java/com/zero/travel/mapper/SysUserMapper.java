@@ -40,4 +40,10 @@ public interface SysUserMapper {
      */
     List<SysUser> selectAll();
 
+    /**
+     * 根据条件查询
+     * @param sysUser
+     * @return
+     */
+    List<SysUser> selectByParam(SysUser sysUser);
 }
