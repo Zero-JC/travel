@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zero.travel.common.enums.SystemConstant;
 import com.zero.travel.controller.CommonController;
+import com.zero.travel.pojo.dto.UserDTO;
 import com.zero.travel.pojo.entity.User;
 import com.zero.travel.service.UserService;
 import org.apache.commons.lang3.ObjectUtils;
@@ -44,6 +45,12 @@ public class UserController extends CommonController {
         PageInfo<User> pageInfo = new PageInfo<>(userList);
 
         modelMap.addAttribute("pageInfo",pageInfo);
+        return "backend/userManager";
+    }
+
+    @RequestMapping("/search")
+    public String search(UserDTO userDTO){
+
         return "backend/userManager";
     }
 }
