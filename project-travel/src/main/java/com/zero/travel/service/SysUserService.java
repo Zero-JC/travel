@@ -90,4 +90,21 @@ public class SysUserService {
 
         sysUserMapper.insertSelective(sysUser);
     }
+
+    /**
+     * 修改用户信息
+     * @param sysUserDTO
+     */
+    public void modify(SysUserDTO sysUserDTO) throws Exception{
+        SysUser sysUser = new SysUser();
+        BeanUtils.copyProperties(sysUserDTO,sysUser);
+        //补充id
+        Integer sysId = sysUserMapper.selectByUsername(sysUserDTO.getUsername()).getSysId();
+        sysUser.setSysId(sysId);
+
+        int row = sysUserMapper.updateByPrimaryKeySelective(sysUser);
+        if (row != 1){
+            throw new RuntimeException("修改失败");
+        }
+    }
 }

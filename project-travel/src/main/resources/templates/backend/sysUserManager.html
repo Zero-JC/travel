@@ -85,10 +85,13 @@
         function addSysUser() {
             $.post(
                 '/backend/sysUser/add',
-                $("#addSysUserFrom").serialize(),
+                $("#addSysUserForm").serialize(),
                 function (result) {
                     if (result.code == 500){
-                        layer.alert(result.msg);
+                        layer.open({
+                            title: '错误提示'
+                            ,content: result.msg
+                        });
                     }
                     if (result.code == 200){
                         layer.msg(result.msg,{
@@ -104,6 +107,36 @@
         }
 
         //TODO:修改用户
+        function updateSysUser() {
+            $.post(
+                '/backend/sysUser/modify',
+                /*{
+                    name: $("#update-sys-name").val(),
+                    username: $("#update-sys-username").val(),
+                    password: $("#update-sys-password").val(),
+                    email: $("#update-sys-email").val(),
+                    roleId: $("#update-sys-role").val()
+                }*/
+                $("#updateSysUserForm").serialize(),
+                function (result) {
+                    if (result.code == 500){
+                        layer.open({
+                            title: '错误提示'
+                            ,content: result.msg
+                        });
+                    }
+                    if (result.code == 200){
+                        layer.msg(result.msg,{
+                            time: 3000,
+                            skin: "successMsg"
+                        });
+                        window.setTimeout(function () {
+                            location.href = '/backend/sysUser/findAll';
+                        }, 3000);
+                    }
+                }
+            );
+        }
 
 
     </script>
@@ -205,7 +238,7 @@
     <div class="modal fade" tabindex="-1" id="addSysUserModal">
         <!-- 窗口声明 -->
         <div class="modal-dialog">
-            <form id="addSysUserFrom">
+            <form id="addSysUserForm">
                 <!-- 内容声明 -->
                 <div class="modal-content">
                     <!-- 头部、主体、脚注 -->
@@ -238,7 +271,7 @@
                         <div class="row text-right">
                             <label for="add-sys-email" class="col-sm-4 control-label">电子邮箱：</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="add-sys-email" name="email" placeholder="xxxx@xxx.xxx">
+                                <input type="text" class="form-control" id="add-sys-email" name="email" placeholder="xxx@xxx.xxx">
                             </div>
                         </div>
                         <br>
@@ -269,59 +302,61 @@
     <div class="modal fade" tabindex="-1" id="updateSysUserModal">
         <!-- 窗口声明 -->
         <div class="modal-dialog">
-            <!-- 内容声明 -->
-            <div class="modal-content">
-                <!-- 头部、主体、脚注 -->
-                <div class="modal-header">
-                    <button class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">系统用户修改</h4>
+            <form id="updateSysUserForm">
+                <!-- 内容声明 -->
+                <div class="modal-content">
+                    <!-- 头部、主体、脚注 -->
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">系统用户修改</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="row text-right">
+                            <label for="update-sys-name" class="col-sm-4 control-label">用户姓名：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="update-sys-name" name="name" placeholder="不能为空">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="update-sys-username" class="col-sm-4 control-label">登录帐号：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="update-sys-username" name="username" placeholder="不可修改" readonly>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="update-sys-password" class="col-sm-4 control-label">登录密码：</label>
+                            <div class="col-sm-4">
+                                <input type="password" class="form-control" id="update-sys-password" name="password" placeholder="密码长度限制(6~20)">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="update-sys-email" class="col-sm-4 control-label">电子邮箱：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="update-sys-email" name="email" placeholder="xxx@xxx.xxx">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-right">
+                            <label for="update-sys-role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
+                            <div class=" col-sm-4">
+                                <select id="update-sys-role" class="form-control" name="roleId">
+                                    <option value="1">超级管理员</option>
+                                    <option value="2">客户专员</option>
+                                    <option value="3">服务商</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary update-Button" type="button" onclick="updateSysUser()">修改</button>
+                        <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
+                    </div>
                 </div>
-                <div class="modal-body text-center">
-                    <div class="row text-right">
-                        <label for="update-sys-name" class="col-sm-4 control-label">用户姓名：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="update-sys-name" name="name">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="update-sys-username" class="col-sm-4 control-label">登录帐号：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="update-sys-username" name="username" readonly>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="update-sys-password" class="col-sm-4 control-label">登录密码：</label>
-                        <div class="col-sm-4">
-                            <input type="password" class="form-control" id="update-sys-password" name="password">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="update-sys-email" class="col-sm-4 control-label">电子邮箱：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="update-sys-email" name="email">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="role" class="col-sm-4 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
-                        <div class=" col-sm-4">
-                            <select id="update-sys-role" class="form-control" name="roleId">
-                                <option value="1">超级管理员</option>
-                                <option value="2">客户专员</option>
-                                <option value="3">服务商</option>
-                            </select>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary update-Button">修改</button>
-                    <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
     <!-- 修改系统用户 end -->

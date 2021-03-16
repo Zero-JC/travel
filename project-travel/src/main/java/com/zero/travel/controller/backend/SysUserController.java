@@ -162,4 +162,28 @@ public class SysUserController extends CommonController {
         }
     }
 
+    /**
+     * 修改
+     * @param sysUserDTO
+     * @param result
+     * @return
+     */
+    @RequestMapping(value = "/modify")
+    @ResponseBody
+    public BaseResponse modify(@Valid SysUserDTO sysUserDTO,BindingResult result) {
+        try {
+            if (result.hasErrors()){
+                String checkResult = ValidateUtils.checkResult(result);
+                log.warn("参数校验失败: {}",checkResult);
+                return new BaseResponse(StatusCode.InvalidParams.getCode(),checkResult);
+            }
+            sysUserService.modify(sysUserDTO);
+
+            return new BaseResponse(StatusCode.Success);
+        } catch (Exception e) {
+            log.error("修改系统用户信息异常:{}",e.toString());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
+    }
+
 }
