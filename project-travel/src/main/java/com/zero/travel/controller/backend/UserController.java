@@ -1,8 +1,12 @@
 package com.zero.travel.controller.backend;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.zero.travel.common.enums.SystemConstant;
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.entity.User;
 import com.zero.travel.service.UserService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +33,17 @@ public class UserController extends CommonController {
      * @return
      */
     @RequestMapping("/findAll")
-    public String findAll(ModelMap modelMap){
-        List<User> userList = userService.findAll();
+    public String findAll(Integer pageNum,ModelMap modelMap){
+        if (ObjectUtils.isEmpty(pageNum)){
+            pageNum = SystemConstant.PAGE_NUM;
+        }
+        Integer pageSize = SystemConstant.PAGE_SIZE;
 
-        modelMap.addAttribute("userList",userList);
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> userList = userService.findAll();
+        PageInfo<User> pageInfo = new PageInfo<>(userList);
+
+        modelMap.addAttribute("pageInfo",pageInfo);
         return "backend/userManager";
     }
 }

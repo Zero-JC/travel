@@ -15,6 +15,38 @@
     <link rel="stylesheet"  href="/css/bootstrapValidator.css" />
     <script type="text/javascript" src="/layer/layer.js"></script>
     <link rel="stylesheet" href="/css/zero.css" />
+    <script type="text/javascript" th:inline="javascript">
+        $(function () {
+
+            //TODO:分页
+            $("#paginator").bootstrapPaginator({
+                bootstrapMajorVersion: 3,  //版本
+                currentPage:[[${pageInfo.getPageNum()}]],   //当前页码
+                totalPages:[[${pageInfo.getPages()}]],    //总页数
+                itemTexts:function (type, page, current) {  //设置显示样式
+                    switch (type) {
+                        case 'first':
+                            return '首页';
+                        case 'prev':
+                            return '上一页';
+                        case 'next':
+                            return '下一页';
+                        case 'last':
+                            return '尾页';
+                        case 'page':
+                            return page;
+                    }
+                },
+                pageUrl:function (type, page, current) {  //设置分页的超链接
+                    return '/backend/user/findAll?pageNum='+page;
+                }
+                /*onPageClicked: function (event,originalEvent,type,page) {
+                    $("#pageNum").val(page);
+                    $("#sysUserSearchForm").submit();
+                }*/
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -29,26 +61,21 @@
                     <label for="customer_name">姓名:</label>
                     <input type="text" class="form-control"id="customer_name" name="name" placeholder="请输入姓名" size="15px">
                   </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <div class="form-group">
                     <label for="customer_loginName">帐号:</label>
                     <input type="text" class="form-control" id="customer_loginName" name="loginName" placeholder="请输入帐号" size="15px">
                   </div>
-                  <div class="form-group">
-                    <label for="customer_phone">电话:</label>
-                    <input type="text" class="form-control" id="customer_phone" name="phone" placeholder="请输入电话" size="15px">
-                  </div>
-                  <div class="form-group">
-                    <label for="customer_address">地址:</label>
-                    <input type="text" class="form-control" id="customer_address" name="address" placeholder="请输入地址">
-                  </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <div class="form-group">
                     <label for="customer_isValid">状态:</label>
                         <select class="form-control" id="customer_isValid" name="isValid">
                             <option value="-1">全部</option>
-                            <option value="1">---有效---</option>
-                            <option value="0">---无效---</option>
+                            <option value="1">有效</option>
+                            <option value="0">无效</option>
                         </select>
                   </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <input type="button" value="查询" class="btn btn-primary" id="doSearch">
                 </form>
             </div>
@@ -67,7 +94,7 @@
                         </tr>
                     </thead>
                     <tbody id="tb">
-                        <tr th:each="user:${userList}">
+                        <tr th:each="user:${pageInfo.getList()}">
                             <td th:text="${user.getUserId()}"></td>
                             <td th:text="${user.getName()}"></td>
                             <td th:text="${user.getUsername()}"></td>
@@ -83,6 +110,11 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <!--分页条-->
+            <div class="text-center">
+                <ul id="paginator"></ul>
+                <div class=""><strong>共[[${pageInfo.getTotal()}]]条记录</strong></div>
             </div>
         </div>
     </div>
