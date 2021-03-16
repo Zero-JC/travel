@@ -1,20 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>backend</title>
-    <link rel="stylesheet"  href="/css/bootstrap.css" />
     <link rel="stylesheet"  href="/css/index.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <script src="/js/jquery-3.5.1.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    <script src="/js/userSetting.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-paginator.js"></script>
+    <script src="/js/bootstrapValidator.js"></script>
+    <link rel="stylesheet"  href="/css/bootstrapValidator.css" />
+    <script type="text/javascript" src="/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/zero.css" />
 </head>
 
 <body>
-    <div class="panel panel-default" id="userInfo" id="homeSet">
+    <div class="panel panel-default" id="homeSet">
         <div class="panel-heading">
             <h3 class="panel-title">客户管理</h3>
         </div>
@@ -56,35 +60,25 @@
                             <th class="text-center">序号</th>
                             <th class="text-center">姓名</th>
                             <th class="text-center">帐号</th>
-                            <th class="text-center">电话</th>
-                            <th class="text-center">地址</th>
+                            <th class="text-center">邮箱</th>
+                            <th class="text-center">注册时间</th>
                             <th class="text-center">状态</th>
                             <th class="text-center">操作</th>
                         </tr>
                     </thead>
                     <tbody id="tb">
-                        <tr>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>admin</td>
-                            <td>15996868058</td>
-                            <td>江苏南京</td>
-                            <td>有效</td>
+                        <tr th:each="user:${userList}">
+                            <td th:text="${user.getUserId()}"></td>
+                            <td th:text="${user.getName()}"></td>
+                            <td th:text="${user.getUsername()}"></td>
+                            <td th:text="${user.getEmail()}"></td>
+                            <td th:text="${#dates.format(user.getCreateTime())}"></td>
+                            <td th:if="${user.getStatus() == 1}">有效</td>
+                            <td th:if="${user.getStatus() == 0}">无效</td>
                             <td class="text-center">
-                                <input type="button" class="btn btn-warning btn-sm doModify" value="修改">
-                                <input type="button" class="btn btn-danger btn-sm doDisable" value="禁用">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>admin2</td>
-                            <td>admin2</td>
-                            <td>15996868058</td>
-                            <td>江苏南京</td>
-                            <td>无效</td>
-                            <td class="text-center">
-                                <input type="button" class="btn btn-warning btn-sm doModify" value="修改">
-                                <input type="button" class="btn btn-success btn-sm doDisable" value="禁用">
+                                <input th:if="${user.getStatus() == 0}" type="button" class="btn btn-success btn-sm doModify" value="启用">
+                                <input th:if="${user.getStatus() == 1}" type="button" class="btn btn-danger btn-sm doModify" value="禁用">
+                                <input type="button" class="btn btn-danger btn-sm doDisable" value="删除">
                             </td>
                         </tr>
                     </tbody>
