@@ -96,12 +96,7 @@
                         }, 3000);
                     }
                     if (result.code == 500){
-                        layer.msg(result.msg,{
-                            time: 3000
-                        });
-                        window.setTimeout(function () {
-                            location.href = '/backend/seller/findAll?pageNum='+[[${pageInfo.getPageNum()}]];
-                        }, 3000);
+                        layer.alert(result.msg);
                     }
                 }
             );
@@ -122,12 +117,7 @@
                         }, 3000);
                     }
                     if (result.code == 500){
-                        layer.msg(result.msg,{
-                            time: 3000
-                        });
-                        window.setTimeout(function () {
-                            location.href = '/backend/seller/findAll?pageNum='+[[${pageInfo.getPageNum()}]];
-                        }, 3000);
+                        layer.alert(result.msg);
                     }
                 }
             )
