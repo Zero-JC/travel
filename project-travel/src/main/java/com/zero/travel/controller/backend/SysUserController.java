@@ -188,17 +188,17 @@ public class SysUserController extends CommonController {
 
     /**
      * 账户的启用禁用
-     * @param sysUserDTO
+     * @param sysId
      * @return
      */
     @RequestMapping("/modifyStatus")
     @ResponseBody
-    public BaseResponse modifyStatus(SysUserDTO sysUserDTO){
+    public BaseResponse modifyStatus(Integer sysId){
         try {
-            if (ObjectUtils.isEmpty(sysUserDTO.getSysId())||ObjectUtils.isEmpty(sysUserDTO.getIsActive())){
+            if (ObjectUtils.isEmpty(sysId)){
                 return new BaseResponse(StatusCode.InvalidParams);
             }
-            sysUserService.modify(sysUserDTO);
+            sysUserService.modifyStatus(sysId);
             return new BaseResponse(StatusCode.Success);
         }catch (Exception e){
             log.error("账户的启用禁用:{}",e.getMessage());

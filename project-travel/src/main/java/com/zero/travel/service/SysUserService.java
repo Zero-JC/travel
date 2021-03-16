@@ -109,4 +109,25 @@ public class SysUserService {
             throw new RuntimeException("修改失败");
         }
     }
+
+    /**
+     * 修改状态
+     * @param sysId
+     */
+    public void modifyStatus(Integer sysId) {
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(sysId);
+        Integer isActive = null;
+        if (sysUser.getIsActive() == 1){
+            isActive = 0;
+        }
+
+        if (sysUser.getIsActive() == 0){
+            isActive = 1;
+        }
+        int row = sysUserMapper.updateByIsActive(isActive,sysId);
+        if (row != 1){
+            throw new RuntimeException("修改失败");
+        }
+
+    }
 }

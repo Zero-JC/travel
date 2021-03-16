@@ -140,10 +140,10 @@
         }
 
         //修改状态
-        function modifyStatus(sysId,status,btn) {
+        function modifyStatus(sysId,btn) {
             $.post(
                 '/backend/sysUser/modifyStatus',
-                {sysId: sysId,isActive:status},
+                {sysId: sysId},
                 function (result) {
                     //TODO:局部刷新页面
                     if (result.code == 200) {
@@ -245,8 +245,8 @@
 
                             <td class="text-center">
                                 <input type="button" class="btn btn-warning btn-sm showUpdateModal" th:onclick="showSysUserInfo([[${sysUser.getSysId()}]])" value="修改">
-                                <input th:if="${sysUser.getIsActive()==1}" type="button" class="btn btn-danger btn-sm doMangerDisable" th:onclick="modifyStatus([[${sysUser.getSysId()}]],1,this)" value="禁用">
-                                <input th:if="${sysUser.getIsActive()==0}" type="button" class="btn btn-success btn-sm doMangerDisable" th:onclick="modifyStatus([[${sysUser.getSysId()}]],0,this)" value="启用">
+                                <input th:if="${sysUser.getIsActive()==1}" type="button" class="btn btn-danger btn-sm doMangerDisable" th:onclick="modifyStatus([[${sysUser.getSysId()}]],this)" value="禁用">
+                                <input th:if="${sysUser.getIsActive()==0}" type="button" class="btn btn-success btn-sm doMangerDisable" th:onclick="modifyStatus([[${sysUser.getSysId()}]],this)" value="启用">
                             </td>
                         </tr>
 

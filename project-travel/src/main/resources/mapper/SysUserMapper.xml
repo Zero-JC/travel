@@ -182,4 +182,8 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where sys_id = #{sysId,jdbcType=INTEGER}
   </update>
+
+  <update id="updateByIsActive" parameterType="java.lang.Integer">
+    update sys_user set is_active = #{isActive,jdbcType=INTEGER} where sys_id = #{sysId,jdbcType=INTEGER}
+  </update>
 </mapper>

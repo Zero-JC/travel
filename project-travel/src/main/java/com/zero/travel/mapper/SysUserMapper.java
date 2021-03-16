@@ -46,4 +46,12 @@ public interface SysUserMapper {
      * @return
      */
     List<SysUser> selectByParam(SysUser sysUser);
+
+    /**
+     * 修改用户状态
+     * @param isActive
+     * @param sysId
+     * @return
+     */
+    int updateByIsActive(@Param("isActive") Integer isActive, @Param("sysId") Integer sysId);
 }
