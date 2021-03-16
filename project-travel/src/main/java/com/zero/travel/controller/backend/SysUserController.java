@@ -186,4 +186,24 @@ public class SysUserController extends CommonController {
         }
     }
 
+    /**
+     * 账户的启用禁用
+     * @param sysUserDTO
+     * @return
+     */
+    @RequestMapping("/modifyStatus")
+    @ResponseBody
+    public BaseResponse modifyStatus(SysUserDTO sysUserDTO){
+        try {
+            if (ObjectUtils.isEmpty(sysUserDTO.getSysId())||ObjectUtils.isEmpty(sysUserDTO.getIsActive())){
+                return new BaseResponse(StatusCode.InvalidParams);
+            }
+            sysUserService.modify(sysUserDTO);
+            return new BaseResponse(StatusCode.Success);
+        }catch (Exception e){
+            log.error("账户的启用禁用:{}",e.getMessage());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
+    }
+
 }

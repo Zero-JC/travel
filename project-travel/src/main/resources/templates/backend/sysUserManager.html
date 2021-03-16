@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="/css/zero.css" />
 
     <script type="text/javascript" th:inline="javascript">
-        $(function () {
+
+    $(function () {
             //TODO:分页
             $("#paginator").bootstrapPaginator({
                 bootstrapMajorVersion: 3,  //版本
@@ -138,7 +139,33 @@
             );
         }
 
-
+        //修改状态
+        function modifyStatus(sysId,status,btn) {
+            $.post(
+                '/backend/sysUser/modifyStatus',
+                {sysId: sysId,isActive:status},
+                function (result) {
+                    //TODO:局部刷新页面
+                    if (result.code == 200) {
+                        layer.alert(result.msg);
+                        let statusType = $(btn).parent().parent().children().eq(4);
+                        if (statusType.text().trim()=='有效'){
+                            statusType.text("无效");
+                            $(btn).val("启用").removeClass("btn-danger").addClass("btn-success");
+                        }else {
+                            statusType.text("有效");
+                            $(btn).val("禁用").removeClass("btn-success").addClass("btn-danger");
+                        }
+                    }
+                    if (result.code == 500){
+                        layer.open({
+                            title: '错误提示'
+                            ,content: result.msg
+                        });
+                    }
+                }
+            );
+        }
     </script>
 </head>
 
@@ -218,8 +245,8 @@
 
                             <td class="text-center">
                                 <input type="button" class="btn btn-warning btn-sm showUpdateModal" th:onclick="showSysUserInfo([[${sysUser.getSysId()}]])" value="修改">
-                                <input th:if="${sysUser.getIsActive()==1}" type="button" class="btn btn-danger btn-sm doMangerDisable" value="禁用">
-                                <input th:if="${sysUser.getIsActive()==0}" type="button" class="btn btn-success btn-sm doMangerDisable" value="启用">
+                                <input th:if="${sysUser.getIsActive()==1}" type="button" class="btn btn-danger btn-sm doMangerDisable" th:onclick="modifyStatus([[${sysUser.getSysId()}]],1,this)" value="禁用">
+                                <input th:if="${sysUser.getIsActive()==0}" type="button" class="btn btn-success btn-sm doMangerDisable" th:onclick="modifyStatus([[${sysUser.getSysId()}]],0,this)" value="启用">
                             </td>
                         </tr>
 

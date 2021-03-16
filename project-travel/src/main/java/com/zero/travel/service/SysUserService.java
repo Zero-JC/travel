@@ -99,8 +99,10 @@ public class SysUserService {
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(sysUserDTO,sysUser);
         //补充id
-        Integer sysId = sysUserMapper.selectByUsername(sysUserDTO.getUsername()).getSysId();
-        sysUser.setSysId(sysId);
+        if (sysUser.getSysId() == null){
+            Integer sysId = sysUserMapper.selectByUsername(sysUserDTO.getUsername()).getSysId();
+            sysUser.setSysId(sysId);
+        }
 
         int row = sysUserMapper.updateByPrimaryKeySelective(sysUser);
         if (row != 1){
