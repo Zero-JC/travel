@@ -53,8 +53,7 @@
                 '/backend/user/modifyStatus',
                 {userId:userId},
                 function (result) {
-                    layer.alert(result.msg);
-                    if (result == 200){
+                    if (result.code == 200){
                         layer.alert(result.msg);
                         //当前元素父元素的上一个同级元素
                         let statusType = $(btn).parent().prev();
@@ -66,7 +65,7 @@
                             $(btn).val("禁用").removeClass("btn-success").addClass("btn-danger");
                         }
                     }
-                    if (result == 500){
+                    if (result.code == 500){
                         layer.open({
                            title: "错误提示",
                            content: result.msg
