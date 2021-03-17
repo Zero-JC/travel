@@ -74,6 +74,33 @@
                 }
             );
         }
+        //确认模态框
+        function showResetModal(userId) {
+            $("#userIdHidden").val(userId);
+            $("#resetPasswordModal").modal("show");
+        };
+
+        //TODO:密码找回
+        function retrievePassword() {
+            let userId = $("#userIdHidden").val();
+            $("#resetPasswordModal").modal("hide");
+            $.post(
+                '/backend/user/retrievePassword',
+                {userId:userId},
+                function (result) {
+                    if (result.code == 200){
+                        layer.alert(result.msg);
+                    }
+                    if (result.code == 500){
+                        layer.open({
+                            title: "错误提示",
+                            content: result.msg
+                        });
+                    }
+                }
+            );
+        }
+
     </script>
 </head>
 
@@ -135,7 +162,7 @@
                             <td class="text-center">
                                 <input th:if="${user.getStatus() == 0}" type="button" class="btn btn-success btn-sm doModify" th:onclick="modifyStatus([[${user.getUserId()}]],this)" value="启用">
                                 <input th:if="${user.getStatus() == 1}" type="button" class="btn btn-danger btn-sm doModify" th:onclick="modifyStatus([[${user.getUserId()}]],this)" value="禁用">
-                                <input type="button" class="btn btn-warning btn-sm doDisable"  value="重置密码">
+                                <input type="button" class="btn btn-warning btn-sm doReset"  th:onclick="showResetModal([[${user.getUserId()}]])" value="密码找回">
                             </td>
                         </tr>
                     </tbody>
@@ -149,62 +176,30 @@
         </div>
     </div>
 
-    <!-- 修改客户信息 start -->
-    <div class="modal fade" tabindex="-1" id="myModal">
-        <!-- 窗口声明 -->
-        <div class="modal-dialog">
+    <!-- 找回密码确认 start -->
+    <div class="modal fade" tabindex="-1" id="resetPasswordModal">
+        <!-- 窗口声明 modal-lg-->
+        <div class="modal-dialog ">
             <!-- 内容声明 -->
             <div class="modal-content">
                 <!-- 头部、主体、脚注 -->
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">修改客户</h4>
+                    <h4 class="modal-title">信息提示</h4>
                 </div>
                 <div class="modal-body text-center">
-                    <div class="row text-right">
-                        <label for="id" class="col-sm-4 control-label">编号：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="id">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="name" class="col-sm-4 control-label">姓名：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="name">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="loginName" class="col-sm-4 control-label">帐号：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="loginName">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="phone" class="col-sm-4 control-label">电话：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="phone">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row text-right">
-                        <label for="adrees" class="col-sm-4 control-label">地址：</label>
-                        <div class="col-sm-4">
-                            <input type="email" class="form-control" id="adrees">
-                        </div>
-                    </div>
-                    <br>
+                    <h4>您确认要为客户找回密码?</h4>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary updateOne">修改</button>
+                    <!--隐藏域存储客户id-->
+                    <input type="hidden" id="userIdHidden">
+                    <button id="confirmReset" class="btn btn-primary addProductType" onclick="retrievePassword()" data-dismiss="modal">确定</button>
                     <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- 修改客户信息 end -->
+    <!-- 重置密码确认 end -->
 </body>
 
 </html>

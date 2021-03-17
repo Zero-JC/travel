@@ -5,13 +5,17 @@ import com.zero.travel.pojo.dto.UserDTO;
 import com.zero.travel.pojo.entity.User;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 客户业务处理
@@ -25,6 +29,12 @@ public class UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private Environment env;
 
     /**
      * 客户信息展示
@@ -72,5 +82,21 @@ public class UserService {
         if (row != 1){
             throw new RuntimeException("修改失败");
         }
+    }
+
+    /**
+     * 找回密码
+     * @param userId
+     */
+    public void retrievePassword(Integer userId) throws Exception {
+        User user = userMapper.selectByPrimaryKey(userId);
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("name",user.getName());
+        paramMap.put("password",user.getPassword());
+
+        String mailTemplate = mailService.renderTemplate(env.getProperty("mail.template.file.location"), paramMap);
+        String subject = "密码找回";
+
+        mailService.sendHtmlMail(subject,mailTemplate,user.getEmail());
     }
 }

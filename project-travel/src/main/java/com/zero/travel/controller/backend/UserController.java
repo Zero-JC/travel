@@ -34,6 +34,7 @@ public class UserController extends CommonController {
 
     /**
      * 查询所有
+     * @param pageNum
      * @param modelMap
      * @return
      */
@@ -91,10 +92,30 @@ public class UserController extends CommonController {
                 return new BaseResponse(StatusCode.ParamNotBlank);
             }
             userService.modifyStatus(userId);
-            log.info("----------操作成功--------");
             return new BaseResponse(StatusCode.Success);
         } catch (Exception e) {
             log.error("修改客户状态:{}",e.getMessage());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
+    }
+
+    /**
+     * 找回客户密码
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/retrievePassword")
+    @ResponseBody
+    public BaseResponse retrievePassword(Integer userId){
+        try{
+            if (ObjectUtils.isEmpty(userId)){
+                return new BaseResponse(StatusCode.InvalidParams);
+            }
+            userService.retrievePassword(userId);
+
+            return new BaseResponse(StatusCode.Success);
+        }catch (Exception e){
+            log.error("找回密码异常:{}",e.getMessage());
             return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
         }
     }
