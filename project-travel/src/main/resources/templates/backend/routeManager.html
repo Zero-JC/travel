@@ -11,8 +11,8 @@
     <link rel="stylesheet"  href="/css/file.css" />
     <script src="/js/jquery-3.5.1.js"></script>
     <script src="/js/bootstrap.js"></script>
-    <script src="/js/userSetting.js"></script>
     <script>
+
         $(function(){
             //上传图像预览
             $('#product-image').on('change',function() {
@@ -20,9 +20,34 @@
             });        
             $('#pro-image').on('change',function() {
                 $('#img2').attr('src', window.URL.createObjectURL(this.files[0]));
-            });    
+            });
+
+
+            //模态框显示
+            $(".doProModify").on("click", function() {
+                _this = this; //this是事件源
+                $("#myProduct").modal("show");
+            });
+
+            $(".updatePro").on("click", function() {
+                $("#myProduct").modal("hide");
+            });
+
+
+            $("#doAddPro").on("click", function() {
+                _this = this; //this是事件源
+                $("#Product").modal("show");
+            });
+
+            $(".addProduct").on("click", function() {
+                $("#Product").modal("hide");
+            });
         });
+
+
+
     </script>
+
 </head>
 
 <body>
@@ -85,7 +110,7 @@
                 <!-- 头部、主体、脚注 -->
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">添加商品</h4>
+                    <h4 class="modal-title">添加旅游线路</h4>
                 </div>
                 <div class="modal-body text-center row">
                     <div class="col-sm-8">
