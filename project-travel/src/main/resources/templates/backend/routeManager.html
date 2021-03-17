@@ -115,29 +115,41 @@
                 <div class="modal-body text-center row">
                     <div class="col-sm-8">
                         <div class="form-group">
-                            <label for="product-name" class="col-sm-4 control-label">商品名称：</label>
+                            <label for="add-route-name" class="col-sm-4 control-label">线路名称：</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="product-name">
+                                <input type="text" class="form-control" id="add-route-name">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="product-price" class="col-sm-4 control-label">商品价格：</label>
+                            <label for="add-route-price" class="col-sm-4 control-label">参考价格：</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="product-price">
+                                <input type="text" class="form-control" id="add-route-price">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="product-image" class="col-sm-4 control-label">商品图片：</label>
+                            <label for="add-route-introduce" class="col-sm-4 control-label">线路简介：</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="add-route-introduce">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="add-strategy" class="col-sm-4 control-label">攻略：</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="add-strategy">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="add-route-image" class="col-sm-4 control-label">商品图片：</label>
                             <div class="col-sm-8">
                                 <a href="javascript:;" class="file">选择文件
-                                    <input type="file" name="" id="product-image">
+                                    <input type="file" name="file" id="add-route-image">
                                 </a>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="add-product-type" class="col-sm-4 control-label">商品类型：</label>
+                            <label for="add-seller-type" class="col-sm-4 control-label">所属商家：</label>
                             <div class="col-sm-8">
-                                <select class="form-control" id="add-product-type">
+                                <select class="form-control" id="add-seller-type">
                                     <option>--请选择--</option>
                                     <option th:each="seller:${sellerList}" th:text="${seller.getSellerName()}" th:value="${seller.getSellerId()}"></option>
                                 </select>
@@ -174,35 +186,41 @@
                 <div class="modal-body text-center row">
                     <div class="col-sm-8">
                         <div class="form-group">
-                            <label for="pro-num" class="col-sm-4 control-label">商品编号：</label>
+                            <label for="update-route-name" class="col-sm-4 control-label">线路名称：</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="pro-num" readonly>
+                                <input type="text" class="form-control" id="update-route-name">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="pro-name" class="col-sm-4 control-label">线路名称：</label>
+                            <label for="update-route-price" class="col-sm-4 control-label">参考价格：</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="pro-name">
+                                <input type="text" class="form-control" id="update-route-price">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="pro-price" class="col-sm-4 control-label">参考价格：</label>
+                            <label for="update-route-introduce" class="col-sm-4 control-label">线路简介：</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="pro-price">
+                                <input type="text" class="form-control" id="update-route-introduce">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="pro-image" class="col-sm-4 control-label">线路图片：</label>
+                            <label for="update-strategy" class="col-sm-4 control-label">攻略：</label>
                             <div class="col-sm-8">
-                                <a class="file">
-                                    选择文件 <input type="file" name="file" id="pro-image">
+                                <input type="text" class="form-control" id="update-strategy">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="update-route-image" class="col-sm-4 control-label">线路图片：</label>
+                            <div class="col-sm-8">
+                                <a href="javascript:;" class="file">选择文件
+                                    <input type="file" name="file" id="update-route-image">
                                 </a>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="update-product-type" class="col-sm-4 control-label">所属商家：</label>
+                            <label for="update-seller-type" class="col-sm-4 control-label">所属商家：</label>
                             <div class="col-sm-8">
-                                <select class="form-control" id="update-product-type">
+                                <select class="form-control" id="update-seller-type">
                                     <option>--请选择--</option>
                                     <option th:each="seller:${sellerList}" th:text="${seller.getSellerName()}" th:value="${seller.getSellerId()}"></option>
                                 </select>
