@@ -61,4 +61,10 @@ public interface UserMapper {
      */
     List<User> selectFindAll();
 
+    /**
+     * 多条件查询
+     * @param userParam
+     * @return
+     */
+    List<User> selectByParam(User userParam);
 }

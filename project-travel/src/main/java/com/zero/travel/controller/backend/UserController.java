@@ -44,12 +44,32 @@ public class UserController extends CommonController {
         List<User> userList = userService.findAll();
         PageInfo<User> pageInfo = new PageInfo<>(userList);
 
+        UserDTO userDTO = new UserDTO();
         modelMap.addAttribute("pageInfo",pageInfo);
+        modelMap.addAttribute("userDTO",userDTO);
         return "backend/userManager";
     }
 
+    /**
+     * 条件搜索
+     * @param pageNum
+     * @param userDTO
+     * @param modelMap
+     * @return
+     */
     @RequestMapping("/search")
-    public String search(UserDTO userDTO){
+    public String search(Integer pageNum,UserDTO userDTO,ModelMap modelMap){
+        if (ObjectUtils.isEmpty(pageNum)){
+            pageNum = SystemConstant.PAGE_NUM;
+        }
+        Integer pageSize = SystemConstant.PAGE_SIZE;
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> userList = userService.findByParam(userDTO);
+        PageInfo<User> pageInfo = new PageInfo<>(userList);
+
+        modelMap.addAttribute("pageInfo",pageInfo);
+        modelMap.addAttribute("userDTO",userDTO);
 
         return "backend/userManager";
     }
