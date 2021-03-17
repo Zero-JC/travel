@@ -46,6 +46,35 @@
                 }
             });
         });
+
+        //TODO:修改状态
+        function modifyStatus(userId, btn) {
+            $.post(
+                '/backend/user/modifyStatus',
+                {userId:userId},
+                function (result) {
+                    layer.alert(result.msg);
+                    if (result == 200){
+                        layer.alert(result.msg);
+                        //当前元素父元素的上一个同级元素
+                        let statusType = $(btn).parent().prev();
+                        if (statusType.text().trim()=='有效'){
+                            statusType.text("无效");
+                            $(btn).val("启用").removeClass("btn-danger").addClass("btn-success");
+                        }else {
+                            statusType.text("有效");
+                            $(btn).val("禁用").removeClass("btn-success").addClass("btn-danger");
+                        }
+                    }
+                    if (result == 500){
+                        layer.open({
+                           title: "错误提示",
+                           content: result.msg
+                        });
+                    }
+                }
+            );
+        }
     </script>
 </head>
 
@@ -71,10 +100,10 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <div class="form-group">
                     <label for="customer_isValid">状态:</label>
-                        <select class="form-control" id="customer_isValid" name="status" th:value="${userDTO.getStatus()}">
-                            <option value="-1">全部</option>
-                            <option value="1">有效</option>
-                            <option value="0">无效</option>
+                        <select class="form-control" id="customer_isValid" name="status" >
+                            <option value="-1" th:selected="${userDTO.getStatus() == -1}">全部</option>
+                            <option value="1" th:selected="${userDTO.getStatus() == 1}">有效</option>
+                            <option value="0" th:selected="${userDTO.getStatus() == 0}">无效</option>
                         </select>
                   </div>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -105,9 +134,9 @@
                             <td th:if="${user.getStatus() == 1}">有效</td>
                             <td th:if="${user.getStatus() == 0}">无效</td>
                             <td class="text-center">
-                                <input th:if="${user.getStatus() == 0}" type="button" class="btn btn-success btn-sm doModify" value="启用">
-                                <input th:if="${user.getStatus() == 1}" type="button" class="btn btn-danger btn-sm doModify" value="禁用">
-                                <input type="button" class="btn btn-danger btn-sm doDisable" value="删除">
+                                <input th:if="${user.getStatus() == 0}" type="button" class="btn btn-success btn-sm doModify" th:onclick="modifyStatus([[${user.getUserId()}]],this)" value="启用">
+                                <input th:if="${user.getStatus() == 1}" type="button" class="btn btn-danger btn-sm doModify" th:onclick="modifyStatus([[${user.getUserId()}]],this)" value="禁用">
+                                <input type="button" class="btn btn-warning btn-sm doDisable"  value="重置密码">
                             </td>
                         </tr>
                     </tbody>

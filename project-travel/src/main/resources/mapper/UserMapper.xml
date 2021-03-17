@@ -172,4 +172,11 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+  <update id="updateStatus" parameterType="java.lang.Integer">
+    update user
+    set
+        status = #{status,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
 </mapper>

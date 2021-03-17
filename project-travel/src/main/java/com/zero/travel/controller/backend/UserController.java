@@ -2,7 +2,9 @@ package com.zero.travel.controller.backend;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zero.travel.common.enums.StatusCode;
 import com.zero.travel.common.enums.SystemConstant;
+import com.zero.travel.common.response.BaseResponse;
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.UserDTO;
 import com.zero.travel.pojo.entity.User;
@@ -10,7 +12,9 @@ import com.zero.travel.service.UserService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -72,5 +76,26 @@ public class UserController extends CommonController {
         modelMap.addAttribute("userDTO",userDTO);
 
         return "backend/userManager";
+    }
+
+    /**
+     * 状态的启用禁用
+     * @param userId
+     * @return
+     */
+    @PostMapping("/modifyStatus")
+    @ResponseBody
+    public BaseResponse modifyStatus(Integer userId){
+        try {
+            if (ObjectUtils.isEmpty(userId)){
+                return new BaseResponse(StatusCode.ParamNotBlank);
+            }
+            userService.modifyStatus(userId);
+            log.info("----------操作成功--------");
+            return new BaseResponse(StatusCode.Success);
+        } catch (Exception e) {
+            log.error("修改客户状态:{}",e.getMessage());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.zero.travel.mapper;
 
 import com.zero.travel.pojo.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -67,4 +68,12 @@ public interface UserMapper {
      * @return
      */
     List<User> selectByParam(User userParam);
+
+    /**
+     * 修改客户状态
+     * @param status
+     * @param userId
+     * @return
+     */
+    int updateStatus(@Param("status") Integer status, @Param("userId") Integer userId);
 }

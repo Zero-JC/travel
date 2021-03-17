@@ -51,4 +51,26 @@ public class UserService {
         }
         return null;
     }
+
+    /**
+     * 修改用户状态
+     * @param userId
+     */
+    public void modifyStatus(Integer userId) throws Exception{
+        User currUser = userMapper.selectByPrimaryKey(userId);
+        if (ObjectUtils.isEmpty(currUser)){
+            throw new RuntimeException("客户不存在");
+        }
+        Integer status = 1;
+        if (currUser.getStatus() == 1){
+            status = 0;
+        }
+        if (currUser.getStatus() == 0){
+            status = 1;
+        }
+        int row = userMapper.updateStatus(status,userId);
+        if (row != 1){
+            throw new RuntimeException("修改失败");
+        }
+    }
 }
