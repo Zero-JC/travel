@@ -16,7 +16,7 @@
     <link rel="stylesheet"  href="/css/bootstrapValidator.css" />
     <script type="text/javascript" src="/layer/layer.js"></script>
     <link rel="stylesheet" href="/css/zero.css" />
-    <script>
+    <script type="text/javascript" th:inline="javascript">
 
         $(function(){
             //上传图像预览
@@ -29,30 +29,173 @@
 
 
             //模态框显示
-            $(".doProModify").on("click", function() {
+            $(".doRouteModify").on("click", function() {
                 _this = this; //this是事件源
                 $("#myProduct").modal("show");
             });
 
-            $(".updatePro").on("click", function() {
+            /*$(".updateRoute").on("click", function() {
                 $("#myProduct").modal("hide");
-            });
+            });*/
 
 
-            $("#doAddPro").on("click", function() {
+            $("#doAddRoute").on("click", function() {
                 _this = this; //this是事件源
                 $("#Product").modal("show");
             });
 
-            $(".addProduct").on("click", function() {
+            /*$(".addProduct").on("click", function() {
                 $("#Product").modal("hide");
-            });
+            });*/
+
+            let msg = [[${msg}]];
+            if (msg != null&& msg !=''){
+                layer.alert(msg);
+            }
         });
 
 
     </script>
     <script type="text/javascript" th:inline="javascript">
-
+        $(function (){
+            //TODO:客户端表单校验
+            $("#addRouteForm").bootstrapValidator({
+                //根据验证结果显示各种图标
+                feedbackIcons:{
+                    valid:'glyphicon glyphicon-ok',
+                    invalid:'glyphicon glyphicon-remove',
+                    validating:'glyphicon glyphicon-refresh'
+                },
+                //校验规则
+                fields:{
+                    //表单项 表单的name值
+                    routeName:{
+                        //规则
+                        validators:{
+                            //非空校验
+                            notEmpty:{
+                                message:'线路名称不能为空'
+                            }
+                        }
+                    },
+                    price: {
+                        validators: {
+                            notEmpty: {
+                                message: '参考价格不能为空'
+                            },
+                            //数字间隔验证
+                            between: {
+                                min: '0.0',
+                                max: '999999',
+                                message: '商品价格超出范围(0.0 - 999999)'
+                            }/*,
+                            regexp:{
+                                regexp:/^\d+(\.\d+)?$/,
+                                message:'价格格式不正确'
+                            }*/
+                        }
+                    },
+                    routeIntroduce:{
+                        validators:{
+                            notEmpty:{
+                                message:'线路简介不能为空'
+                            }
+                        }
+                    },
+                    strategy:{
+                        validators:{
+                            notEmpty:{
+                                message:'攻略不能为空'
+                            }
+                        }
+                    },
+                    file:{
+                        validators:{
+                            notEmpty:{
+                                message:'请选择商品图片'
+                            }
+                        }
+                    },
+                    sellerId:{
+                        validators:{
+                            between: {
+                                min: '0',
+                                max: '999999',
+                                message: '请选择所属商家'
+                            }
+                        }
+                    }
+                }
+            });
+            $("#updateRouteForm").bootstrapValidator({
+                //根据验证结果显示各种图标
+                feedbackIcons:{
+                    valid:'glyphicon glyphicon-ok',
+                    invalid:'glyphicon glyphicon-remove',
+                    validating:'glyphicon glyphicon-refresh'
+                },
+                //校验规则
+                fields:{
+                    //表单项 表单的name值
+                    routeName:{
+                        //规则
+                        validators:{
+                            //非空校验
+                            notEmpty:{
+                                message:'线路名称不能为空'
+                            }
+                        }
+                    },
+                    price: {
+                        validators: {
+                            notEmpty: {
+                                message: '参考价格不能为空'
+                            },
+                            //数字间隔验证
+                            between: {
+                                min: '0.0',
+                                max: '999999',
+                                message: '商品价格超出范围(0.0 - 999999)'
+                            }/*,
+                            regexp:{
+                                regexp:/^\d+(\.\d+)?$/,
+                                message:'价格格式不正确'
+                            }*/
+                        }
+                    },
+                    routeIntroduce:{
+                        validators:{
+                            notEmpty:{
+                                message:'线路简介不能为空'
+                            }
+                        }
+                    },
+                    strategy:{
+                        validators:{
+                            notEmpty:{
+                                message:'攻略不能为空'
+                            }
+                        }
+                    },
+                    file:{
+                        validators:{
+                            notEmpty:{
+                                message:'请选择商品图片'
+                            }
+                        }
+                    },
+                    sellerId:{
+                        validators:{
+                            between: {
+                                min: '0',
+                                max: '999999',
+                                message: '请选择所属商家'
+                            }
+                        }
+                    }
+                }
+            });
+        });
     </script>
 
 </head>
@@ -63,42 +206,33 @@
             <h3 class="panel-title">商品管理</h3>
         </div>
         <div class="panel-body">
-            <input type="button" value="添加商品" class="btn btn-primary" id="doAddPro">
+            <input type="button" value="添加商品" class="btn btn-primary" id="doAddRoute">
             <br>
             <br>
             <div class="show-list">
                 <table class="table table-bordered table-hover" style='text-align: center;'>
                     <thead>
                         <tr class="text-danger">
-                            <th class="text-center">编号</th>
-                            <th class="text-center">商品</th>
-                            <th class="text-center">价格</th>
-                            <th class="text-center">产品类型</th>
-                            <th class="text-center">状态</th>
+                            <th class="text-center">线路ID</th>
+                            <th class="text-center">线路名称</th>
+                            <th class="text-center">参考价格</th>
+                            <th class="text-center">线路简介</th>
+                            <th class="text-center">出行攻略</th>
+                            <th class="text-center">所属商家</th>
                             <th class="text-center">操作</th>
                         </tr>
                     </thead>
                     <tbody id="tb">
-                        <tr>
-                            <td>1</td>
-                            <td>手机</td>
-                            <td>1999</td>
-                            <td>电子产品</td>
-                            <td>有效商品</td>
+                        <tr th:each="route:${routeList}">
+                            <td th:text="${route.getRouteId()}"></td>
+                            <td th:text="${route.getRouteName()}"></td>
+                            <td th:text="${route.getPrice()}"></td>
+                            <td th:text="${route.getRouteIntroduce()}"></td>
+                            <td th:text="${route.getStrategy()}"></td>
+                            <td th:text="${route.getSellerId()}"></td>
                             <td class="text-center">
-                                <input type="button" class="btn btn-warning btn-sm doProModify" value="修改">
-                                <input type="button" class="btn btn-warning btn-sm doProDelete" value="删除">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>平板</td>
-                            <td>2999</td>
-                            <td>电子产品</td>
-                            <td>有效商品</td>
-                            <td class="text-center">
-                                <input type="button" class="btn btn-warning btn-sm doProModify" value="修改">
-                                <input type="button" class="btn btn-warning btn-sm doProDelete" value="删除">
+                                <input type="button" class="btn btn-warning btn-sm doRouteModify" value="修改">
+                                <input type="button" class="btn btn-warning btn-sm doRouteDelete" value="删除">
                             </td>
                         </tr>
                     </tbody>
@@ -107,12 +241,13 @@
         </div>
     </div>
 
-    <!-- 添加商品 start -->     
+    <!-- 添加旅游线路 start -->
     <div class="modal fade" tabindex="-1" id="Product">
         <!-- 窗口声明 -->
         <div class="modal-dialog modal-lg">
             <!-- 内容声明 -->
-            <form action="/backend/route/add" method="post" class="form-horizontal" id="addRouteForm" enctype ="multipart/form-data">
+            <form action="/backend/route/add" method="post" class="form-horizontal"
+                  id="addRouteForm" enctype ="multipart/form-data">
                 <div class="modal-content">
                     <!-- 头部、主体、脚注 -->
                     <div class="modal-header">
@@ -124,40 +259,40 @@
                             <div class="form-group">
                                 <label for="add-route-name" class="col-sm-4 control-label">线路名称：</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="add-route-name" name="routeName">
+                                    <input type="text" class="form-control" id="add-route-name" name="routeName" >
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="add-route-price" class="col-sm-4 control-label">参考价格：</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="add-route-price" name="price">
+                                    <input type="text" class="form-control" id="add-route-price" name="price" >
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="add-route-introduce" class="col-sm-4 control-label">线路简介：</label>
                                 <div class="col-sm-8">
-                                    <textarea id="add-route-introduce" form="addRouteForm" style="width: 370px" name="routeIntroduce"  rows="5" required></textarea>
+                                    <textarea id="add-route-introduce" form="addRouteForm" style="width: 370px" name="routeIntroduce"  rows="4" ></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="add-route-strategy" class="col-sm-4 control-label">攻略：</label>
+                                <label for="add-route-strategy" class="col-sm-4 control-label">出行攻略：</label>
                                 <div class="col-sm-8">
-                                    <textarea id="add-route-strategy" form="addRouteForm" style="width: 370px" name="strategy"  rows="5" required></textarea>
+                                    <textarea id="add-route-strategy" form="addRouteForm" style="width: 370px" name="strategy"  rows="6" ></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="add-route-image" class="col-sm-4 control-label">商品图片：</label>
                                 <div class="col-sm-8">
                                     <a href="javascript:;" class="file">选择文件
-                                        <input type="file" name="fileName" id="add-route-image">
+                                        <input type="file" name="fileName" id="add-route-image" >
                                     </a>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="add-seller-type" class="col-sm-4 control-label">所属商家：</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control" id="add-seller-type" name="sellerId">
-                                        <option value="-1">--请选择--</option>
+                                    <select class="form-control" id="add-seller-type" name="sellerId" >
+                                        <option>--请选择--</option>
                                         <option th:each="seller:${sellerList}" th:text="${seller.getSellerName()}" th:value="${seller.getSellerId()}"></option>
                                     </select>
                                 </div>
@@ -176,74 +311,74 @@
             </form>
         </div>
     </div>
-    <!-- 添加商品 end -->  
+    <!-- 添加旅游线路 end -->
     
-    <!-- 修改商品 start -->  
+    <!-- 修改旅游线路 start -->
     <div class="modal fade" tabindex="-1" id="myProduct">
         <!-- 窗口声明 -->
         <div class="modal-dialog modal-lg">
             <!-- 内容声明 -->
-            <form action="" class="form-horizontal">
-            <div class="modal-content">
-                <!-- 头部、主体、脚注 -->
-                <div class="modal-header">
-                    <button class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">修改商品</h4>
-                </div>
-                <div class="modal-body text-center row">
-                    <div class="col-sm-8">
-                        <div class="form-group">
-                            <label for="update-route-name" class="col-sm-4 control-label">线路名称：</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="update-route-name">
+            <form action="/backend/route/modify" method="post" id="updateRouteForm" class="form-horizontal">
+                <div class="modal-content">
+                    <!-- 头部、主体、脚注 -->
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">修改旅游线路</h4>
+                    </div>
+                    <div class="modal-body text-center row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="update-route-name" class="col-sm-4 control-label">线路名称：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="update-route-name" name="routeName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="update-route-price" class="col-sm-4 control-label">参考价格：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="update-route-price" name="price">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="update-route-introduce" class="col-sm-4 control-label">线路简介：</label>
+                                <div class="col-sm-8">
+                                    <textarea id="update-route-introduce" style="width: 370px" name="routeIntroduce" rows="4" ></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="update-strategy" class="col-sm-4 control-label">出行攻略：</label>
+                                <div class="col-sm-8">
+                                    <textarea id="update-strategy" style="width: 370px" name="strategy"  rows="6"  ></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="update-route-image" class="col-sm-4 control-label">线路图片：</label>
+                                <div class="col-sm-8">
+                                    <a href="javascript:;" class="file">选择文件
+                                        <input type="file" name="fileName" id="update-route-image">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="update-seller-type" class="col-sm-4 control-label">所属商家：</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="update-seller-type" name="sellerId">
+                                        <option>--请选择--</option>
+                                        <option th:each="seller:${sellerList}" th:text="${seller.getSellerName()}" th:value="${seller.getSellerId()}"></option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="update-route-price" class="col-sm-4 control-label">参考价格：</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="update-route-price">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="update-route-introduce" class="col-sm-4 control-label">线路简介：</label>
-                            <div class="col-sm-8">
-                                <textarea id="update-route-introduce" style="width: 370px" name="introduce" rows="5" required></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="update-strategy" class="col-sm-4 control-label">攻略：</label>
-                            <div class="col-sm-8">
-                                <textarea id="update-strategy" style="width: 370px" name="strategy"  rows="5"  required></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="update-route-image" class="col-sm-4 control-label">线路图片：</label>
-                            <div class="col-sm-8">
-                                <a href="javascript:;" class="file">选择文件
-                                    <input type="file" name="file" id="update-route-image">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="update-seller-type" class="col-sm-4 control-label">所属商家：</label>
-                            <div class="col-sm-8">
-                                <select class="form-control" id="update-seller-type">
-                                    <option value="-1">--请选择--</option>
-                                    <option th:each="seller:${sellerList}" th:text="${seller.getSellerName()}" th:value="${seller.getSellerId()}"></option>
-                                </select>
-                            </div>
+                        <div class="col-sm-4">
+                            <!-- 显示图像预览 -->
+                            <img style="width: 160px;height: 180px;" id="img2">
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <!-- 显示图像预览 -->
-                        <img style="width: 160px;height: 180px;" id="img2">
+                    <div class="modal-footer">
+                        <button class="btn btn-primary updateRoute" type="submit">修改</button>
+                        <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary updatePro">修改</button>
-                    <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
-                </div>
-            </div>
             </form>
         </div>
     </div>

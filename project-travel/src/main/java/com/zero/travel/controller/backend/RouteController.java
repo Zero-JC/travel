@@ -3,6 +3,7 @@ package com.zero.travel.controller.backend;
 
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.RouteDTO;
+import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.pojo.entity.Seller;
 import com.zero.travel.service.backend.RouteService;
 import com.zero.travel.service.backend.SellerService;
@@ -40,9 +41,16 @@ public class RouteController extends CommonController {
         return sellerList;
     }
 
+    /**
+     * 查询所有
+     * @param model
+     * @return
+     */
     @RequestMapping("/findAll")
-    public String findAll(){
+    public String findAll(Model model){
+        List<Route> routeList = routeService.findAll();
 
+        model.addAttribute("routeList",routeList);
         return "backend/routeManager";
     }
 
@@ -54,29 +62,49 @@ public class RouteController extends CommonController {
     @RequestMapping(value = "/add",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String add(MultipartHttpServletRequest request, Model model){
         try {
-            RouteDTO routeDTO = new RouteDTO();
 
-            final String routeName = request.getParameter("routeName");
-            Integer price = Integer.parseInt(request.getParameter("price"));
-            final String routeIntroduce = request.getParameter("routeIntroduce");
-            final String strategy = request.getParameter("strategy");
-            final MultipartFile file = request.getFile("fileName");
-            Integer sellerId = Integer.parseInt(request.getParameter("sellerId"));
-
-            routeDTO.setRouteName(routeName);
-            routeDTO.setPrice(price);
-            routeDTO.setRouteIntroduce(routeIntroduce);
-            routeDTO.setStrategy(strategy);
-            routeDTO.setImageFile(file);
-            routeDTO.setSellerId(sellerId);
-            ///BeanUtils.populate();
-            log.info(routeDTO.toString());
+            final RouteDTO routeDTO = packageParam(request);
 
             routeService.add(routeDTO);
 
+            model.addAttribute("msg","操作成功");
             return "backend/routeManager";
         }catch (Exception e){
+            model.addAttribute("msg","操作失败");
             return "backend/routeManager";
         }
+    }
+
+    @RequestMapping(value = "modify",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String modify(MultipartHttpServletRequest request,Model model){
+
+
+        return "backend/routeManager";
+    }
+
+    /**
+     * 封装参数
+     * @param request
+     * @return
+     */
+    public static RouteDTO packageParam(MultipartHttpServletRequest request){
+        RouteDTO routeDTO = new RouteDTO();
+
+        final String routeName = request.getParameter("routeName");
+        Integer price = Integer.parseInt(request.getParameter("price"));
+        final String routeIntroduce = request.getParameter("routeIntroduce");
+        final String strategy = request.getParameter("strategy");
+        final MultipartFile file = request.getFile("fileName");
+        Integer sellerId = Integer.parseInt(request.getParameter("sellerId"));
+
+        routeDTO.setRouteName(routeName);
+        routeDTO.setPrice(price);
+        routeDTO.setRouteIntroduce(routeIntroduce);
+        routeDTO.setStrategy(strategy);
+        routeDTO.setImageFile(file);
+        routeDTO.setSellerId(sellerId);
+        ///BeanUtils.populate();
+
+        return routeDTO;
     }
 }

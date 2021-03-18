@@ -28,4 +28,11 @@ public interface RouteMapper {
     int updateByPrimaryKeySelective(Route record);
 
     int updateByPrimaryKey(Route record);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<Route> selectAll();
+
 }

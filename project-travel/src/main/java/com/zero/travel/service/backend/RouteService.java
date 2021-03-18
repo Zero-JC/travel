@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * 业务层-旅游线路
@@ -58,12 +59,19 @@ public class RouteService {
         UploadService.commonUpload(uploadDTO);
 
         //TODO:记录到数据库
-        String imageUrl = "route/image"+File.separator+fileName;
+        String imageUrl = "route\\image"+File.separator+fileName;
         routeDTO.setImageUrl(imageUrl);
         Route route = new Route();
         BeanUtils.copyProperties(routeDTO,route);
 
         routeMapper.insertSelective(route);
 
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
+    public List<Route> findAll() {
+        List<Route> routeList = routeMapper.selectAll();
+
+        return routeList;
     }
 }
