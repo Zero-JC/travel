@@ -1,6 +1,8 @@
 package com.zero.travel.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,5 +23,16 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/showLogin").setViewName("backend/login");
         registry.addViewController("/welcome").setViewName("welcome");
         registry.addViewController("/index").setViewName("index");
+    }
+
+    /**
+     * 文件解析器
+     * @return
+     */
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver multipartResolver(){
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+        commonsMultipartResolver.setMaxUploadSize(10000000);
+        return commonsMultipartResolver;
     }
 }

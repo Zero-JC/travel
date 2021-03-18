@@ -1,4 +1,4 @@
-${AnsiColor.BRIGHT_YELLOW}
+${AnsiColor.BRIGHT_RED}
                        _ooOoo_
                       o8888888o
                       88" . "88
@@ -28,5 +28,5 @@ ${AnsiColor.BRIGHT_YELLOW}
  |_____/| .__/|_|  |_|_| |_|\__, |____/ \___/ \___/ \__|
         | |                  __/ |                      
         |_|                 |___/
-${AnsiColor.BRIGHT_WHITE}
+${AnsiColor.BRIGHT_BLACK}
 <Zero>:Project (version:${application.version})::  Spring Boot ${spring-boot.formatted-version}

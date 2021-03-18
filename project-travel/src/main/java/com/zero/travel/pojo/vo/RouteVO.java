@@ -3,6 +3,10 @@ package com.zero.travel.pojo.vo;
 import lombok.Data;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -20,16 +24,19 @@ public class RouteVO implements Serializable {
     /**
      * 线路名称
      */
+    @NotBlank(message = "线路名称不能为空")
     private String routeName;
 
     /**
      * 参考价格
      */
+    @NotNull(message = "参考价格不能为空")
     private Integer price;
 
     /**
      * 线路简介
      */
+    @NotBlank(message = "线路简介不能为空")
     private String routeIntroduce;
 
     /**
@@ -40,6 +47,7 @@ public class RouteVO implements Serializable {
     /**
      * 攻略
      */
+    @NotBlank(message = "攻略不能为空")
     private String strategy;
 
     /**
