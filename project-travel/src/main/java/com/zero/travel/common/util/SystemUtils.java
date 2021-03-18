@@ -9,7 +9,7 @@ import java.util.Random;
  * @version 1.0
  * @date 2020/12/8 16:34
  */
-public class StringUtils {
+public class SystemUtils {
 
     /**
      * 重命名上传文件名

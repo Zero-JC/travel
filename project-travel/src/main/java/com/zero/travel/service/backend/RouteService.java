@@ -1,19 +1,21 @@
 package com.zero.travel.service.backend;
 
-import com.zero.travel.common.util.StringUtils;
+import com.zero.travel.common.util.SystemUtils;
+import com.zero.travel.mapper.RouteMapper;
 import com.zero.travel.pojo.dto.RouteDTO;
 import com.zero.travel.pojo.dto.UploadDTO;
+import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.service.common.UploadService;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
  * 业务层-旅游线路
@@ -31,6 +33,9 @@ public class RouteService {
     @Autowired
     private UploadService uploadService;
 
+    @Autowired
+    private RouteMapper routeMapper;
+
     /**
      * 新增旅游线路
      * @param routeDTO
@@ -43,7 +48,7 @@ public class RouteService {
         ///final String rootPath = ResourceUtils.getFile("classpath:image/route/").getPath();
 
         String rootPath = env.getProperty("upload.root.location");
-        final String fileName = StringUtils.rename(file.getOriginalFilename());
+        final String fileName = SystemUtils.rename(file.getOriginalFilename());
 
         UploadDTO uploadDTO = new UploadDTO();
         uploadDTO.setFile(file);
@@ -54,7 +59,11 @@ public class RouteService {
 
         //TODO:记录到数据库
         String imageUrl = "route/image"+File.separator+fileName;
+        routeDTO.setImageUrl(imageUrl);
+        Route route = new Route();
+        BeanUtils.copyProperties(routeDTO,route);
 
+        routeMapper.insertSelective(route);
 
     }
 }

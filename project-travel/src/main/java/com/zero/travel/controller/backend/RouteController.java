@@ -1,21 +1,18 @@
 package com.zero.travel.controller.backend;
 
-import com.zero.travel.common.enums.StatusCode;
-import com.zero.travel.common.response.BaseResponse;
+
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.RouteDTO;
 import com.zero.travel.pojo.entity.Seller;
 import com.zero.travel.service.backend.RouteService;
 import com.zero.travel.service.backend.SellerService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -55,8 +52,7 @@ public class RouteController extends CommonController {
      * @return
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @ResponseBody
-    public BaseResponse add(MultipartHttpServletRequest request){
+    public String add(MultipartHttpServletRequest request, Model model){
         try {
             RouteDTO routeDTO = new RouteDTO();
 
@@ -78,9 +74,9 @@ public class RouteController extends CommonController {
 
             routeService.add(routeDTO);
 
-            return new BaseResponse(StatusCode.Success);
+            return "backend/routeManager";
         }catch (Exception e){
-            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+            return "backend/routeManager";
         }
     }
 }
