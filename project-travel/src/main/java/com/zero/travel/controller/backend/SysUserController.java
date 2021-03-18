@@ -11,7 +11,7 @@ import com.zero.travel.mapper.SysUserMapper;
 import com.zero.travel.pojo.dto.LoginDTO;
 import com.zero.travel.pojo.dto.SysUserDTO;
 import com.zero.travel.pojo.entity.SysUser;
-import com.zero.travel.service.SysUserService;
+import com.zero.travel.service.backend.SysUserService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

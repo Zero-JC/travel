@@ -2,21 +2,23 @@ package com.zero.travel.controller.backend;
 
 import com.zero.travel.common.enums.StatusCode;
 import com.zero.travel.common.response.BaseResponse;
-import com.zero.travel.common.util.ValidateUtils;
 import com.zero.travel.controller.CommonController;
+import com.zero.travel.pojo.dto.RouteDTO;
 import com.zero.travel.pojo.entity.Seller;
-import com.zero.travel.pojo.vo.RouteVO;
-import com.zero.travel.service.SellerService;
+import com.zero.travel.service.backend.RouteService;
+import com.zero.travel.service.backend.SellerService;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -31,6 +33,9 @@ public class RouteController extends CommonController {
     @Autowired
     private SellerService sellerService;
 
+    @Autowired
+    private RouteService routeService;
+
     @ModelAttribute("sellerList")
     public List<Seller> sellerList(){
         List<Seller> sellerList = sellerService.findAll();
@@ -44,12 +49,35 @@ public class RouteController extends CommonController {
         return "backend/routeManager";
     }
 
+    /**
+     * 新增旅游线路
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/add",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
-    public BaseResponse add(RouteVO routeVO){
+    public BaseResponse add(MultipartHttpServletRequest request){
         try {
+            RouteDTO routeDTO = new RouteDTO();
 
-            log.info(routeVO.toString());
+            final String routeName = request.getParameter("routeName");
+            Integer price = Integer.parseInt(request.getParameter("price"));
+            final String routeIntroduce = request.getParameter("routeIntroduce");
+            final String strategy = request.getParameter("strategy");
+            final MultipartFile file = request.getFile("fileName");
+            Integer sellerId = Integer.parseInt(request.getParameter("sellerId"));
+
+            routeDTO.setRouteName(routeName);
+            routeDTO.setPrice(price);
+            routeDTO.setRouteIntroduce(routeIntroduce);
+            routeDTO.setStrategy(strategy);
+            routeDTO.setImageFile(file);
+            routeDTO.setSellerId(sellerId);
+            ///BeanUtils.populate();
+            log.info(routeDTO.toString());
+
+            routeService.add(routeDTO);
+
             return new BaseResponse(StatusCode.Success);
         }catch (Exception e){
             return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());

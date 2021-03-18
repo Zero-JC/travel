@@ -8,7 +8,7 @@ import com.zero.travel.common.response.BaseResponse;
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.UserDTO;
 import com.zero.travel.pojo.entity.User;
-import com.zero.travel.service.UserService;
+import com.zero.travel.service.backend.UserService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

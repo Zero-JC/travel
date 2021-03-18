@@ -10,7 +10,7 @@ import com.zero.travel.controller.CommonController;
 import com.zero.travel.mapper.SellerMapper;
 import com.zero.travel.pojo.dto.SellerDTO;
 import com.zero.travel.pojo.entity.Seller;
-import com.zero.travel.service.SellerService;
+import com.zero.travel.service.backend.SellerService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

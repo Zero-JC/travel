@@ -26,13 +26,13 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     /**
-     * 文件解析器
+     * 文件解析器 使用CommonsMultipartFile类型接受 file文件是需要配置文件解析
      * @return
      */
-    @Bean(name = "multipartResolver")
+    /*@Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver(){
         CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
         commonsMultipartResolver.setMaxUploadSize(10000000);
         return commonsMultipartResolver;
-    }
+    }*/
 }
