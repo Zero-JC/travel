@@ -3,6 +3,7 @@ package com.zero.travel.controller.backend;
 
 import com.zero.travel.common.enums.StatusCode;
 import com.zero.travel.common.response.BaseResponse;
+import com.zero.travel.common.util.SystemUtils;
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.RouteDTO;
 import com.zero.travel.pojo.entity.Route;
@@ -138,9 +139,20 @@ public class RouteController extends CommonController {
     @RequestMapping("/search")
     public String search(RouteVO routeVO,Model model){
         try {
+            List<Route> routeList = null;
             RouteDTO routeDTO = new RouteDTO();
             BeanUtils.copyProperties(routeVO,routeDTO);
-            List<Route> routeList = routeService.search(routeDTO);
+            if (routeVO.getSellerId() == -1){
+                routeDTO.setSellerId(null);
+            }
+            if ("".equals(routeVO.getRouteName())){
+                routeDTO.setRouteName(null);
+            }
+            if (SystemUtils.isAllFieldNull(routeDTO)){
+                routeList = routeService.findAll();
+            }else {
+                routeList = routeService.search(routeDTO);
+            }
 
             model.addAttribute("routeList",routeList);
             model.addAttribute("searchParam",routeVO);

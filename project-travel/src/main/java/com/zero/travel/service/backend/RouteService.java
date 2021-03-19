@@ -191,7 +191,7 @@ public class RouteService {
      * @param routeDTO
      * @return
      */
-    public List<Route> search(RouteDTO routeDTO) {
+    public List<Route> search(RouteDTO routeDTO) throws Exception {
         Route route = new Route();
         BeanUtils.copyProperties(routeDTO,route);
 

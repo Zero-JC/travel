@@ -278,7 +278,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="form-group">
                         <label for="seller_id">所属商家:</label>
-                        <select id="seller_id" class="form-control" name="sellerId" style="width: 100px">
+                        <select id="seller_id" class="form-control" name="sellerId" style="width: 150px">
                             <option value="-1">--全部--</option>
                             <option th:each="seller:${sellerList}" th:text="${seller.getSellerName()}"  th:value="${seller.getSellerId()}"></option>
                         </select>
