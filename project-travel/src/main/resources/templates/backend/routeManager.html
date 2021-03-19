@@ -216,16 +216,14 @@
         //回显线路信息
         function showRouteInfo(route){
             let path = route.imageUrl;
+            $("#update-routeId").val(route.routeId);
             $("#update-route-name").val(route.routeName);
             $("#update-route-price").val(route.price);
             $("#update-route-introduce").val(route.routeIntroduce);
             $("#update-strategy").val(route.strategy);
             $("#img2").attr('src','/backend/route/getImage?path='+path);
-            //$("#img2").attr('src','/backend/route/getImage?path=image/route/2021031818060430.png');
             $("#update-seller-type").val(route.sellerId);
 
-            /*console.log(route);
-            console.log(route.routeName);*/
         }
     </script>
 
@@ -352,7 +350,8 @@
         <!-- 窗口声明 -->
         <div class="modal-dialog modal-lg">
             <!-- 内容声明 -->
-            <form action="/backend/route/modify" method="post" id="updateRouteForm" class="form-horizontal">
+            <form action="/backend/route/modify" method="post" id="updateRouteForm"
+                  enctype ="multipart/form-data" class="form-horizontal">
                 <div class="modal-content">
                     <!-- 头部、主体、脚注 -->
                     <div class="modal-header">
@@ -360,6 +359,8 @@
                         <h4 class="modal-title">修改旅游线路</h4>
                     </div>
                     <div class="modal-body text-center row">
+                        <!--隐藏域-->
+                        <input type="hidden" name="routeId" id="update-routeId">
                         <div class="col-sm-8">
                             <div class="form-group">
                                 <label for="update-route-name" class="col-sm-4 control-label">线路名称：</label>

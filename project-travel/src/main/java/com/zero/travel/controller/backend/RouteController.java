@@ -14,13 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -72,18 +70,37 @@ public class RouteController extends CommonController {
             routeService.add(routeDTO);
 
             model.addAttribute("msg","操作成功");
-            return "backend/routeManager";
+
+            return "forward:findAll";
         }catch (Exception e){
             model.addAttribute("msg","操作失败");
-            return "backend/routeManager";
+
+            return "forward:findAll";
         }
     }
 
+    /**
+     * 修改线路信息
+     * @param request
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "modify",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String modify(MultipartHttpServletRequest request,Model model){
+        try {
+            final RouteDTO routeDTO = packageParam(request);
 
+            log.info(routeDTO.toString());
+            log.info("Filename:"+routeDTO.getImageFile().getOriginalFilename());
 
-        return "backend/routeManager";
+            routeService.modify(routeDTO);
+
+            model.addAttribute("msg","操作成功");
+            return "forward:findAll";
+        }catch (Exception e){
+            model.addAttribute("msg","操作失败");
+            return "forward:findAll";
+        }
     }
 
     /**
@@ -110,6 +127,8 @@ public class RouteController extends CommonController {
     public static RouteDTO packageParam(MultipartHttpServletRequest request){
         RouteDTO routeDTO = new RouteDTO();
 
+        final String routeId = request.getParameter("routeId");
+
         final String routeName = request.getParameter("routeName");
         Integer price = Integer.parseInt(request.getParameter("price"));
         final String routeIntroduce = request.getParameter("routeIntroduce");
@@ -117,6 +136,9 @@ public class RouteController extends CommonController {
         final MultipartFile file = request.getFile("fileName");
         Integer sellerId = Integer.parseInt(request.getParameter("sellerId"));
 
+        if (routeId != null && !"".equals(routeId)){
+            routeDTO.setRouteId(Integer.parseInt(routeId));
+        }
         routeDTO.setRouteName(routeName);
         routeDTO.setPrice(price);
         routeDTO.setRouteIntroduce(routeIntroduce);

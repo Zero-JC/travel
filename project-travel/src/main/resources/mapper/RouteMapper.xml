@@ -120,7 +120,7 @@
       <if test="routeIntroduce != null" >
         route_introduce = #{routeIntroduce,jdbcType=VARCHAR},
       </if>
-      <if test="imageUrl != null" >
+      <if test="imageUrl != null and imageUrl != '' " >
         image_url = #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="strategy != null" >

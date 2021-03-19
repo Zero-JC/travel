@@ -7,6 +7,7 @@ import com.zero.travel.pojo.dto.UploadDTO;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.service.common.UploadService;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -62,7 +63,12 @@ public class RouteService {
         uploadDTO.setRootPath(rootPath);
         uploadDTO.setFileName(fileName);
         //上传
-        uploadService.commonUpload(uploadDTO);
+        try {
+            uploadService.commonUpload(uploadDTO);
+        } catch (Exception e) {
+            log.error("文件上传异常:{}",e.getMessage());
+            throw new FileNotFoundException("文件上传失败");
+        }
 
         //TODO:记录到数据库
         String imageUrl = fileName;
@@ -97,5 +103,54 @@ public class RouteService {
         //将图片加载到输出流中图片
         StreamUtils.copy(new FileInputStream(fileName),outputStream);
 
+    }
+
+    /**
+     * 修改线路信息
+     * @param routeDTO
+     */
+    public void modify(RouteDTO routeDTO) throws Exception {
+        //TODO:判断图片是否修改 文件名不为空时说明图片以及更新
+        final MultipartFile imageFile = routeDTO.getImageFile();
+        final String filename = "image/route/"+SystemUtils.rename(imageFile.getOriginalFilename());
+
+        final Route oldRoute = routeMapper.selectByPrimaryKey(routeDTO.getRouteId());
+        Route newRoute = new Route();
+
+        if (imageFile.getOriginalFilename()!=null && !"".equals(imageFile.getOriginalFilename())){
+            //TODO: 删除原图片
+            String rootPath = env.getProperty("upload.root.location");
+            String oldImage = rootPath +File.separator+ oldRoute.getImageUrl();
+            File file = new File(oldImage);
+            System.gc();
+            boolean flag = file.delete();
+            log.info("原图片是否删除:{}",flag);
+
+            //TODO:上传图片
+            UploadDTO uploadDTO = new UploadDTO();
+            uploadDTO.setFile(imageFile);
+            uploadDTO.setFileName(filename);
+            uploadDTO.setRootPath(rootPath);
+
+            try {
+                uploadService.commonUpload(uploadDTO);
+            } catch (Exception e) {
+                log.error("文件上传异常:{}",e.getMessage());
+                throw new FileNotFoundException("文件上传失败");
+            }
+
+
+        }
+        //TODO:更新数据库
+        BeanUtils.copyProperties(routeDTO,newRoute);
+        if (imageFile.getOriginalFilename()!=null && !"".equals(imageFile.getOriginalFilename())){
+            //图片发生变更时保存新的imageUrl
+            newRoute.setImageUrl(filename);
+        }
+
+        int row = routeMapper.updateByPrimaryKeySelective(newRoute);
+        if (row != 1){
+            throw new RuntimeException("修改旅游线路失败");
+        }
     }
 }

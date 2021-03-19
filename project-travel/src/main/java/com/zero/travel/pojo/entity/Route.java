@@ -1,8 +1,9 @@
 package com.zero.travel.pojo.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Route {
+public class Route implements Serializable {
     private Integer routeId;
 
     private String routeName;

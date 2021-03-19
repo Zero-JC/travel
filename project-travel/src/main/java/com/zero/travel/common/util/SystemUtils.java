@@ -17,6 +17,12 @@ public class SystemUtils {
      * @return
      */
     public static String rename(String fileName){
+        if (fileName == null){
+            return null;
+        }
+        if ("".equals(fileName)){
+            return "";
+        }
         int index = fileName.lastIndexOf(".");
         String suffix = fileName.substring(index);
 
