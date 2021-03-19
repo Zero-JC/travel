@@ -57,7 +57,10 @@ public class RouteController extends CommonController {
     public String findAll(Model model){
         List<Route> routeList = routeService.findAll();
 
+
         model.addAttribute("routeList",routeList);
+        RouteVO routeVO = new RouteVO();
+        model.addAttribute("searchParam",routeVO);
         return "backend/routeManager";
     }
 
@@ -140,6 +143,7 @@ public class RouteController extends CommonController {
             List<Route> routeList = routeService.search(routeDTO);
 
             model.addAttribute("routeList",routeList);
+            model.addAttribute("searchParam",routeVO);
             return "backend/routeManager";
         } catch (Exception e) {
             e.printStackTrace();
