@@ -272,6 +272,24 @@
             <h3 class="panel-title">商品管理</h3>
         </div>
         <div class="panel-body">
+            <div class="showusersearch">
+                <form style="text-align: center" class="form-inline" id="userSearchForm" action="" method="post">
+                    <div class="form-group">
+                        <label for="customer_name">线路名称:</label>
+                        <input type="text" class="form-control" style="width: 200px" id="customer_name" name="name" placeholder="请输入线路名称" size="15px">
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="form-group">
+                        <label for="customer_isValid">所属商家:</label>
+                        <select class="form-control" id="customer_isValid" name="status" style="width: 100px">
+                            <option value="-1">全部</option>
+                        </select>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="submit"  value="查询" class="btn btn-primary" id="doSearch">
+                </form>
+            </div>
+            <br>
             <input type="button" value="添加商品" class="btn btn-primary" id="doAddRoute">
             <br>
             <br>
@@ -361,7 +379,7 @@
                                 <label for="add-seller-type" class="col-sm-4 control-label">所属商家：</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" id="add-seller-type" name="sellerId" >
-                                        <option>--请选择--</option>
+                                        <option value="-1">--请选择--</option>
                                         <option th:each="seller:${sellerList}" th:text="${seller.getSellerName()}" th:value="${seller.getSellerId()}"></option>
                                     </select>
                                 </div>
@@ -435,7 +453,7 @@
                                 <label for="update-seller-type" class="col-sm-4 control-label">所属商家：</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" id="update-seller-type" name="sellerId">
-                                        <option>--请选择--</option>
+                                        <option value="-1">--请选择--</option>
                                         <option th:each="seller:${sellerList}" th:text="${seller.getSellerName()}" th:value="${seller.getSellerId()}"></option>
                                     </select>
                                 </div>
