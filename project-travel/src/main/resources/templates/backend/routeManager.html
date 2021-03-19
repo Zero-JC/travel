@@ -227,7 +227,7 @@
                             <td th:text="${route.getRouteId()}"></td>
                             <td th:text="${route.getRouteName()}"></td>
                             <td th:text="${route.getPrice()}"></td>
-                            <td th:text="${route.getSellerId()}"></td>
+                            <td th:each="seller:${sellerList}" th:if="${route.getSellerId() == seller.getSellerId()}" th:text="${seller.getSellerName()}"></td>
                             <td th:text="${#dates.format(route.getCreateTime(),'YYYY-MM-dd HH:mm:ss')}"></td>
                             <td class="text-center" >
                                 <input type="button" class="btn btn-success btn-sm" value="线路简介">
