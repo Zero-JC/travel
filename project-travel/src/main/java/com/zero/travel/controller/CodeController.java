@@ -35,7 +35,7 @@ public class CodeController {
      * 生成验证码图片
      */
     @RequestMapping("/image")
-    public void verificationCode( HttpServletResponse response) throws IOException {
+    public void verificationCode( HttpServletResponse response,HttpServletRequest request) throws IOException {
 
         ///
         //服务器通知浏览器不要缓存
@@ -60,8 +60,13 @@ public class CodeController {
 
         //产生4个随机验证码，12Ey
         String checkCode = getCheckCode();
+
+        //将验证码放入session中
+        final HttpSession session = request.getSession();
+        session.setAttribute("checkCode",checkCode);
+
         //将验证码放入redis中
-        stringRedisTemplate.opsForValue().set("checkCode",checkCode);
+        ///stringRedisTemplate.opsForValue().set("checkCode",checkCode);
 
         //设置画笔颜色为黄色
         g.setColor(Color.YELLOW);
@@ -97,9 +102,13 @@ public class CodeController {
      */
     @RequestMapping("/checkCode")
     @ResponseBody
-    public Map<String,Object> checkCode(String code){
+    public Map<String,Object> checkCode(String code,HttpServletRequest request){
         Map<String,Object> map = new HashMap<>(5);
-        String checkCode = stringRedisTemplate.opsForValue().get("checkCode");
+
+        ///String checkCode = stringRedisTemplate.opsForValue().get("checkCode");
+
+        final HttpSession session = request.getSession();
+        final String checkCode = (String) session.getAttribute("checkCode");
         if (code.equalsIgnoreCase(checkCode)){
             map.put("valid",true);
         }else {

@@ -1,10 +1,16 @@
 package com.zero.travel.config;
 
+import com.zero.travel.common.interceptor.BackendLoginInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LJC
@@ -13,6 +19,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private BackendLoginInterceptor backendLoginInterceptor;
 
     /**
      * 配置视图跳转
@@ -35,4 +44,19 @@ public class WebConfig implements WebMvcConfigurer {
         commonsMultipartResolver.setMaxUploadSize(10000000);
         return commonsMultipartResolver;
     }*/
+
+    /**
+     * 自定义拦截器
+     * @return
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+
+        List<String> excludePath = new ArrayList<>();
+        excludePath.add("/backend/sysUser/login");
+        excludePath.add("/backend/sysUser/logout");
+
+        registry.addInterceptor(backendLoginInterceptor).addPathPatterns("/backend/**")
+                .excludePathPatterns(excludePath);
+    }
 }
