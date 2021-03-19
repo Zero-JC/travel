@@ -1,6 +1,8 @@
 package com.zero.travel.controller.backend;
 
 
+import com.zero.travel.common.enums.StatusCode;
+import com.zero.travel.common.response.BaseResponse;
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.RouteDTO;
 import com.zero.travel.pojo.entity.Route;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -100,6 +103,24 @@ public class RouteController extends CommonController {
         }catch (Exception e){
             model.addAttribute("msg","操作失败");
             return "forward:findAll";
+        }
+    }
+
+    /**
+     * 删除
+     * @param routeId
+     * @return
+     */
+    @RequestMapping(value = "/remove",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponse remove(Integer routeId){
+        try{
+            routeService.remove(routeId);
+            return new BaseResponse(StatusCode.Success);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            log.error(e.toString());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
         }
     }
 

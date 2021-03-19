@@ -98,7 +98,7 @@ public class RouteService {
 
         String rootPath = env.getProperty("upload.root.location");
         String fileName = rootPath +File.separator+path;
-        log.info("[获取]图片的物理路径:{}",fileName);
+        log.info("[加载图片]物理路径:{}",fileName);
 
         //将图片加载到输出流中图片
         StreamUtils.copy(new FileInputStream(fileName),outputStream);
@@ -152,5 +152,35 @@ public class RouteService {
         if (row != 1){
             throw new RuntimeException("修改旅游线路失败");
         }
+    }
+
+    /**
+     * 删除
+     * @param routeId
+     */
+    public void remove(Integer routeId) {
+        //TODO: 清除数据库记录
+        final Route route = routeMapper.selectByPrimaryKey(routeId);
+        if (route == null){
+            throw new RuntimeException("旅游线路不存在");
+        }
+        routeMapper.deleteByPrimaryKey(routeId);
+
+        //TODO: 删除图片
+        String rootPath = env.getProperty("upload.root.location");
+        deleteImage(route.getImageUrl(),rootPath);
+    }
+
+    /**
+     * 删除图片
+     * @param imageUrl
+     */
+    public static void deleteImage(String imageUrl,String rootPath){
+        String oldImage = rootPath +File.separator+ imageUrl;
+        File file = new File(oldImage);
+        System.gc();
+        boolean flag = file.delete();
+        log.info("[删除线路信息]图片物理路径:{}",oldImage);
+        log.info("原图片是否删除:{}",flag);
     }
 }

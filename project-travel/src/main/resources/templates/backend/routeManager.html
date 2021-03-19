@@ -49,9 +49,17 @@
                 $("#strategyModal").modal("hide");
             });
 
+            //关闭删除模态框
+            $(".doRouteDelete").on("click",function () {
+                $("#removeRouteModel").modal("hide");
+            })
+
             let msg = [[${msg}]];
             if (msg != null&& msg !=''){
-                layer.alert(msg);
+                layer.msg(msg,{
+                    time: 3000,
+                    skin: "successMsg"
+                });
             }
         });
 
@@ -224,6 +232,35 @@
             $("#img2").attr('src','/backend/route/getImage?path='+path);
             $("#update-seller-type").val(route.sellerId);
 
+        };
+
+        //显示删除模态框
+        function showRemoveModel(routeId) {
+            $("#removeRouteId").val(routeId);
+            $("#removeRouteModel").modal("show");
+        };
+
+        //删除
+        function removeRoute() {
+            let routeId = $("#removeRouteId").val();
+            $.post(
+                '/backend/route/remove',
+                {routeId:routeId},
+                function (result) {
+                    if (result.code == 200){
+                        layer.msg(result.msg,{
+                            time: 3000,
+                            skin: "successMsg"
+                        });
+                        setTimeout(function () {
+                            location.href = '/backend/route/findAll';
+                        },3000);
+                    }
+                    if (result.code == 500){
+                        layer.alert(result.msg);
+                    }
+                }
+            );
         }
     </script>
 
@@ -264,7 +301,7 @@
                             </td>
                             <td class="text-center" >
                                 <input type="button" class="btn btn-warning btn-sm doRouteModify" value="修改" th:onclick="showRouteInfo([[${route}]])">
-                                <input type="button" class="btn btn-danger btn-sm doRouteDelete" value="删除">
+                                <input type="button" class="btn btn-danger btn-sm " value="删除" th:onclick="showRemoveModel([[${route.getRouteId()}]])">
                             </td>
                         </tr>
                     </tbody>
@@ -465,6 +502,30 @@
     </div>
     <!-- 出行攻略 end -->
 
+    <!-- 确认删除 start -->
+    <div class="modal fade" tabindex="-1" id="removeRouteModel">
+        <!-- 窗口声明 modal-lg-->
+        <div class="modal-dialog ">
+            <!-- 内容声明 -->
+            <div class="modal-content">
+                <!-- 头部、主体、脚注 -->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">信息提示</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <h4>您确认要删除吗?</h4>
+                </div>
+                <div class="modal-footer">
+                    <!--隐藏域存储旅游线路ID-->
+                    <input type="hidden" id="removeRouteId">
+                    <button class="btn btn-danger doRouteDelete" onclick="removeRoute()" data-dismiss="modal">删除</button>
+                    <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 确认删除 end -->
 </body>
 
 </html>
