@@ -36,7 +36,7 @@ public class RouteVO implements Serializable {
     /**
      * 景点图片
      */
-    private CommonsMultipartFile file;
+    ///private CommonsMultipartFile file;
 
     /**
      * 攻略

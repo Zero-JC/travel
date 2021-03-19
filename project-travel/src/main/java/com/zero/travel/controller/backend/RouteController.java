@@ -7,8 +7,10 @@ import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.RouteDTO;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.pojo.entity.Seller;
+import com.zero.travel.pojo.vo.RouteVO;
 import com.zero.travel.service.backend.RouteService;
 import com.zero.travel.service.backend.SellerService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -121,6 +123,28 @@ public class RouteController extends CommonController {
             log.error(e.getMessage());
             log.error(e.toString());
             return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
+    }
+
+    /**
+     * 条件查询
+     * @param routeVO
+     * @param model
+     * @return
+     */
+    @RequestMapping("/search")
+    public String search(RouteVO routeVO,Model model){
+        try {
+            RouteDTO routeDTO = new RouteDTO();
+            BeanUtils.copyProperties(routeVO,routeDTO);
+            List<Route> routeList = routeService.search(routeDTO);
+
+            model.addAttribute("routeList",routeList);
+            return "backend/routeManager";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("msg",e.toString());
+            return "backend/routeManager";
         }
     }
 

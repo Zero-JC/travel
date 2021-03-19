@@ -35,4 +35,11 @@ public interface RouteMapper {
      */
     List<Route> selectAll();
 
+    /**
+     * 条件查询
+     * @param route
+     * @return
+     */
+    List<Route> selectByParam(Route route);
+
 }

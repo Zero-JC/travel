@@ -5,9 +5,11 @@ import com.zero.travel.mapper.RouteMapper;
 import com.zero.travel.pojo.dto.RouteDTO;
 import com.zero.travel.pojo.dto.UploadDTO;
 import com.zero.travel.pojo.entity.Route;
+import com.zero.travel.pojo.vo.RouteVO;
 import com.zero.travel.service.common.UploadService;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -182,5 +184,19 @@ public class RouteService {
         boolean flag = file.delete();
         log.info("[删除线路信息]图片物理路径:{}",oldImage);
         log.info("原图片是否删除:{}",flag);
+    }
+
+    /**
+     * 条件查询
+     * @param routeDTO
+     * @return
+     */
+    public List<Route> search(RouteDTO routeDTO) {
+        Route route = new Route();
+        BeanUtils.copyProperties(routeDTO,route);
+
+        List<Route> routeList = routeMapper.selectByParam(route);
+
+        return routeList;
     }
 }

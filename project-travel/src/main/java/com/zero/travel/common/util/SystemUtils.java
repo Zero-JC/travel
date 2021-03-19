@@ -29,4 +29,7 @@ public class SystemUtils {
         return new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+new Random().nextInt(100) +suffix;
 
     }
+
+    //TODO:判断对象各属性是否为空
+    //public static
 }
