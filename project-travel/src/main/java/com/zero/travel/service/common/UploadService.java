@@ -25,7 +25,7 @@ public class UploadService {
      * 通用上传
      * @param uploadDTO
      */
-    public static void commonUpload(UploadDTO uploadDTO) throws Exception{
+    public void commonUpload(UploadDTO uploadDTO) throws Exception{
         final MultipartFile file = uploadDTO.getFile();
         if (ObjectUtils.isEmpty(file)){
             throw new Exception("文件不存在");

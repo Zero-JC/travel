@@ -14,9 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -80,6 +84,22 @@ public class RouteController extends CommonController {
 
 
         return "backend/routeManager";
+    }
+
+    /**
+     * 获取线路图片
+     * @param path
+     * @param response
+     */
+    @RequestMapping("/getImage")
+    public void getImage(String path, HttpServletResponse response){
+        try {
+            final ServletOutputStream outputStream = response.getOutputStream();
+            log.info(path);
+            routeService.getImage(path,outputStream);
+        }catch (Exception e){
+            log.error("加载图片失败:{}",e.toString());
+        }
     }
 
     /**

@@ -7,15 +7,18 @@ import com.zero.travel.pojo.dto.UploadDTO;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.service.common.UploadService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -37,6 +40,8 @@ public class RouteService {
     @Autowired
     private RouteMapper routeMapper;
 
+    private static final Logger log = LoggerFactory.getLogger(RouteService.class);
+
     /**
      * 新增旅游线路
      * @param routeDTO
@@ -49,17 +54,18 @@ public class RouteService {
         ///final String rootPath = ResourceUtils.getFile("classpath:image/route/").getPath();
 
         String rootPath = env.getProperty("upload.root.location");
-        final String fileName = SystemUtils.rename(file.getOriginalFilename());
+        final String fileName = "image/route/"+SystemUtils.rename(file.getOriginalFilename());
+        log.info("imageUrl:{}",fileName);
 
         UploadDTO uploadDTO = new UploadDTO();
         uploadDTO.setFile(file);
         uploadDTO.setRootPath(rootPath);
         uploadDTO.setFileName(fileName);
         //上传
-        UploadService.commonUpload(uploadDTO);
+        uploadService.commonUpload(uploadDTO);
 
         //TODO:记录到数据库
-        String imageUrl = "route\\image"+File.separator+fileName;
+        String imageUrl = fileName;
         routeDTO.setImageUrl(imageUrl);
         Route route = new Route();
         BeanUtils.copyProperties(routeDTO,route);
@@ -73,5 +79,23 @@ public class RouteService {
         List<Route> routeList = routeMapper.selectAll();
 
         return routeList;
+    }
+
+    /**
+     * 获取线路图片
+     * @param path
+     * @param outputStream
+     */
+    public void getImage(String path, OutputStream outputStream) throws IOException {
+        //相对路径写法
+        ///final String rootPath = ResourceUtils.getFile("classpath:image/route/").getPath();
+
+        String rootPath = env.getProperty("upload.root.location");
+        String fileName = rootPath +File.separator+path;
+        log.info("[获取]图片的物理路径:{}",fileName);
+
+        //将图片加载到输出流中图片
+        StreamUtils.copy(new FileInputStream(fileName),outputStream);
+
     }
 }
