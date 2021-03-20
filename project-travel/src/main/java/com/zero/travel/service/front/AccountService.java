@@ -3,6 +3,7 @@ package com.zero.travel.service.front;
 import com.zero.travel.mapper.UserMapper;
 import com.zero.travel.pojo.dto.UserDTO;
 import com.zero.travel.pojo.entity.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -44,4 +45,21 @@ public class AccountService {
         return user;
     }
 
+    /**
+     * 注册
+     * @param userDTO
+     */
+    public void register(UserDTO userDTO) throws Exception{
+        final User user = userMapper.selectByUsername(userDTO.getUsername());
+        if (user != null){
+            throw new Exception("用户名已存在");
+        }
+        User userParam = new User();
+        BeanUtils.copyProperties(userDTO,userParam);
+
+        final int row = userMapper.insertSelective(userParam);
+        if (row != 1){
+            throw new Exception("注册失败");
+        }
+    }
 }

@@ -11,6 +11,7 @@
         <script type="text/javascript" th:inline="javascript">
 
             function login() {
+                $("#loginInfo").html('');
                 $.post(
                     '/front/account/login',
                     $("#form-login").serialize(),
@@ -37,10 +38,32 @@
                            setTimeout(function () {
                                location.href = "/front/index";
                            },3000);
+                       }else {
+                           layer.alert(result.msg);
                        }
                     }
                 );
-            }
+            };
+
+            function register(){
+                $("#registerInfo").html('');
+                $.post(
+                    '/front/account/register',
+                    $("#form-register").serialize(),
+                    function (result) {
+                        if (result.code == 200){
+                            $("#registModal").modal("hide");
+                            layer.msg(result.msg,{
+                                time: 3000
+                            });
+                            $("#loginModal").modal("show");
+                        }
+                        if (result.code == 500){
+                            $("#registerInfo").html(result.msg);
+                        }
+                    }
+                );
+            };
         </script>
 
 
@@ -79,7 +102,7 @@
                         </li>
 
                         <li class="userName" th:unless="${session.currentUser==null}">
-                            您好:<span th:text="${session.currentUser.name}"></span>！
+                            您好: <span th:text="${session.currentUser.name}"></span>！
                         </li>
                         <li class="dropdown" th:unless="${session.currentUser==null}">
                             <a href="#" class="dropdown-toggle user-active" data-toggle="dropdown" role="button">
@@ -170,47 +193,13 @@
                             </div>
                         </div>
                         <div class="modal-footer" style="text-align: center">
-                            <a class="btn-link">忘记密码？</a> &nbsp;
-                            <button type="button" class="btn btn-warning" data-dismiss="modal" aria-label="Close">关&nbsp;&nbsp;闭</button>
                             <button type="button" class="btn btn-warning" onclick="login()">登&nbsp;&nbsp;陆</button> &nbsp;&nbsp;
-                            <!--<a class="btn-link" id="btn-sms-back">短信快捷登录</a>-->
+                            <button type="button" class="btn btn-warning" data-dismiss="modal" aria-label="Close">关&nbsp;&nbsp;闭</button>
+                            &nbsp;<a class="btn-link">忘记密码？</a>
                         </div>
                     </form>
                 </div>
                 <!-- 用户名密码登陆 end -->
-                <!-- 短信快捷登陆 start -->
-                <!--<div class="modal-content" id="login-sms" style="display: none;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">短信快捷登陆</h4>
-                    </div>
-                    <form class="form-horizontal" method="post">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">手机号：</label>
-                                <div class="col-sm-6">
-                                    <input class="form-control" type="text" placeholder="请输入手机号">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">验证码：</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" type="text" placeholder="请输入验证码">
-                                </div>
-                                <div class="col-sm-2">
-                                    <button class="pass-item-timer" type="button">发送验证码</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer" style="text-align: center">
-                            <a class="btn-link">忘记密码？</a> &nbsp;
-                            <button type="button" class="btn btn-warning" data-dismiss="modal" aria-label="Close">关&nbsp;&nbsp;闭</button>
-                            <button type="submit" class="btn btn-warning">登&nbsp;&nbsp;陆</button> &nbsp;&nbsp;
-                            <a class="btn-link" id="btn-account-back">用户名密码登录</a>
-                        </div>
-                    </form>
-                </div>-->
-                <!-- 短信快捷登陆 end -->
             </div>
         </div>
         <!-- 登录模态框 end  -->
@@ -221,45 +210,39 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">会员注册</h4>
+                        <h4 class="modal-title" id="myModalLabel">用户注册&nbsp;&nbsp;&nbsp;<small id="registerInfo" class="text-danger"></small></h4>
                     </div>
-                    <form action="" class="form-horizontal" method="post">
+                    <form action="#" id="form-register" class="form-horizontal" method="post">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">用户姓名:</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="text">
+                                    <input class="form-control" type="text" name="name">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">登陆账号:</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="text">
+                                    <input class="form-control" type="text" name="username">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">登录密码:</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="password">
+                                    <input class="form-control" type="password" name="password">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">联系电话:</label>
+                                <label class="col-sm-3 control-label">电子邮箱:</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="text">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">联系地址:</label>
-                                <div class="col-sm-6">
-                                    <input class="form-control" type="text">
+                                    <input class="form-control" type="text" name="email">
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="text-align: center">
                             <button type="button" class="btn btn-warning" data-dismiss="modal" aria-label="Close">关&nbsp;&nbsp;闭</button>
                             <button type="reset" class="btn btn-warning">重&nbsp;&nbsp;置</button>
-                            <button type="submit" class="btn btn-warning">注&nbsp;&nbsp;册</button>
+                            <button type="button" class="btn btn-warning" onclick="register()">注&nbsp;&nbsp;册</button>
                         </div>
                     </form>
                 </div>
