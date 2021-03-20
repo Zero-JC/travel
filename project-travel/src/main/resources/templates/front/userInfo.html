@@ -12,6 +12,31 @@
     <script src="/js/jquery-3.5.1.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/zshop.js"></script>
+
+    <script type="text/javascript">
+        function modifyUserInfo() {
+            $.post(
+                '/front/account/modifyUserInfo',
+                $("#form-modify-userInfo").serialize(),
+                function (result) {
+                    if (result.code == 200){
+                        layer.msg(result.msg,{
+                            time: 2000
+                        });
+                        setTimeout(function () {
+                            location.href = '/front/account/info';
+                        },2000);
+                    }
+                    if (result.code == 500){
+                        layer.open({
+                            title: '错误提示',
+                            content: result.msg
+                        });
+                    }
+                }
+            );
+        }
+    </script>
 </head>
 
 <body>
@@ -30,11 +55,11 @@
         </div>
     </div>
     <div class="container">
-        <form class="form-horizontal">
+        <form id="form-modify-userInfo" class="form-horizontal">
             <div class="form-group">
                 <label for="name" class="col-md-2  col-sm-2 control-label">用户姓名:</label>
                 <div class="col-md-8 col-sm-10">
-                    <input th:value="${currUser.name}" type="text" class="form-control" id="name" placeholder="用户姓名" >
+                    <input th:value="${currUser.name}" name="name" type="text" class="form-control" id="name" placeholder="用户姓名" >
                 </div>
             </div>
             <br>
@@ -42,7 +67,7 @@
             <div class="form-group">
                 <label for="username" class="col-md-2 col-sm-2 control-label">登陆账号:</label>
                 <div class="col-md-8  col-sm-10">
-                    <input th:value="${currUser.username}" type="text" class="form-control" id="username" placeholder="登陆账号" readonly="readonly" >
+                    <input th:value="${currUser.username}" name="username" type="text" class="form-control" id="username" placeholder="登陆账号" readonly="readonly" >
                 </div>
             </div>
             <br>
@@ -50,7 +75,7 @@
             <div class="form-group">
                 <label for="email" class="col-md-2  col-sm-2 control-label">电子邮箱:</label>
                 <div class="col-md-8 col-sm-10">
-                    <input th:value="${currUser.email}" type="text" class="form-control" id="email" placeholder="电子邮箱" >
+                    <input th:value="${currUser.email}" name="email" type="text" class="form-control" id="email" placeholder="电子邮箱" >
                 </div>
             </div>
             <br>
@@ -65,7 +90,7 @@
             <br>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-warning">确认修改</button>
+                    <button type="button" class="btn btn-warning" onclick="modifyUserInfo()">确认修改</button>
                 </div>
             </div>
         </form>
@@ -76,37 +101,6 @@
         <br>
         <br>
     </div>
-    <!--<div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="page-header" style="margin-bottom: 0px;">
-                    <h3>修改头像</h3>
-                </div>
-            </div>
-        </div>
-        <form action="" class="form-horizontal">
-            <div class="form-group">
-                <label for="address" class="col-md-2   col-sm-2  control-label">选择头像:</label>
-                <div class="col-md-10 col-sm-10">
-                    <img src="images/add.png" id="showImg" class="togeImg" onclick="openFile()" alt="" width="100" height="100">
-                    <input id="file" type="file" style="display: none;" name="imgName" />
-                    <script>
-                    function openFile() {
-                        $("#file").click();
-                    }
-                    $('#file').change(function() {
-                        $("#showImg").attr("src", window.URL.createObjectURL(this.files[0]));
-                    });
-                    </script>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-warning">确认修改</button>
-                </div>
-            </div>
-        </form>
-    </div>-->
     <!-- content end-->
     <!-- footers start -->
     <div class="footers">

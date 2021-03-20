@@ -7,6 +7,7 @@ import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.UserDTO;
 import com.zero.travel.pojo.entity.User;
 import com.zero.travel.pojo.vo.UserLoginVO;
+import com.zero.travel.pojo.vo.UserModifyVO;
 import com.zero.travel.pojo.vo.UserVO;
 import com.zero.travel.service.front.AccountService;
 import org.apache.commons.lang3.ObjectUtils;
@@ -131,5 +132,24 @@ public class AccountController extends CommonController {
         return "front/userInfo";
     }
 
+    @RequestMapping(value = "/modifyUserInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponse modifyUserInfo(@Validated UserModifyVO userModifyVO,BindingResult result){
+        try {
+            if (result.hasErrors()){
+                final String checkResult = ValidateUtils.checkResult(result);
+                return new BaseResponse(StatusCode.InvalidParams.getCode(),checkResult);
+            }
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(userModifyVO,userDTO);
+
+            accountService.modifyInfo(userDTO);
+
+            return new BaseResponse(StatusCode.Success);
+        }catch (Exception e){
+            log.error(e.toString());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
+    }
 
 }

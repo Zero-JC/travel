@@ -85,4 +85,26 @@ public class AccountService {
             throw new Exception("修改密码失败");
         }
     }
+
+    /**
+     * 修改基本信息
+     * @param userDTO
+     * @throws Exception
+     */
+    public void modifyInfo(UserDTO userDTO) throws Exception{
+        User userParam = new User();
+        BeanUtils.copyProperties(userDTO,userParam);
+
+        final User user = userMapper.selectByUsername(userParam.getUsername());
+        if (user == null){
+            throw new Exception("当前用户不存在");
+        }
+        userParam.setUserId(user.getUserId());
+
+        final int row = userMapper.updateByPrimaryKeySelective(userParam);
+
+        if (row != 1){
+            throw new Exception("修改用户资料失败");
+        }
+    }
 }
