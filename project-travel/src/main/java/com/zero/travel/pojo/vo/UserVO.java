@@ -3,8 +3,8 @@ package com.zero.travel.pojo.vo;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 /**
  * 前台用户
@@ -29,8 +29,7 @@ public class UserVO {
     @Length(min = 3,max = 20,message = "密码长度限制(3~20)")
     private String password;
 
-    @NotBlank(message = "电子邮箱不能为空")
-    @Pattern(regexp = "^[A-Za-z0-9]+([_\\.][A-Za-z0-9]+)*@([A-Za-z0-9\\-]+\\.)+[A-Za-z]{2,6}$",message = "邮箱格式不合法")
+    @Email(message = "邮箱格式不合法")
     private String email;
 
     private Integer status;

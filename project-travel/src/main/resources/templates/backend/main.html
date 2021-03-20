@@ -11,7 +11,7 @@
     <script src="/js/bootstrap.js"></script>
     <script src="/js/userSetting.js"></script>
     <script type="text/javascript" th:inline="javascript">
-    let currUser = [[${session.currentUser.name}]];
+    let currUser = [[${session.currentSysUser.name}]];
     $(function(){
         //TODO:遗留问题
         //退出登录之后，点击浏览器回退按钮返回到登录后的页面
@@ -79,7 +79,7 @@
                     <p>旅游网站<span>后台管理系统</span></p>
                     <div class="welcome">
                         <div class="left">欢迎您：</div>
-                        <div class="right" th:text="${session.currentUser.name}"></div>
+                        <div class="right" th:text="${session.currentSysUser.name}"></div>
                         <div class="exit" onclick="showLogOut()"><i class="glyphicon glyphicon-off"></i></div>
                     </div>
                 </div>

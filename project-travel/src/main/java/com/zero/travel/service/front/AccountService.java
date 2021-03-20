@@ -3,6 +3,7 @@ package com.zero.travel.service.front;
 import com.zero.travel.mapper.UserMapper;
 import com.zero.travel.pojo.dto.UserDTO;
 import com.zero.travel.pojo.entity.User;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,28 @@ public class AccountService {
         final int row = userMapper.insertSelective(userParam);
         if (row != 1){
             throw new Exception("注册失败");
+        }
+    }
+
+    /**
+     * 修改密码
+     * @param userId
+     * @param newPassword
+     */
+    public void modifyPassword(Integer userId, String newPassword) throws Exception {
+        if (ObjectUtils.isEmpty(userId)){
+            throw new Exception("用户id为空");
+        }
+        if (ObjectUtils.isEmpty(newPassword) && "".equals(newPassword)){
+            throw new Exception("新密码为空");
+        }
+        User userParam = new User();
+        userParam.setUserId(userId);
+        userParam.setPassword(newPassword);
+
+        final int row = userMapper.updateByPrimaryKeySelective(userParam);
+        if (row != 1){
+            throw new Exception("修改密码失败");
         }
     }
 }

@@ -64,6 +64,27 @@
                     }
                 );
             };
+
+            function modifyPassword() {
+                $.post(
+                    '/front/account/modifyPassword',
+                    $("#form-modify-password").serialize(),
+                    function (result) {
+                        if (result.code == 200){
+                            $("#modifyPasswordModal").modal("hide");
+                            layer.msg(result.msg,{
+                                time: 3000
+                            });
+                            setTimeout(function () {
+                                location.href = "/front/index";
+                            },3000);
+                        }
+                        if (result.code == 500){
+                            $("#modifyPasswordInfo").html(result.msg);
+                        }
+                    }
+                );
+            }
         </script>
 
 
@@ -87,7 +108,7 @@
                             <a href="cart.html">我的收藏</a>
                         </li>
                         <li class="dropdown">
-                            <a href="center.html">会员中心</a>
+                            <a th:href="@{/front/account/info}">会员中心</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -134,33 +155,33 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel-">修改密码</h4>
+                        <h4 class="modal-title" id="myModalLabel-">修改密码&nbsp;&nbsp;&nbsp;<small id="modifyPasswordInfo" class="text-danger"></small></h4>
                     </div>
-                    <form action="" class="form-horizontal" method="post">
+                    <form action="#" id="form-modify-password" class="form-horizontal" method="post">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">原密码：</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="password">
+                                    <input class="form-control" type="password" name="oldPassword">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">新密码：</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="password">
+                                    <input class="form-control" type="password" name="newPasswordOne">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">重复密码：</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="password">
+                                    <input class="form-control" type="password" name="newPasswordTwo">
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="text-align: center">
                             <button type="button" class="btn btn-warning" data-dismiss="modal" aria-label="Close">关&nbsp;&nbsp;闭</button>
                             <button type="reset" class="btn btn-warning">重&nbsp;&nbsp;置</button>
-                            <button type="submit" class="btn btn-warning">修&nbsp;&nbsp;改</button>
+                            <button type="button" class="btn btn-warning" onclick="modifyPassword()">修&nbsp;&nbsp;改</button>
                         </div>
                     </form>
                 </div>

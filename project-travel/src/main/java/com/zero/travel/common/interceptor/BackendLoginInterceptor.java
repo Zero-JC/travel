@@ -24,7 +24,7 @@ public class BackendLoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         final HttpSession session = request.getSession();
-        final SysUser currentUser = (SysUser) session.getAttribute("currentUser");
+        final SysUser currentUser = (SysUser) session.getAttribute("currentSysUser");
         if (currentUser == null){
 
             throw new NotLoginException("用户未登录");

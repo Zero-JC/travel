@@ -59,8 +59,7 @@ public class SysUserController extends CommonController {
         try {
             //TODO:登录验证
             SysUser sysUser = sysUserService.loginValidate(loginDTO);
-            ///modelMap.addAttribute("currentUser",sysUser);
-            session.setAttribute("currentUser",sysUser);
+            session.setAttribute("currentSysUser",sysUser);
             return "backend/main";
         } catch (Exception e) {
             log.error("登录验证异常:{}",e.getMessage());
@@ -75,7 +74,7 @@ public class SysUserController extends CommonController {
      */
     @RequestMapping("logout")
     public String logout(HttpSession session){
-        session.removeAttribute("currentUser");
+        session.removeAttribute("currentSysUser");
 
         return "backend/login";
     }
