@@ -20,7 +20,7 @@ public class NoPermissionException extends Exception{
 
     @Override
     public String getMessage() {
-        return super.getMessage();
+        return this.message;
     }
 
     public void setMessage(String message) {

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class SysUserController extends CommonController {
      * @return
      */
     @PostMapping ("login")
-    public String login(@Valid LoginDTO loginDTO, BindingResult bindingResult, Model modelMap){
+    public String login(@Valid LoginDTO loginDTO, BindingResult bindingResult, Model modelMap, HttpSession session){
         //TODO:服务端表单校验
         if (bindingResult.hasErrors()){
             String checkResult = ValidateUtils.checkResult(bindingResult);
@@ -58,7 +59,8 @@ public class SysUserController extends CommonController {
         try {
             //TODO:登录验证
             SysUser sysUser = sysUserService.loginValidate(loginDTO);
-            modelMap.addAttribute("currentUser",sysUser);
+            ///modelMap.addAttribute("currentUser",sysUser);
+            session.setAttribute("currentUser",sysUser);
             return "backend/main";
         } catch (Exception e) {
             log.error("登录验证异常:{}",e.getMessage());
@@ -72,7 +74,8 @@ public class SysUserController extends CommonController {
      * @return
      */
     @RequestMapping("logout")
-    public String logout(){
+    public String logout(HttpSession session){
+        session.removeAttribute("currentUser");
 
         return "backend/login";
     }

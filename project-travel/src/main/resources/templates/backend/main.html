@@ -11,16 +11,14 @@
     <script src="/js/bootstrap.js"></script>
     <script src="/js/userSetting.js"></script>
     <script type="text/javascript" th:inline="javascript">
-    let currUser = [[${currentUser.name}]];
+    let currUser = [[${session.currentUser.name}]];
     $(function(){
         //TODO:遗留问题
         //退出登录之后，点击浏览器回退按钮返回到登录后的页面
         if (currUser==null){
             location.href="/showLogin";
         }
-
-        //TODO:切换页面时将当前用户的id作为参数，在后端判断是否具有相关的操作权限，如果没有则跳转到提示页面，提示内容:当前用户没有操作权限
-    	// 点击切换页面
+        // 点击切换页面
         $("#welcome-set").click(function() {
             $("#frame-id").attr("src", "/index");
         });
@@ -81,7 +79,8 @@
                     <p>旅游网站<span>后台管理系统</span></p>
                     <div class="welcome">
                         <div class="left">欢迎您：</div>
-                        <div class="right" th:text="${currentUser.name}"></div>
+                        <!--<div class="right" th:text="${currentUser.name}"></div>-->
+                        <div class="right" th:text="${session.currentUser.name}"></div>
                         <div class="exit" onclick="showLogOut()"><i class="glyphicon glyphicon-off"></i></div>
                     </div>
                 </div>

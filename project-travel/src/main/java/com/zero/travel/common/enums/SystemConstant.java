@@ -26,5 +26,13 @@ public class SystemConstant implements Serializable {
     public static final Integer PAGE_SIZE_BACKEND = 8;
 
 
+    public static final String SYS_USER = "sysUser";
+    public static final Integer ROLE_SYS_USER = 1;
+
+    public static final String USER = "user";
+    public static final Integer ROLE_USER = 2;
+
+    public static final String SELLER = "seller";
+    public static final Integer ROLE_SELLER = 3;
 
 }
