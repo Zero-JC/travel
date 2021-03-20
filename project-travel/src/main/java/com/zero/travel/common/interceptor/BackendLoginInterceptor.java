@@ -26,8 +26,6 @@ public class BackendLoginInterceptor implements HandlerInterceptor {
         final HttpSession session = request.getSession();
         final SysUser currentUser = (SysUser) session.getAttribute("currentUser");
         if (currentUser == null){
-            /*request.setAttribute("errorMsg","登录失效,请重新登录");
-            request.getRequestDispatcher("/showLogin").forward(request,response);*/
 
             throw new NotLoginException("用户未登录");
         }
