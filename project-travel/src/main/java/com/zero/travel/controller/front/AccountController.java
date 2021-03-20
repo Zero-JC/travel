@@ -124,7 +124,9 @@ public class AccountController extends CommonController {
     public String userInfo(Model model,HttpSession session){
         User currentUser = (User) session.getAttribute("currentUser");
         if (currentUser == null){
-            return "front/main";
+
+            model.addAttribute("msg","请先登录！");
+            return "forward:/front/search";
         }
 
         model.addAttribute("currUser",currentUser);

@@ -191,7 +191,7 @@ public class RouteController extends CommonController {
         final String routeId = request.getParameter("routeId");
 
         final String routeName = request.getParameter("routeName");
-        Integer price = Integer.parseInt(request.getParameter("price"));
+        Double price = (double)(Integer.parseInt(request.getParameter("price")));
         final String routeIntroduce = request.getParameter("routeIntroduce");
         final String strategy = request.getParameter("strategy");
         final MultipartFile file = request.getFile("fileName");

@@ -1,6 +1,7 @@
 package com.zero.travel.mapper;
 
 import com.zero.travel.pojo.entity.Route;
+import com.zero.travel.pojo.vo.RouteSearchQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -42,4 +43,10 @@ public interface RouteMapper {
      */
     List<Route> selectByParam(Route route);
 
+    /**
+     * 前台查询
+     * @param routeSearchQuery
+     * @return
+     */
+    List<Route> query(RouteSearchQuery routeSearchQuery);
 }

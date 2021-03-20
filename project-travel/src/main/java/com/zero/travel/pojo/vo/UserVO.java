@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
  * 前台用户
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2021/3/20 14:05
  */
 @Data
-public class UserVO {
+public class UserVO implements Serializable {
 
     private Integer userId;
 

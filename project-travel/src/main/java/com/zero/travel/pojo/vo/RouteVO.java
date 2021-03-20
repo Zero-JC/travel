@@ -26,7 +26,7 @@ public class RouteVO implements Serializable {
     /**
      * 参考价格
      */
-    private Integer price;
+    private Double price;
 
     /**
      * 线路简介

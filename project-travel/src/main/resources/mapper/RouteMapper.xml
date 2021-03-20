@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.zero.travel.pojo.entity.Route" >
     <id column="route_id" property="routeId" jdbcType="INTEGER" />
     <result column="route_name" property="routeName" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
     <result column="route_introduce" property="routeIntroduce" jdbcType="VARCHAR" />
     <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
     <result column="strategy" property="strategy" jdbcType="VARCHAR" />
@@ -41,7 +41,7 @@
       route_introduce, image_url, strategy, 
       seller_id, create_time, update_time
       )
-    values (#{routeId,jdbcType=INTEGER}, #{routeName,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
+    values (#{routeId,jdbcType=INTEGER}, #{routeName,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE},
       #{routeIntroduce,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR}, #{strategy,jdbcType=VARCHAR}, 
       #{sellerId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
@@ -85,7 +85,7 @@
         #{routeName,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
-        #{price,jdbcType=INTEGER},
+        #{price,jdbcType=DOUBLE},
       </if>
       <if test="routeIntroduce != null" >
         #{routeIntroduce,jdbcType=VARCHAR},
@@ -115,7 +115,7 @@
         route_name = #{routeName,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
-        price = #{price,jdbcType=INTEGER},
+        price = #{price,jdbcType=DOUBLE},
       </if>
       <if test="routeIntroduce != null" >
         route_introduce = #{routeIntroduce,jdbcType=VARCHAR},
@@ -141,7 +141,7 @@
   <update id="updateByPrimaryKey" parameterType="com.zero.travel.pojo.entity.Route" >
     update route
     set route_name = #{routeName,jdbcType=VARCHAR},
-      price = #{price,jdbcType=INTEGER},
+      price = #{price,jdbcType=DOUBLE},
       route_introduce = #{routeIntroduce,jdbcType=VARCHAR},
       image_url = #{imageUrl,jdbcType=VARCHAR},
       strategy = #{strategy,jdbcType=VARCHAR},
@@ -163,7 +163,7 @@
         and route_name like concat(concat('%',#{routeName,jdbcType=VARCHAR}),'%')
       </if>
       <if test="price != null" >
-        and price = #{price,jdbcType=INTEGER}
+        and price = #{price,jdbcType=DOUBLE}
       </if>
       <if test="routeIntroduce != null and routeIntroduce != '' " >
         and route_introduce = #{routeIntroduce,jdbcType=VARCHAR}
@@ -182,6 +182,28 @@
       </if>
       <if test="updateTime != null" >
         and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="query" parameterType="com.zero.travel.pojo.vo.RouteSearchQuery" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from route
+    <where>
+      <if test="routeName != null and routeName != '' " >
+        and route_name like concat(concat('%',#{routeName,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="minPrice!=null and maxPrice!=null">
+        and price between #{minPrice} and #{maxPrice}
+      </if>
+      <if test="minPrice!=null and maxPrice==null">
+        and price &gt;= #{minPrice}
+      </if>
+      <if test="minPrice==null and maxPrice!=null">
+        and price &lt;= #{maxPrice}
+      </if>
+      <if test="sellerId != null and sellerId != -1 " >
+        and seller_id = #{sellerId,jdbcType=INTEGER}
       </if>
     </where>
   </select>

@@ -12,6 +12,19 @@
     <script src="/js/jquery-3.5.1.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/zshop.js"></script>
+    <script src="/js/bootstrapValidator.js"></script>
+    <link rel="stylesheet"  href="/css/bootstrapValidator.css" />
+    <!--弹窗-->
+    <script type="text/javascript" src="/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/zero.css" />
+    <script type="text/javascript" th:inline="javascript">
+        $(function () {
+           let msg =  [[${msg}]];
+           if(msg != null && msg != ''){
+               layer.alert(msg);
+           }
+        });
+    </script>
 </head>
 
 <body>
@@ -33,28 +46,28 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <form class="form-inline hot-search">
+                    <form class="form-inline hot-search" action="/front/search">
                         <div class="form-group">
                             <label class="control-label">线路名称：</label>
-                            <input type="text" class="form-control" placeholder="线路名称">
+                            <input type="text" class="form-control" placeholder="线路名称" name="routeName">
                         </div>
                         &nbsp;
                         <div class="form-group">
                             <label class="control-label">价格：</label>
-                            <input type="text" class="form-control" placeholder="最低价格"> --
-                            <input type="text" class="form-control" placeholder="最高价格">
+                            <input type="text" class="form-control" placeholder="最低价格" name="minPrice"> --
+                            <input type="text" class="form-control" placeholder="最高价格" name="maxPrice">
                         </div>
                         &nbsp;
                         <div class="form-group">
                             <label class="control-label">所属商家：</label>
-                            <select class="form-control">
+                            <select class="form-control" name="sellerId">
                                 <option value="-1" selected="selected">--全部--</option>
                                 <option th:each="seller:${sellers}" th:text="${seller.sellerName}" th:value="${seller.sellerId}"></option>
                             </select>
                         </div>
                         &nbsp;
                         <div class="form-group">
-                            <button type="button" class="btn btn-warning">
+                            <button type="submit" class="btn btn-warning">
                                 <i class="glyphicon glyphicon-search"></i> 查询
                             </button>
                         </div>    
@@ -65,7 +78,7 @@
         <div class="content-back">
             <div class="container" id="a">
                 <div class="row">
-                    <div class="col-xs-3  hot-item" th:each="route:${routeList}">
+                    <div class="col-xs-3  hot-item" th:each="route:${pageInfo.list}">
                         <div class="panel clear-panel">
                             <div class="panel-body">
                                 <div class="art-back clear-back">

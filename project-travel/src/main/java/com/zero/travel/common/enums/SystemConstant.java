@@ -23,7 +23,7 @@ public class SystemConstant implements Serializable {
     /**
      * 默认每页显示8条数 前台系统
      */
-    public static final Integer PAGE_SIZE_BACKEND = 8;
+    public static final Integer PAGE_SIZE_FRONT = 8;
 
 
     public static final String SYS_USER = "sysUser";

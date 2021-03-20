@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
  * @author LJC
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2021/3/20 18:43
  */
 @Data
-public class UserModifyVO {
+public class UserModifyVO implements Serializable {
 
     @NotBlank(message = "姓名不能为空")
     @Length(min=1,max=30,message = "姓名长度超限")
