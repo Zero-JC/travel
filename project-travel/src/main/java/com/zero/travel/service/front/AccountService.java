@@ -91,7 +91,7 @@ public class AccountService {
      * @param userDTO
      * @throws Exception
      */
-    public void modifyInfo(UserDTO userDTO) throws Exception{
+    public User modifyInfo(UserDTO userDTO) throws Exception{
         User userParam = new User();
         BeanUtils.copyProperties(userDTO,userParam);
 
@@ -106,5 +106,8 @@ public class AccountService {
         if (row != 1){
             throw new Exception("修改用户资料失败");
         }
+
+        //返回用户对象，用于更新Session
+        return userMapper.selectByPrimaryKey(user.getUserId());
     }
 }

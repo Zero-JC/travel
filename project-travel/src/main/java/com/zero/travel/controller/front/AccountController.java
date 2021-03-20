@@ -134,7 +134,7 @@ public class AccountController extends CommonController {
 
     @RequestMapping(value = "/modifyUserInfo",method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponse modifyUserInfo(@Validated UserModifyVO userModifyVO,BindingResult result){
+    public BaseResponse modifyUserInfo(@Validated UserModifyVO userModifyVO,BindingResult result,HttpSession session){
         try {
             if (result.hasErrors()){
                 final String checkResult = ValidateUtils.checkResult(result);
@@ -143,7 +143,10 @@ public class AccountController extends CommonController {
             UserDTO userDTO = new UserDTO();
             BeanUtils.copyProperties(userModifyVO,userDTO);
 
-            accountService.modifyInfo(userDTO);
+            final User user = accountService.modifyInfo(userDTO);
+
+            //TODO:更新session
+            session.setAttribute("currentUser",user);
 
             return new BaseResponse(StatusCode.Success);
         }catch (Exception e){
