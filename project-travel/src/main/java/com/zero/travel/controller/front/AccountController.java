@@ -120,10 +120,16 @@ public class AccountController extends CommonController {
     }
 
     @RequestMapping("/info")
-    public String userInfo(Model model){
+    public String userInfo(Model model,HttpSession session){
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null){
+            return "front/main";
+        }
 
+        model.addAttribute("currUser",currentUser);
 
         return "front/userInfo";
     }
+
 
 }

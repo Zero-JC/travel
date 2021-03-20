@@ -98,7 +98,8 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active">
+                        <!--class="active" 选择-->
+                        <li>
                             <a th:href="@{/front/index}">主页</a>
                         </li>
                         <li>
@@ -107,7 +108,7 @@
                         <li>
                             <a href="cart.html">我的收藏</a>
                         </li>
-                        <li class="dropdown">
+                        <li>
                             <a th:href="@{/front/account/info}">会员中心</a>
                         </li>
                     </ul>
@@ -127,7 +128,7 @@
                         </li>
                         <li class="dropdown" th:unless="${session.currentUser==null}">
                             <a href="#" class="dropdown-toggle user-active" data-toggle="dropdown" role="button">
-                                <img class="img-circle" src="/images/user.jpeg" height="30" />
+                                <img class="img-circle" src="/images/user.png" height="30" />
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">

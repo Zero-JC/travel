@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="page-header" style="margin-bottom: 0px;">
-                    <h3>基本资料</h3>
+                    <h3>会员中心：基本资料</h3>
                 </div>
             </div>
         </div>
@@ -34,33 +34,47 @@
             <div class="form-group">
                 <label for="name" class="col-md-2  col-sm-2 control-label">用户姓名:</label>
                 <div class="col-md-8 col-sm-10">
-                    <input type="text" class="form-control" id="name" placeholder="用户姓名" readonly="readonly" value="张三">
+                    <input th:value="${currUser.name}" type="text" class="form-control" id="name" placeholder="用户姓名" >
                 </div>
             </div>
+            <br>
+            <br>
             <div class="form-group">
-                <label for="loginName" class="col-md-2 col-sm-2 control-label">登陆账号:</label>
+                <label for="username" class="col-md-2 col-sm-2 control-label">登陆账号:</label>
                 <div class="col-md-8  col-sm-10">
-                    <input type="text" class="form-control" id="loginName" placeholder="登陆账号" readonly="readonly" value="zhangsan">
+                    <input th:value="${currUser.username}" type="text" class="form-control" id="username" placeholder="登陆账号" readonly="readonly" >
                 </div>
             </div>
+            <br>
+            <br>
             <div class="form-group">
-                <label for="phone" class="col-md-2  col-sm-2 control-label">联系电话:</label>
+                <label for="email" class="col-md-2  col-sm-2 control-label">电子邮箱:</label>
                 <div class="col-md-8 col-sm-10">
-                    <input type="text" class="form-control" id="phone" placeholder="联系电话" value="13878987658">
+                    <input th:value="${currUser.email}" type="text" class="form-control" id="email" placeholder="电子邮箱" >
                 </div>
             </div>
+            <br>
+            <br>
             <div class="form-group">
-                <label for="address" class="col-md-2   col-sm-2  control-label">联系地址:</label>
+                <label for="createDate" class="col-md-2   col-sm-2  control-label">注册时间:</label>
                 <div class="col-md-8 col-sm-10">
-                    <input type="text" class="form-control" id="address" placeholder="联系电话" value="江苏-南京">
+                    <input th:value="${#dates.format(currUser.createTime)}" type="text" class="form-control" id="createDate" readonly>
                 </div>
             </div>
+            <br>
+            <br>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-warning">确认修改</button>
                 </div>
             </div>
         </form>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </div>
     <!--<div class="container">
         <div class="row">
