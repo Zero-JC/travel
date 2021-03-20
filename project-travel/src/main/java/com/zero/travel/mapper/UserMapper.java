@@ -76,4 +76,11 @@ public interface UserMapper {
      * @return
      */
     int updateStatus(@Param("status") Integer status, @Param("userId") Integer userId);
+
+    /**
+     * 根据用户名查询
+     * @param username
+     * @return
+     */
+    User selectByUsername(@Param("username") String username);
 }
