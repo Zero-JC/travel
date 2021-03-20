@@ -56,6 +56,7 @@ public class WebConfig implements WebMvcConfigurer {
         excludePath.add("/backend/sysUser/login");
         excludePath.add("/backend/sysUser/logout");
         excludePath.add("/backend/sysUser/showLogin");
+        excludePath.add("/backend/route/getImage");
 
         registry.addInterceptor(backendLoginInterceptor).addPathPatterns("/backend/**")
                 .excludePathPatterns(excludePath);

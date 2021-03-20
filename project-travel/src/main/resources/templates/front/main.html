@@ -35,8 +35,8 @@
                 <div class="col-xs-12">
                     <form class="form-inline hot-search">
                         <div class="form-group">
-                            <label class="control-label">商品：</label>
-                            <input type="text" class="form-control" placeholder="商品名称">
+                            <label class="control-label">线路名称：</label>
+                            <input type="text" class="form-control" placeholder="线路名称">
                         </div>
                         &nbsp;
                         <div class="form-group">
@@ -46,11 +46,10 @@
                         </div>
                         &nbsp;
                         <div class="form-group">
-                            <label class="control-label">种类：</label>
-                            <select class="form-control input-sm">
-                                <option value="all" selected="selected">查询全部</option>
-                                <option value="grade">饮料</option>
-                                <option value="course">零食</option>
+                            <label class="control-label">所属商家：</label>
+                            <select class="form-control">
+                                <option value="-1" selected="selected">--全部--</option>
+                                <option th:each="seller:${sellers}" th:text="${seller.sellerName}" th:value="${seller.sellerId}"></option>
                             </select>
                         </div>
                         &nbsp;
@@ -66,174 +65,26 @@
         <div class="content-back">
             <div class="container" id="a">
                 <div class="row">
-                    <div class="col-xs-3  hot-item">
+                    <div class="col-xs-3  hot-item" th:each="route:${routeList}">
                         <div class="panel clear-panel">
                             <div class="panel-body">
                                 <div class="art-back clear-back">
                                     <div class="add-padding-bottom">
-                                        <img src="/images/shop2.jpg" class="shopImg">
+                                        <img th:src="@{/backend/route/getImage(path=${route.imageUrl})}" class="shopImg">
                                     </div>
-                                    <h4><a href="">秋冬新款韩版</a></h4>
+                                    <h4><a href="" th:text="${route.routeName}"></a></h4>
                                     <div class="user clearfix pull-right">
-                                        ￥128.00
+                                        ￥<span th:text="${route.price}"></span>
                                     </div>
-                                    <div class="desc">平时穿也不会显得夸张，很大方洋气 我已经自留了，还和小姐妹准备人手一件圣诞节穿着出去玩！ 经典的圆领，大气休闲，长袖设计，休闲舒适 宽松的版型，怕冷可以里面穿保暖衣）
-                                    </div>
-                                    <div class="attention pull-right">
-                                        加入购物车 <i class="icon iconfont icon-gouwuche"></i>
+                                    <div class="desc" th:text="${route.routeIntroduce}"></div>
+                                    <div class="attention pull-right" style="background-color: #de8c07;color: #fcfcfc">
+                                        收藏 <i class="icon iconfont icon-yonghu favorite-btn" ></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-3  hot-item">
-                        <div class="panel clear-panel">
-                            <div class="panel-body">
-                                <div class="art-back clear-back">
-                                    <div class="add-padding-bottom">
-                                        <img src="/images/shop1.jpg" class="shopImg">
-                                    </div>
-                                    <h4><a href="">连衣裙</a>2</h4>
-                                    <div class="user clearfix pull-right">
-                                        ￥5.00
-                                    </div>
-                                    <div class="desc">
-                                        工厂自产自销质量保证,拍下有运费险不合适，不满意，不喜欢7天无理由退换！下单送钥匙扣小礼物，全场满1件-包邮，注明：小礼物(钥匙扣）
-                                    </div>
-                                    <div class="attention pull-right">
-                                        加入购物车 <i class="icon iconfont icon-gouwuche"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-3  hot-item">
-                        <div class="panel clear-panel">
-                            <div class="panel-body">
-                                <div class="art-back clear-back">
-                                    <div class="add-padding-bottom">
-                                        <img src="/images/shop4.jpg" class="shopImg">
-                                    </div>
-                                    <h4>
-                                    <a href="">时尚套装女</a></h4>
-                                    <div class="user clearfix pull-right">
-                                        ￥200.00
-                                    </div>
-                                    <div class="desc">
-                                        冬款韩版新款毛领连帽棉服外套牛仔裤两件套时尚套装女
-                                    </div>
-                                    <div class="attention pull-right">
-                                        加入购物车 <i class="icon iconfont icon-gouwuche"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-3  hot-item">
-                        <div class="panel clear-panel">
-                            <div class="panel-body">
-                                <div class="art-back clear-back">
-                                    <div class="add-padding-bottom">
-                                        <img src="/images/shop3.jpg" class="shopImg">
-                                    </div>
-                                    <h4><a href="">小脚裤套装</a></h4>
-                                    <div class="user clearfix pull-right">
-                                        ￥49.00
-                                    </div>
-                                    <div class="desc">
-                                        新款大毛领加绒加厚牛仔棉衣羊羔毛短外套 休闲 时尚 百搭
-                                    </div>
-                                    <div class="attention pull-right">
-                                        加入购物车 <i class="icon iconfont icon-gouwuche"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-3  hot-item">
-                        <div class="panel clear-panel">
-                            <div class="panel-body">
-                                <div class="art-back clear-back">
-                                    <div class="add-padding-bottom">
-                                        <img src="/images/shop5.jpg" class="shopImg">
-                                    </div>
-                                    <h4><a href="">高腰牛仔裤三件套</a></h4>
-                                    <div class="user clearfix pull-right">
-                                        ￥210.00
-                                    </div>
-                                    <div class="desc">
-                                        这款棉马甲推荐给妹子们，立领的设计， 马甲款式，面料是比较好的羽绒棉， 上身软软的很舒服~单排扣金属衣门襟， 两个插袋设计，实用又比较保暖~ 经典百搭的颜色色，里面配卫衣或者毛衣，都灰常好看~
-                                    </div>
-                                    <div class="attention pull-right">
-                                        加入购物车 <i class="icon iconfont icon-gouwuche"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-3  hot-item">
-                        <div class="panel clear-panel">
-                            <div class="panel-body">
-                                <div class="art-back clear-back">
-                                    <div class="add-padding-bottom">
-                                        <img src="/images/shop6.jpg" class="shopImg">
-                                    </div>
-                                    <h4><a href="">仿皮草短款外套</a></h4>
-                                    <div class="user clearfix pull-right">
-                                        ￥210.00
-                                    </div>
-                                    <div class="desc">
-                                        颜色无色差，质感好，百搭 2017冬季新款小香风淑女韩东大门女装毛毛外套
-                                    </div>
-                                    <div class="attention pull-right">
-                                        加入购物车 <i class="icon iconfont icon-gouwuche"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-3  hot-item">
-                        <div class="panel clear-panel">
-                            <div class="panel-body">
-                                <div class="art-back clear-back">
-                                    <div class="add-padding-bottom">
-                                        <img src="/images/shop7.jpg" class="shopImg">
-                                    </div>
-                                    <h4><a href="">内搭背心</a></h4>
-                                    <div class="user clearfix pull-right">
-                                        ￥210.00
-                                    </div>
-                                    <div class="desc">
-                                        加绒保暖塑身，效果很好哦，告别臃肿的体态，买一件修正身形的内衣背心很有必要，关键价格白菜
-                                    </div>
-                                    <div class="attention pull-right">
-                                        加入购物车 <i class="icon iconfont icon-gouwuche"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-3  hot-item">
-                        <div class="panel clear-panel">
-                            <div class="panel-body">
-                                <div class="art-back clear-back">
-                                    <div class="add-padding-bottom">
-                                        <img src="/images/shop8.jpg" class="shopImg">
-                                    </div>
-                                    <h4><a href="">短款外套</a></h4>
-                                    <div class="user clearfix pull-right">
-                                        ￥210.00
-                                    </div>
-                                    <div class="desc">
-                                        杭产品质，质量OK 支持退换送运费险，购买无忧
-                                    </div>
-                                    <div class="attention pull-right">
-                                        加入购物车 <i class="icon iconfont icon-gouwuche"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
