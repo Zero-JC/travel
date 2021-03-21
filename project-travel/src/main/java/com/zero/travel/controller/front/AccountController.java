@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -153,6 +154,12 @@ public class AccountController extends CommonController {
         }
     }
 
+    /**
+     * 线路详情-收藏线路
+     * @param routeId
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/addFavorite")
     @ResponseBody
     public BaseResponse addFavorite(Integer routeId,HttpSession session){
@@ -176,6 +183,42 @@ public class AccountController extends CommonController {
         }
     }
 
+    /**
+     * 删除收藏线路
+     * @param routeId
+     * @return
+     */
+    @RequestMapping(value = "/deleteFavorite")
+    @ResponseBody
+    public BaseResponse deleteFavorite(@RequestParam(name = "routeId") Integer routeId,HttpSession session){
+        try {
+            User currentUser = (User) session.getAttribute("currentUser");
+            if (currentUser == null){
+                return new BaseResponse(StatusCode.Fail.getCode(),"当前没有用户登录,请先登录!");
+            }
 
+            accountService.deleteFavorite(routeId,currentUser.getUserId());
+
+            return new BaseResponse(StatusCode.Success);
+        }catch (Exception e){
+            log.error(e.toString());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
+    }
+
+    /**
+     * 清除当前用户所有收藏
+     * @return
+     */
+    @RequestMapping(value = "/deleteAllFavorite")
+    public BaseResponse deleteAllFavorite(){
+        try {
+
+            return new BaseResponse(StatusCode.Success);
+        }catch (Exception e){
+            log.error(e.toString());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
+    }
 
 }

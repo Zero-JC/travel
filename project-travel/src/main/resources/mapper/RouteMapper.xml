@@ -22,9 +22,9 @@
     <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
     <result column="strategy" property="strategy" jdbcType="VARCHAR" />
     <result column="seller_id" property="sellerId" jdbcType="INTEGER" />
-    <result column="phone" property="strategy" jdbcType="VARCHAR" />
-    <result column="seller_name" property="strategy" jdbcType="VARCHAR" />
-    <result column="address" property="strategy" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="seller_name" property="sellerName" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="TIMESTAMP" />
   </resultMap>
 

@@ -152,4 +152,26 @@ public class AccountService {
             throw new Exception("更新线路收藏表失败");
         }
     }
+
+    /**
+     * 删除收藏记录
+     * @param routeId
+     * @param userId
+     */
+    public void deleteFavorite(Integer routeId, Integer userId) throws Exception{
+        //TODO: 删除用户收藏表记录
+        final int rowOne = favoriteMapper.deleteByPrimaryKey(new FavoriteKey(userId, routeId));
+        if (rowOne != 1){
+            throw new Exception("删除用户收藏记录失败");
+        }
+        //TODO: 修改线路收藏表记录
+        final RouteFavorite routeFavorite = routeFavoriteMapper.selectByPrimaryKey(routeId);
+        routeFavorite.setCount(routeFavorite.getCount()-1);
+
+        final int roeTow = routeFavoriteMapper.updateByPrimaryKey(routeFavorite);
+        if (roeTow != 1){
+            throw new Exception("修改线路收藏记录失败");
+        }
+
+    }
 }

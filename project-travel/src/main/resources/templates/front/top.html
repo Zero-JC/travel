@@ -111,6 +111,7 @@
                             $("#strategy").val(route.strategy);
                             $("#seller-info").val(sellerInfo)
                             $("#routeImage").attr('src','/backend/route/getImage?path='+path);
+
                             //打开详情模态框 增加用户收藏按钮
                             $("#routeDetailsModal").modal("show");
                         }else {
@@ -119,6 +120,26 @@
                     }
                 );
             };
+
+            /**
+             * 查看线路详情-我的收藏
+             */
+            function routeFavoriteDetails(favorite) {
+                let sellerInfo = '【商家】'+favorite.sellerName+'\n'+'【联系方式】'+favorite.phone+'\n'+'【地址】'+favorite.address;
+                //填充信息
+                let path = favorite.imageUrl;
+                $("#route-id").val(favorite.routeId);
+                $("#route-name").val(favorite.routeName);
+                $("#route-price").val(favorite.price);
+                $("#route-introduce").val(favorite.routeIntroduce);
+                $("#strategy").val(favorite.strategy);
+                $("#seller-info").val(sellerInfo)
+                $("#routeImage").attr('src','/backend/route/getImage?path='+path);
+
+                //打开详情模态框 禁用 收藏按钮
+                $(".favoriteRoute-btn").attr("disabled","disabled");
+                $("#routeDetailsModal").modal("show");
+            }
 
             function addFavorite() {
                 let routeId = $("#route-id").val();

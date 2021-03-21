@@ -12,6 +12,34 @@
     <script src="/js/jquery-3.5.1.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/zshop.js"></script>
+    <script type="text/javascript" src="/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/zero.css" />
+    <script type="text/javascript" th:inline="javascript">
+
+        /**
+         * 删除收藏
+         * @param routeId
+         */
+        function deleteFavorite(routeId) {
+            $.post(
+                '/front/account/deleteFavorite',
+                {routeId:routeId},
+                function (result) {
+                    if (result.code == 200){
+                        layer.msg("删除成功",{
+                           time: 1500
+                        });
+                        setTimeout(function () {
+                            location.reload();
+                        },1500);
+                    }
+                    if (result.code == 500){
+                        layer.alert(result.msg);
+                    }
+                }
+            );
+        }
+    </script>
 </head>
 
 <body>
@@ -43,8 +71,8 @@
                 <td th:text="${favorite.price}"></td>
                 <td th:text="${#dates.format(favorite.time,'YYYY-MM-dd HH:mm:ss')}"></td>
                 <td>
-                    <button class="btn btn-success" type="button">查看详情</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-danger" type="button" onclick="">删除</button>
+                    <button class="btn btn-success" type="button" th:onclick="routeFavoriteDetails([[${favorite}]])">查看详情</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-danger" type="button" th:onclick="deleteFavorite([[${favorite.routeId}]])">删除</button>
                 </td>
             </tr>
 

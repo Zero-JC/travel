@@ -1,11 +1,15 @@
 package com.zero.travel.pojo.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author LJC
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class FavoriteKey {
     private Integer userId;
 
