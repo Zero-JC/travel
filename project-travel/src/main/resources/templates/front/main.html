@@ -14,7 +14,7 @@
     <script src="/js/zshop.js"></script>
     <script src="/js/bootstrapValidator.js"></script>
     <link rel="stylesheet"  href="/css/bootstrapValidator.css" />
-    <!--弹窗-->
+    <script src="/js/bootstrap-paginator.js"></script>
     <script type="text/javascript" src="/layer/layer.js"></script>
     <link rel="stylesheet" href="/css/zero.css" />
     <script type="text/javascript" th:inline="javascript">
@@ -24,6 +24,34 @@
                layer.alert(msg);
            }
         });
+
+        $(function () {
+            //TODO:分页
+            $("#paginator").bootstrapPaginator({
+                bootstrapMajorVersion: 3,  //版本
+                currentPage:[[${pageInfo.getPageNum()}]],   //当前页码
+                totalPages:[[${pageInfo.getPages()}]],    //总页数
+                itemTexts:function (type, page, current) {  //设置显示样式
+                    switch (type) {
+                        case 'first':
+                            return '首页';
+                        case 'prev':
+                            return '上一页';
+                        case 'next':
+                            return '下一页';
+                        case 'last':
+                            return '尾页';
+                        case 'page':
+                            return page;
+                    }
+                },
+                onPageClicked: function (event,originalEvent,type,page) {
+                    $("#pageNum").val(page);
+                    $("#form-route-search").submit();
+                }
+            });
+        })
+
     </script>
 </head>
 
@@ -46,23 +74,24 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <form class="form-inline hot-search" action="/front/search">
+                    <form id="form-route-search" class="form-inline hot-search" action="/front/search">
+                        <input type="hidden" name="pageNum" id="pageNum">
                         <div class="form-group">
                             <label class="control-label">线路名称：</label>
-                            <input type="text" class="form-control" placeholder="线路名称" name="routeName">
+                            <input th:value="${searchQuery.routeName}" type="text" class="form-control" placeholder="线路名称" name="routeName">
                         </div>
                         &nbsp;
                         <div class="form-group">
                             <label class="control-label">价格：</label>
-                            <input type="text" class="form-control" placeholder="最低价格" name="minPrice"> --
-                            <input type="text" class="form-control" placeholder="最高价格" name="maxPrice">
+                            <input th:value="${searchQuery.minPrice}" type="text" class="form-control" placeholder="最低价格" name="minPrice"> --
+                            <input th:value="${searchQuery.maxPrice}" type="text" class="form-control" placeholder="最高价格" name="maxPrice">
                         </div>
                         &nbsp;
                         <div class="form-group">
                             <label class="control-label">所属商家：</label>
                             <select class="form-control" name="sellerId">
-                                <option value="-1" selected="selected">--全部--</option>
-                                <option th:each="seller:${sellers}" th:text="${seller.sellerName}" th:value="${seller.sellerId}"></option>
+                                <option value="-1">--全部--</option>
+                                <option th:selected="${seller.sellerId == searchQuery.sellerId}" th:each="seller:${sellers}" th:text="${seller.sellerName}" th:value="${seller.sellerId}"></option>
                             </select>
                         </div>
                         &nbsp;
@@ -97,9 +126,12 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
+        </div>
+        <div class="text-center">
+            <ul id="paginator"></ul>
+            <div class=""><strong>共[[${pageInfo.getTotal()}]]条记录</strong></div>
         </div>
         <!-- content end-->
         <!-- footers start -->

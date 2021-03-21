@@ -69,15 +69,16 @@ public class MainController extends CommonController {
 
             List<Route> routeList = null;
             if (SystemUtils.isAllFieldNull(routeSearchQuery)){
-                PageHelper.startPage(pageNum, SystemConstant.PAGE_SIZE_FRONT);
+                PageHelper.startPage(pageNum, 4);
                 routeList = frontRouteService.search(null);
             }else {
-                PageHelper.startPage(pageNum, SystemConstant.PAGE_SIZE_FRONT);
+                PageHelper.startPage(pageNum, 4);
                 routeList = frontRouteService.search(routeSearchQuery);
             }
             PageInfo<Route> pageInfo = new PageInfo<>(routeList);
 
             model.addAttribute("pageInfo",pageInfo);
+            model.addAttribute("searchQuery",routeSearchQuery);
             return "front/main";
         } catch (Exception e) {
             e.printStackTrace();
