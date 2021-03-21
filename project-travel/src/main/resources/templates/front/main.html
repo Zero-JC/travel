@@ -50,7 +50,7 @@
                     $("#form-route-search").submit();
                 }
             });
-        })
+        });
 
     </script>
 </head>
@@ -119,8 +119,8 @@
                                         ￥<span th:text="${route.price}"></span>
                                     </div>
                                     <div class="desc" th:text="${route.routeIntroduce}"></div>
-                                    <div class="attention pull-right" style="background-color: #de8c07;color: #fcfcfc">
-                                        收藏 <i class="icon iconfont icon-yonghu favorite-btn" ></i>
+                                    <div class="attention pull-right route-details" th:onclick="routeDetails([[${route}]])">
+                                        查看详情 <i class="icon iconfont icon-jiankuohaoxizuo" ></i>
                                     </div>
                                 </div>
                             </div>

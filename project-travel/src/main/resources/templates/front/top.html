@@ -9,6 +9,12 @@
         <link rel="stylesheet" href="/css/zero.css" />
 
         <script type="text/javascript" th:inline="javascript">
+            $(function () {
+                //关闭查看详情模态框
+                /*$(".close-details-modal").on("click", function() {
+                    $("#routeDetailsModal").modal("hide");
+                });*/
+            });
 
             function login() {
                 $("#loginInfo").html('');
@@ -81,6 +87,36 @@
                         }
                         if (result.code == 500){
                             $("#modifyPasswordInfo").html(result.msg);
+                        }
+                    }
+                );
+            };
+
+            /**
+             * 查看线路详情
+             * @param route
+             */
+            function routeDetails(route) {
+                //商家信息需要从后端获取并处理
+                $.post(
+                    '/front/sellerInfo',
+                    {sellerId:route.sellerId},
+                    function (result) {
+                        if (result.code == 200){
+                            let seller = result.data;
+                            let sellerInfo = '【商家】'+seller.sellerName+'\n'+'【联系方式】'+seller.phone+'\n'+'【地址】'+seller.address;
+                            //填充信息
+                            let path = route.imageUrl;
+                            $("#route-name").val(route.routeName);
+                            $("#route-price").val(route.price);
+                            $("#route-introduce").val(route.routeIntroduce);
+                            $("#strategy").val(route.strategy);
+                            $("#seller-info").val(sellerInfo)
+                            $("#routeImage").attr('src','/backend/route/getImage?path='+path);
+                            //打开详情模态框 增加用户收藏按钮
+                            $("#routeDetailsModal").modal("show");
+                        }else {
+                            layer.alert(result.msg);
                         }
                     }
                 );
@@ -271,6 +307,69 @@
             </div>
         </div>
         <!-- 注册模态框 end -->
+
+        <!-- 查看旅游线路详情 start -->
+        <div class="modal fade" tabindex="-1" id="routeDetailsModal">
+            <!-- 窗口声明 -->
+            <div class="modal-dialog modal-lg">
+                <!-- 内容声明 -->
+                <form method="post" id="routeDetailsForm" class="form-horizontal">
+                    <div class="modal-content">
+                        <!-- 头部、主体、脚注 -->
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">旅游线路详情</h4>
+                        </div>
+                        <div class="modal-body text-center row">
+
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label for="route-name" class="col-sm-4 control-label">线路名称：</label>
+                                    <div class="col-sm-8">
+                                        <textarea form="routeDetailsForm" id="route-name" style="width: 370px" rows="1" readonly></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="route-price" class="col-sm-4 control-label">参考价格：</label>
+                                    <div class="col-sm-8">
+                                        <textarea form="routeDetailsForm" id="route-price" style="width: 370px" rows="1" readonly></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="update-route-introduce" class="col-sm-4 control-label">线路简介：</label>
+                                    <div class="col-sm-8">
+                                        <textarea form="routeDetailsForm" id="route-introduce" style="width: 370px" rows="4" readonly></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="update-strategy" class="col-sm-4 control-label">出行攻略：</label>
+                                    <div class="col-sm-8">
+                                        <textarea form="routeDetailsForm" id="strategy" style="width: 370px" name="strategy"  rows="6" readonly></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">商家信息：</label>
+                                    <div class="col-sm-8">
+                                        <textarea form="routeDetailsForm" id="seller-info" style="width: 370px" name="strategy"  rows="3" readonly>
+
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <!-- 显示图像预览 -->
+                                <img style="width: 160px;height: 180px;" id="routeImage">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-warning favoriteRoute-btn" type="button">收藏</button>
+                            <button class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- 查看旅游线路详情 end -->
     </header>
 
 </html>

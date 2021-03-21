@@ -2,9 +2,12 @@ package com.zero.travel.controller.front;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zero.travel.common.enums.StatusCode;
 import com.zero.travel.common.enums.SystemConstant;
+import com.zero.travel.common.response.BaseResponse;
 import com.zero.travel.common.util.SystemUtils;
 import com.zero.travel.controller.CommonController;
+import com.zero.travel.mapper.SellerMapper;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.pojo.entity.Seller;
 import com.zero.travel.pojo.vo.RouteSearchQuery;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -30,10 +34,11 @@ import java.util.List;
 public class MainController extends CommonController {
 
     @Autowired
-    private RouteService routeService;
+    private SellerMapper sellerMapper;
 
     @Autowired
     private SellerService sellerService;
+
 
     @Autowired
     private FrontRouteService frontRouteService;
@@ -45,20 +50,6 @@ public class MainController extends CommonController {
     }
 
 
-    /**
-     * 门户网站主页
-     * 展示旅游线路信息-查询所有线路信息
-     * @return
-     */
-    /*@RequestMapping("/index")
-    public String main(Model model){
-
-        List<Route> routeList = routeService.findAll();
-        model.addAttribute("routeList",routeList);
-
-        return "front/main";
-    }*/
-
     @RequestMapping("/search")
     public String search(Integer pageNum, RouteSearchQuery routeSearchQuery,Model model){
         try {
@@ -69,10 +60,10 @@ public class MainController extends CommonController {
 
             List<Route> routeList = null;
             if (SystemUtils.isAllFieldNull(routeSearchQuery)){
-                PageHelper.startPage(pageNum, 4);
+                PageHelper.startPage(pageNum, SystemConstant.PAGE_SIZE_FRONT);
                 routeList = frontRouteService.search(null);
             }else {
-                PageHelper.startPage(pageNum, 4);
+                PageHelper.startPage(pageNum, SystemConstant.PAGE_SIZE_FRONT);
                 routeList = frontRouteService.search(routeSearchQuery);
             }
             PageInfo<Route> pageInfo = new PageInfo<>(routeList);
@@ -83,6 +74,21 @@ public class MainController extends CommonController {
         } catch (Exception e) {
             e.printStackTrace();
             return "front/main";
+        }
+    }
+
+    @RequestMapping(value = "/sellerInfo")
+    @ResponseBody
+    public BaseResponse sellerInfo(Integer sellerId){
+        try {
+            Seller seller = sellerMapper.selectByPrimaryKey(sellerId);
+            if (seller == null){
+                return new BaseResponse(StatusCode.Fail.getCode(),"商家不存在");
+            }
+            return new BaseResponse(StatusCode.Success,seller);
+        }catch (Exception e){
+            log.error(e.toString());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
         }
     }
 
