@@ -208,4 +208,10 @@
     </where>
   </select>
 
+  <select id="selectByRouteName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from route
+    where
+    route_name = #{routeName,jdbcType=VARCHAR}
+  </select>
 </mapper>

@@ -1,10 +1,12 @@
 package com.zero.travel.service.backend;
 
 import com.zero.travel.common.util.SystemUtils;
+import com.zero.travel.mapper.RouteFavoriteMapper;
 import com.zero.travel.mapper.RouteMapper;
 import com.zero.travel.pojo.dto.RouteDTO;
 import com.zero.travel.pojo.dto.UploadDTO;
 import com.zero.travel.pojo.entity.Route;
+import com.zero.travel.pojo.entity.RouteFavorite;
 import com.zero.travel.pojo.vo.RouteVO;
 import com.zero.travel.service.common.UploadService;
 
@@ -43,6 +45,9 @@ public class RouteService {
     @Autowired
     private RouteMapper routeMapper;
 
+    @Autowired
+    private RouteFavoriteMapper routeFavoriteMapper;
+
     private static final Logger log = LoggerFactory.getLogger(RouteService.class);
 
     /**
@@ -79,6 +84,12 @@ public class RouteService {
         BeanUtils.copyProperties(routeDTO,route);
 
         routeMapper.insertSelective(route);
+
+        //TODO: 记录线路收藏表
+        RouteFavorite routeFavorite = new RouteFavorite();
+        Route newRoute = routeMapper.selectByRouteName(routeDTO.getRouteName());
+        routeFavorite.setRouteId(newRoute.getRouteId());
+        routeFavoriteMapper.insertSelective(routeFavorite);
 
     }
 
@@ -171,6 +182,9 @@ public class RouteService {
         //TODO: 删除图片
         String rootPath = env.getProperty("upload.root.location");
         deleteImage(route.getImageUrl(),rootPath);
+
+        //TODO:删除线路收藏表记录
+        routeFavoriteMapper.deleteByPrimaryKey(routeId);
     }
 
     /**
@@ -182,8 +196,8 @@ public class RouteService {
         File file = new File(oldImage);
         System.gc();
         boolean flag = file.delete();
-        log.info("[删除线路信息]图片物理路径:{}",oldImage);
-        log.info("原图片是否删除:{}",flag);
+        ///log.info("[删除线路信息]图片物理路径:{}",oldImage);
+        ///log.info("原图片是否删除:{}",flag);
     }
 
     /**

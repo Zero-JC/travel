@@ -49,4 +49,11 @@ public interface RouteMapper {
      * @return
      */
     List<Route> query(RouteSearchQuery routeSearchQuery);
+
+    /**
+     * 根据线路名称查询
+     * @param routeName
+     * @return
+     */
+    Route selectByRouteName(String routeName);
 }
