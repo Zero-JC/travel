@@ -7,6 +7,22 @@ body{
 	/*font-family: 'langqian';*/
 	min-width: 1200px;
 }
+.num {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    float: left;
+    margin-top: 50px;
+    margin-right: 20px;
+    background-color: #ffc343;
+}
+.one {
+    background-color: #ff4444;
+}
+.two {
+    background-color: #ff803b;
+}
 .logo-style{
 	padding: 0px 20px 0px 0px;
 }
@@ -217,6 +233,7 @@ body{
 .clear-btn:hover{
 	color: #ff9d00;
 }
+/*EFEFEF*/
 .content-back{
 	background-color: #efefef;
 }

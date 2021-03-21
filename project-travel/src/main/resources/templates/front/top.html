@@ -93,7 +93,7 @@
             function routeDetails(route) {
                 //商家信息需要从后端获取并处理
                 $.post(
-                    '/front/sellerInfo',
+                    '/front/account/sellerInfo',
                     {sellerId:route.sellerId},
                     function (result) {
                         if (result.code == 200){
@@ -138,6 +138,7 @@
                 $("#routeDetailsModal").modal("show");
             }
 
+            //添加收藏
             function addFavorite() {
                 let routeId = $("#route-id").val();
                 $.post(
@@ -174,7 +175,7 @@
                             <a th:href="@{/front/search}">主页</a>
                         </li>
                         <li>
-                            <a href="myOrders.html">热门线路排行榜</a>
+                            <a th:href="@{/front/hotRoute}">热门线路排行榜</a>
                         </li>
                         <li>
                             <a th:href="@{/front/myFavorite}">我的收藏</a>

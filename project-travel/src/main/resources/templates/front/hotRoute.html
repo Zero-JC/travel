@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>热门线路排行</title>
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/iconfont/iconfont.css">
+    <script src="/js/jquery-3.5.1.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/zshop.js"></script>
+    <script src="/js/bootstrapValidator.js"></script>
+    <link rel="stylesheet"  href="/css/bootstrapValidator.css" />
+    <script src="/js/bootstrap-paginator.js"></script>
+    <script type="text/javascript" src="/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/zero.css" />
+</head>
+
+<body>
+<div id="wrapper">
+    <!-- navbar start -->
+    <div th:replace="front/top::header"></div>
+    <!-- navbar end -->
+
+    <!-- content start -->
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header" style="margin-bottom: 0px;">
+                    <h3>热门线路排行榜</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-back">
+        <div class="container" id="a">
+            <div class="row">
+                <br>
+                <div class="col-xs-4  hot-item" th:each="hotRooute:${hotRouteList}">
+                    <div class="panel clear-panel" style="background-color: white">
+                        <div class="panel-body">
+                            <div class="art-back clear-back">
+                                <div class="add-padding-bottom">
+                                    <img th:src="@{/backend/route/getImage(path=${hotRooute.imageUrl})}" class="shopImg">
+                                </div>
+                                <h4><a href="#" th:text="${hotRooute.routeName}"></a></h4>
+                                <div class="user clearfix pull-right">
+                                    NO.<span th:text="${iterStat}"></span>
+                                </div>
+                                <div class="desc" th:text="${hotRooute.routeIntroduce}"></div>
+                                <div class="attention pull-right">
+                                    已收藏<span th:text="${hotRooute.count}"></span>次<i class="icon iconfont icon-gouwuche"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- content end-->
+
+    <!-- footers start -->
+    <div class="footers">
+        毕业设计-LJC 管理员邮箱: 1725088658@qq.com
+    </div>
+    <!-- footers end -->
+</div>
+</body>
+
+</html>

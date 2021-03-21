@@ -9,11 +9,11 @@ import com.zero.travel.common.util.SystemUtils;
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.mapper.SellerMapper;
 import com.zero.travel.pojo.dto.FavoriteDTO;
+import com.zero.travel.pojo.dto.HotRouteDTO;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.pojo.entity.Seller;
 import com.zero.travel.pojo.entity.User;
 import com.zero.travel.pojo.vo.RouteSearchQuery;
-import com.zero.travel.service.backend.RouteService;
 import com.zero.travel.service.backend.SellerService;
 import com.zero.travel.service.front.FrontRouteService;
 import org.apache.commons.lang3.ObjectUtils;
@@ -36,8 +36,7 @@ import java.util.List;
 @RequestMapping("/front")
 public class MainController extends CommonController {
 
-    @Autowired
-    private SellerMapper sellerMapper;
+
 
     @Autowired
     private SellerService sellerService;
@@ -128,24 +127,15 @@ public class MainController extends CommonController {
         return "front/myFavorite";
     }
 
-    /**
-     * 查询商家信息
-     * @param sellerId
-     * @return
-     */
-    @RequestMapping(value = "/sellerInfo")
-    @ResponseBody
-    public BaseResponse sellerInfo(Integer sellerId){
-        try {
-            Seller seller = sellerMapper.selectByPrimaryKey(sellerId);
-            if (seller == null){
-                return new BaseResponse(StatusCode.Fail.getCode(),"商家不存在");
-            }
-            return new BaseResponse(StatusCode.Success,seller);
-        }catch (Exception e){
-            log.error(e.toString());
-            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
-        }
+    @RequestMapping("/hotRoute")
+    public String hotRoute(Model model){
+        //显示排行前九的旅游线路
+
+        List<HotRouteDTO> hotRouteList = frontRouteService.hotRoute();
+        model.addAttribute("hotRouteList",hotRouteList);
+        return "front/hotRoute";
     }
+
+
 
 }

@@ -4,8 +4,10 @@ import com.zero.travel.common.enums.StatusCode;
 import com.zero.travel.common.response.BaseResponse;
 import com.zero.travel.common.util.ValidateUtils;
 import com.zero.travel.controller.CommonController;
+import com.zero.travel.mapper.SellerMapper;
 import com.zero.travel.pojo.dto.UserDTO;
 import com.zero.travel.pojo.entity.FavoriteKey;
+import com.zero.travel.pojo.entity.Seller;
 import com.zero.travel.pojo.entity.User;
 import com.zero.travel.pojo.vo.UserLoginVO;
 import com.zero.travel.pojo.vo.UserModifyVO;
@@ -35,6 +37,8 @@ public class AccountController extends CommonController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private SellerMapper sellerMapper;
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public BaseResponse login(@Validated UserLoginVO userLoginVO,BindingResult result, HttpSession session){
@@ -140,6 +144,26 @@ public class AccountController extends CommonController {
             session.setAttribute("currentUser",user);
 
             return new BaseResponse(StatusCode.Success);
+        }catch (Exception e){
+            log.error(e.toString());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
+    }
+
+    /**
+     * 查询商家信息
+     * @param sellerId
+     * @return
+     */
+    @RequestMapping(value = "/sellerInfo")
+    @ResponseBody
+    public BaseResponse sellerInfo(Integer sellerId){
+        try {
+            Seller seller = sellerMapper.selectByPrimaryKey(sellerId);
+            if (seller == null){
+                return new BaseResponse(StatusCode.Fail.getCode(),"商家不存在");
+            }
+            return new BaseResponse(StatusCode.Success,seller);
         }catch (Exception e){
             log.error(e.toString());
             return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());

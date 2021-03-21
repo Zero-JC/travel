@@ -28,6 +28,21 @@
     <result column="time" property="time" jdbcType="TIMESTAMP" />
   </resultMap>
 
+  <!--热门线路-->
+  <resultMap id="HotRouteMap" type="com.zero.travel.pojo.dto.HotRouteDTO" >
+    <id column="route_id" property="routeId" jdbcType="INTEGER" />
+    <result column="route_name" property="routeName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="route_introduce" property="routeIntroduce" jdbcType="VARCHAR" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="strategy" property="strategy" jdbcType="VARCHAR" />
+    <result column="seller_id" property="sellerId" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="seller_name" property="sellerName" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+  </resultMap>
+
   <sql id="Base_Column_List" >
     route_id, route_name, price, route_introduce, image_url, strategy, seller_id, create_time, 
     update_time
@@ -244,6 +259,23 @@
       seller s
       ON
         r.seller_id = s.seller_id;
+  </select>
+
+
+  <select id="selectByCount" resultMap="HotRouteMap">
+    SELECT
+      r.route_id, r.route_name, r.price, r.route_introduce, r.image_url, r.strategy, r.seller_id ,s.seller_name,s.phone,s.address, rf.count
+    FROM
+      route r
+        LEFT JOIN
+      seller s
+      ON
+        r.seller_id = s.seller_id
+        LEFT JOIN
+      route_favorite rf
+      ON
+        r.route_id = rf.route_id
+    ORDER BY rf.count DESC LIMIT 9;
   </select>
 
 </mapper>

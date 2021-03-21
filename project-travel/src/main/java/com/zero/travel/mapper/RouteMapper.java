@@ -1,6 +1,7 @@
 package com.zero.travel.mapper;
 
 import com.zero.travel.pojo.dto.FavoriteDTO;
+import com.zero.travel.pojo.dto.HotRouteDTO;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.pojo.vo.RouteSearchQuery;
 import org.apache.ibatis.annotations.Mapper;
@@ -64,4 +65,10 @@ public interface RouteMapper {
      * @return
      */
     List<FavoriteDTO> selectFavorite(@Param("userId") Integer userId);
+
+    /**
+     * count limit 9
+     * @return
+     */
+    List<HotRouteDTO> selectByCount();
 }
