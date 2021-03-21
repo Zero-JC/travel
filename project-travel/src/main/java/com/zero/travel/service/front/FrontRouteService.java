@@ -1,6 +1,7 @@
 package com.zero.travel.service.front;
 
 import com.zero.travel.mapper.RouteMapper;
+import com.zero.travel.pojo.dto.FavoriteDTO;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.pojo.vo.RouteSearchQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,17 @@ public class FrontRouteService {
             routeList = routeMapper.query(routeSearchQuery);
         }
         return routeList;
+    }
+
+    /**
+     * 查询当前用户收藏线路
+     * @param userId
+     * @return
+     */
+    public List<FavoriteDTO> selectFavorite(Integer userId) {
+
+        List<FavoriteDTO> favoriteList =  routeMapper.selectFavorite(userId);
+
+        return favoriteList;
     }
 }

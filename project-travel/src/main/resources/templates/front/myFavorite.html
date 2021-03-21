@@ -29,84 +29,28 @@
         </div>
         <table class="table table-hover table-striped table-bordered">
             <tr>
-                <th>
-                    <input type="checkbox" id="all">
-                </th>
-                <th>序号</th>
-                <th>商品名称</th>
-                <th>商品图片</th>
-                <th>商品数量</th>
-                <th>商品总价</th>
+                <th>线路ID</th>
+                <th>线路名称</th>
+                <th>线路图片</th>
+                <th>参考价格</th>
+                <th>收藏时间</th>
                 <th>操作</th>
             </tr>
-            <tr>
+            <tr th:each="favorite:${favoriteList}">
+                <td th:text="${favorite.routeId}"></td>
+                <td th:text="${favorite.routeName}"></td>
+                <td> <img th:src="@{/backend/route/getImage(path=${favorite.imageUrl})}" alt="" width="60" height="60"></td>
+                <td th:text="${favorite.price}"></td>
+                <td th:text="${#dates.format(favorite.time,'YYYY-MM-dd HH:mm:ss')}"></td>
                 <td>
-                    <input type="checkbox">
-                </td>
-                <td>1</td>
-                <td>奶茶</td>
-                <td> <img src="images/hotaddress1.jpeg" alt="" width="60" height="60"></td>
-                <td>
-                    <input type="text" value="2" size="5">
-                </td>
-                <td>20</td>
-                <td>
-                    <button class="btn btn-success" type="button"> <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>修改</button>
-                    <button class="btn btn-danger" type="button" onclick="javaScript:return confirm('是否确认删除');">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
-                    </button>
+                    <button class="btn btn-success" type="button">查看详情</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-danger" type="button" onclick="">删除</button>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <input type="checkbox">
-                </td>
-                <td>1</td>
-                <td>奶茶</td>
-                <td> <img src="images/hotaddress1.jpeg" alt="" width="60" height="60"></td>
-                <td>
-                    <input type="text" value="2" size="5">
-                </td>
-                <td>20</td>
-                <td>
-                    <button class="btn btn-success" type="button"> <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>修改</button>
-                    <button class="btn btn-danger" type="button" onclick="javaScript:return confirm('是否确认删除');">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
-                    </button>
-                </td>
-            </tr>
-            <br>
-            <tr>
-                <td>
-                    <input type="checkbox">
-                </td>
-                <td>1</td>
-                <td>奶茶</td>
-                <td> <img src="images/hotaddress1.jpeg" alt="" width="60" height="60"></td>
-                <td>
-                    <input type="text" value="2" size="5">
-                </td>
-                <td>20</td>
-                <td>
-                    <button class="btn btn-success" type="button"> <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>修改</button>
-                    <button class="btn btn-danger" type="button" onclick="javaScript:return confirm('是否确认删除');">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
-                    </button>
-                </td>
-            </tr>
+
             <tr>
                 <td colspan="7" align="right">
-                    <button class="btn btn-warning margin-right-15" type="button"> 删除选中项</button>
-                    <button class="btn btn-warning  margin-right-15" type="button"> 清空购物车</button>
-                    <button class="btn btn-warning margin-right-15" type="button"> 继续购物</button>
-                    <a href="order.html">
-                        <button class="btn btn-warning " type="button"> 结算</button>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="7" align="right" class="foot-msg">
-                    总计： <b><span>1000</span> </b>元
+                    <button class="btn btn-warning  margin-right-15" type="button">清空收藏</button>
                 </td>
             </tr>
         </table>

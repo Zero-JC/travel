@@ -1,5 +1,6 @@
 package com.zero.travel.mapper;
 
+import com.zero.travel.pojo.dto.FavoriteDTO;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.pojo.vo.RouteSearchQuery;
 import org.apache.ibatis.annotations.Mapper;
@@ -56,4 +57,11 @@ public interface RouteMapper {
      * @return
      */
     Route selectByRouteName(String routeName);
+
+    /**
+     * 多表查询 favorite route seller
+     * @param userId
+     * @return
+     */
+    List<FavoriteDTO> selectFavorite(@Param("userId") Integer userId);
 }

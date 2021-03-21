@@ -8,6 +8,7 @@ import com.zero.travel.common.response.BaseResponse;
 import com.zero.travel.common.util.SystemUtils;
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.mapper.SellerMapper;
+import com.zero.travel.pojo.dto.FavoriteDTO;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.pojo.entity.Seller;
 import com.zero.travel.pojo.entity.User;
@@ -119,8 +120,10 @@ public class MainController extends CommonController {
             model.addAttribute("msg","请先登录！");
             return "forward:/front/search";
         }
+        //TODO:根据当前用户获取其收藏列表
+        List<FavoriteDTO> favoriteList = frontRouteService.selectFavorite(currentUser.getUserId());
 
-        model.addAttribute("currUser",currentUser);
+        model.addAttribute("favoriteList",favoriteList);
 
         return "front/myFavorite";
     }

@@ -13,6 +13,21 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
+  <!--线路收藏信息封装-->
+  <resultMap id="FavoriteMap" type="com.zero.travel.pojo.dto.FavoriteDTO" >
+    <id column="route_id" property="routeId" jdbcType="INTEGER" />
+    <result column="route_name" property="routeName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="route_introduce" property="routeIntroduce" jdbcType="VARCHAR" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="strategy" property="strategy" jdbcType="VARCHAR" />
+    <result column="seller_id" property="sellerId" jdbcType="INTEGER" />
+    <result column="phone" property="strategy" jdbcType="VARCHAR" />
+    <result column="seller_name" property="strategy" jdbcType="VARCHAR" />
+    <result column="address" property="strategy" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+  </resultMap>
+
   <sql id="Base_Column_List" >
     route_id, route_name, price, route_introduce, image_url, strategy, seller_id, create_time, 
     update_time
@@ -214,4 +229,21 @@
     where
     route_name = #{routeName,jdbcType=VARCHAR}
   </select>
+
+  <!--查询收藏-->
+  <select id="selectFavorite" resultMap="FavoriteMap" parameterType="java.lang.Integer">
+    SELECT
+      r.route_id, r.route_name, r.price, r.route_introduce, r.image_url, r.strategy, r.seller_id ,s.seller_name,s.phone,s.address, f.time
+    FROM
+      route r
+        RIGHT JOIN
+        (SELECT route_id,time FROM favorite WHERE user_id = #{userId,jdbcType=INTEGER}) f
+        ON
+          r.route_id = f.route_id
+        LEFT JOIN
+      seller s
+      ON
+        r.seller_id = s.seller_id;
+  </select>
+
 </mapper>
