@@ -56,4 +56,9 @@
     set count = #{count,jdbcType=INTEGER}
     where route_id = #{routeId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT count FROM route_favorite WHERE route_id = #{routeId,jdbcType=INTEGER};
+  </select>
+
 </mapper>

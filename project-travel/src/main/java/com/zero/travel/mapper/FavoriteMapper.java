@@ -28,4 +28,18 @@ public interface FavoriteMapper {
     int updateByPrimaryKeySelective(Favorite record);
 
     int updateByPrimaryKey(Favorite record);
+
+    /**
+     * 根据用户id查询收藏记录
+     * @param userId
+     * @return
+     */
+    List<Favorite> selectByUserId(Integer userId);
+
+    /**
+     * 根据用户id删除收藏记录
+     * @param userId
+     * @return
+     */
+    int deleteByUserId(Integer userId);
 }

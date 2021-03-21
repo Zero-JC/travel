@@ -39,6 +39,31 @@
                 }
             );
         }
+
+        //清除确认模态框
+        function showConfirmModal() {
+            $("#clearFavoriteModal").modal("show");
+        }
+
+        //清除
+        function confirmClear() {
+            $.post(
+                '/front/account/deleteAllFavorite',
+                function (result) {
+                    if (result.code == 200){
+                        layer.msg("清除成功",{
+                            time: 1500
+                        });
+                        setTimeout(function () {
+                            location.href='/front/search';
+                        },1500);
+                    }
+                    if (result.code == 500){
+                        layer.alert(result.msg);
+                    }
+                }
+            );
+        }
     </script>
 </head>
 
@@ -78,7 +103,7 @@
 
             <tr>
                 <td colspan="7" align="right">
-                    <button class="btn btn-warning  margin-right-15" type="button">清空收藏</button>
+                    <button class="btn btn-warning  margin-right-15" type="button" onclick="showConfirmModal()">清空收藏</button>
                 </td>
             </tr>
         </table>

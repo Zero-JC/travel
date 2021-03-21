@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 /**
  * 用户业务处理
@@ -171,6 +173,37 @@ public class AccountService {
         final int roeTow = routeFavoriteMapper.updateByPrimaryKey(routeFavorite);
         if (roeTow != 1){
             throw new Exception("修改线路收藏记录失败");
+        }
+
+    }
+
+    /**
+     * 清除当前用户收藏记录
+     * @param userId
+     */
+    public void deleteAllFavorite(Integer userId) throws Exception {
+        //TODO: 清除用户收藏表记录
+        List<Favorite> favoriteList = favoriteMapper.selectByUserId(userId);
+        if (favoriteList == null){
+            throw new Exception("当前用户无收藏记录");
+        }
+        int row = favoriteMapper.deleteByUserId(userId);
+        if (row < 0){
+            throw new Exception("清除用户收藏记录失败");
+        }
+        //TODO: 修改线路收藏表记录
+        Integer routeId = null;
+        RouteFavorite routeFavorite = new RouteFavorite();
+        for (Favorite favorite : favoriteList) {
+            routeId = favorite.getRouteId();
+            int count = routeFavoriteMapper.selectCount(routeId);
+            routeFavorite.setRouteId(routeId);
+            routeFavorite.setCount(count-1);
+
+            final int i = routeFavoriteMapper.updateByPrimaryKey(routeFavorite);
+            if (i < 0){
+                throw new Exception("修改线路收藏记录失败");
+            }
         }
 
     }

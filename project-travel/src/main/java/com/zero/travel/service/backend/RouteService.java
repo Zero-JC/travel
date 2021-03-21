@@ -20,6 +20,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -132,6 +133,8 @@ public class RouteService {
 
         if (imageFile.getOriginalFilename()!=null && !"".equals(imageFile.getOriginalFilename())){
             //TODO: 删除原图片
+            //相对路径写法
+            ///final String rootPath = ResourceUtils.getFile("classpath:image/route/").getPath();
             String rootPath = env.getProperty("upload.root.location");
             String oldImage = rootPath +File.separator+ oldRoute.getImageUrl();
             File file = new File(oldImage);

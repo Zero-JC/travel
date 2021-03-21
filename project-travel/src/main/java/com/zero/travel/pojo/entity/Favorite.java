@@ -1,18 +1,19 @@
 package com.zero.travel.pojo.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
  * @author LJC
  */
-public class Favorite extends FavoriteKey {
+@Data
+public class Favorite {
+
+    private Integer userId;
+
+    private Integer routeId;
+
     private Date time;
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
 }

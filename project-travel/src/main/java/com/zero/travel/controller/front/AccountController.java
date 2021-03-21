@@ -18,10 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -31,7 +28,7 @@ import javax.servlet.http.HttpSession;
  * @version 1.0
  * @date 2021/3/20 14:25
  */
-@Controller
+@RestController
 @RequestMapping("/front/account")
 public class AccountController extends CommonController {
 
@@ -40,7 +37,6 @@ public class AccountController extends CommonController {
 
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    @ResponseBody
     public BaseResponse login(@Validated UserLoginVO userLoginVO,BindingResult result, HttpSession session){
         try {
             if (result.hasErrors()){
@@ -60,7 +56,6 @@ public class AccountController extends CommonController {
     }
 
     @RequestMapping(value = "/logout")
-    @ResponseBody
     public BaseResponse logout(HttpSession session){
         try {
             session.removeAttribute("currentUser");
@@ -72,7 +67,6 @@ public class AccountController extends CommonController {
     }
 
     @RequestMapping(value = "/register")
-    @ResponseBody
     public BaseResponse register(@Validated UserVO userVO,BindingResult result){
         try {
             if (result.hasErrors()){
@@ -92,7 +86,6 @@ public class AccountController extends CommonController {
     }
 
     @RequestMapping(value = "/modifyPassword")
-    @ResponseBody
     public BaseResponse modifyPassword(String oldPassword,String newPasswordOne,String newPasswordTwo,HttpSession session){
         try {
             if (ObjectUtils.isEmpty(oldPassword) || ObjectUtils.isEmpty(newPasswordOne) || ObjectUtils.isEmpty(newPasswordTwo)){
@@ -132,7 +125,6 @@ public class AccountController extends CommonController {
      * @return
      */
     @RequestMapping(value = "/modifyUserInfo",method = RequestMethod.POST)
-    @ResponseBody
     public BaseResponse modifyUserInfo(@Validated UserModifyVO userModifyVO,BindingResult result,HttpSession session){
         try {
             if (result.hasErrors()){
@@ -161,7 +153,6 @@ public class AccountController extends CommonController {
      * @return
      */
     @RequestMapping(value = "/addFavorite")
-    @ResponseBody
     public BaseResponse addFavorite(Integer routeId,HttpSession session){
         try {
             if (ObjectUtils.isEmpty(routeId)){
@@ -189,7 +180,6 @@ public class AccountController extends CommonController {
      * @return
      */
     @RequestMapping(value = "/deleteFavorite")
-    @ResponseBody
     public BaseResponse deleteFavorite(@RequestParam(name = "routeId") Integer routeId,HttpSession session){
         try {
             User currentUser = (User) session.getAttribute("currentUser");
@@ -211,8 +201,14 @@ public class AccountController extends CommonController {
      * @return
      */
     @RequestMapping(value = "/deleteAllFavorite")
-    public BaseResponse deleteAllFavorite(){
+    public BaseResponse deleteAllFavorite(HttpSession session){
         try {
+            User currentUser = (User) session.getAttribute("currentUser");
+            if (currentUser == null){
+                return new BaseResponse(StatusCode.Fail.getCode(),"当前没有用户登录,请先登录!");
+            }
+
+            accountService.deleteAllFavorite(currentUser.getUserId());
 
             return new BaseResponse(StatusCode.Success);
         }catch (Exception e){

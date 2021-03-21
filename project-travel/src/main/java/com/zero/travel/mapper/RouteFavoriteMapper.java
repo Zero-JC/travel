@@ -18,4 +18,11 @@ public interface RouteFavoriteMapper {
     int updateByPrimaryKeySelective(RouteFavorite record);
 
     int updateByPrimaryKey(RouteFavorite record);
+
+    /**
+     * 根据线路id获取收藏次数
+     * @param routeId
+     * @return
+     */
+    int selectCount(Integer routeId);
 }

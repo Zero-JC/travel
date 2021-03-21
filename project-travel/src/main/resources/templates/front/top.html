@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+    <!--前台门户网站的所有的模态框以及网页的头部都定义在这里-->
     <header th:fragment="header">
         <script src="/js/bootstrapValidator.js"></script>
         <link rel="stylesheet"  href="/css/bootstrapValidator.css" />
         <!--弹窗-->
         <script type="text/javascript" src="/layer/layer.js"></script>
         <link rel="stylesheet" href="/css/zero.css" />
-
         <script type="text/javascript" th:inline="javascript">
-            $(function () {
-
-            });
 
             function login() {
                 $("#loginInfo").html('');
@@ -406,6 +403,29 @@
             </div>
         </div>
         <!-- 查看旅游线路详情 end -->
+
+        <!-- 确认清除收藏模态框 start -->
+        <div class="modal fade" tabindex="-1" id="clearFavoriteModal">
+            <!-- 窗口声明 modal-lg-->
+            <div class="modal-dialog ">
+                <!-- 内容声明 -->
+                <div class="modal-content">
+                    <!-- 头部、主体、脚注 -->
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">信息提示</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h4 style="color: red">您确认要清空收藏吗(清空之后不可恢复)?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="confirmReset" class="btn btn-primary addProductType" onclick="confirmClear()" data-dismiss="modal">确定</button>
+                        <button class="btn btn-primary cancel" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 确认清除收藏模态框 end -->
     </header>
 
 </html>
