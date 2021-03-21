@@ -127,10 +127,14 @@ public class MainController extends CommonController {
         return "front/myFavorite";
     }
 
+    /**
+     * 热门线路排行
+     * count limit 8
+     * @param model
+     * @return
+     */
     @RequestMapping("/hotRoute")
     public String hotRoute(Model model){
-        //显示排行前九的旅游线路
-
         List<HotRouteDTO> hotRouteList = frontRouteService.hotRoute();
         model.addAttribute("hotRouteList",hotRouteList);
         return "front/hotRoute";

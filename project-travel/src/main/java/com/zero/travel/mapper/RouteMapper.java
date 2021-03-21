@@ -67,7 +67,7 @@ public interface RouteMapper {
     List<FavoriteDTO> selectFavorite(@Param("userId") Integer userId);
 
     /**
-     * count limit 9
+     * count limit 8
      * @return
      */
     List<HotRouteDTO> selectByCount();

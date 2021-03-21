@@ -275,7 +275,7 @@
       route_favorite rf
       ON
         r.route_id = rf.route_id
-    ORDER BY rf.count DESC LIMIT 9;
+    ORDER BY rf.count DESC LIMIT 8;
   </select>
 
 </mapper>

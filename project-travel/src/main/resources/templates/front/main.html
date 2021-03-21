@@ -107,12 +107,13 @@
         <div class="content-back">
             <div class="container" id="a">
                 <div class="row">
-                    <div class="col-xs-3  hot-item" th:each="route:${pageInfo.list}">
-                        <div class="panel clear-panel">
+                    <br>
+                    <div class="col-xs-4  hot-item" th:each="route:${pageInfo.list}">
+                        <div class="panel clear-panel" style="background-color: white">
                             <div class="panel-body">
                                 <div class="art-back clear-back">
                                     <div class="add-padding-bottom">
-                                        <img th:src="@{/backend/route/getImage(path=${route.imageUrl})}" class="shopImg">
+                                        <img th:src="@{/backend/route/getImage(path=${route.imageUrl})}" style="width: 101%;height: 210px;">
                                     </div>
                                     <h4><a href="" th:text="${route.routeName}"></a></h4>
                                     <div class="user clearfix pull-right">

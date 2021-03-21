@@ -87,7 +87,7 @@
             };
 
             /**
-             * 通用查看线路详情
+             * 查看线路详情-主页
              * @param route
              */
             function routeDetails(route) {
@@ -135,6 +135,25 @@
 
                 //打开详情模态框 禁用 收藏按钮
                 $(".favoriteRoute-btn").attr("disabled","disabled");
+                $("#routeDetailsModal").modal("show");
+            }
+
+            /**
+             * 查看线路详情-我的收藏
+             */
+            function routeHotRouteDetails(hotRooute) {
+                let sellerInfo = '【商家】'+hotRooute.sellerName+'\n'+'【联系方式】'+hotRooute.phone+'\n'+'【地址】'+hotRooute.address;
+                //填充信息
+                let path = hotRooute.imageUrl;
+                $("#route-id").val(hotRooute.routeId);
+                $("#route-name").val(hotRooute.routeName);
+                $("#route-price").val(hotRooute.price);
+                $("#route-introduce").val(hotRooute.routeIntroduce);
+                $("#strategy").val(hotRooute.strategy);
+                $("#seller-info").val(sellerInfo)
+                $("#routeImage").attr('src','/backend/route/getImage?path='+path);
+
+                //打开详情模态框
                 $("#routeDetailsModal").modal("show");
             }
 

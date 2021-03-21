@@ -39,16 +39,17 @@
         <div class="container" id="a">
             <div class="row">
                 <br>
-                <div class="col-xs-4  hot-item" th:each="hotRooute:${hotRouteList}">
-                    <div class="panel clear-panel" style="background-color: white">
+                <!--iterStat状态变量-->
+                <div class="col-xs-3  hot-item" th:each="hotRooute,iterStat:${hotRouteList}">
+                    <div class="panel clear-panel" style="background-color: white" th:onclick="routeHotRouteDetails([[${hotRooute}]])">
                         <div class="panel-body">
                             <div class="art-back clear-back">
                                 <div class="add-padding-bottom">
-                                    <img th:src="@{/backend/route/getImage(path=${hotRooute.imageUrl})}" class="shopImg">
+                                    <img th:src="@{/backend/route/getImage(path=${hotRooute.imageUrl})}" style="width: 101%;height: 210px;">
                                 </div>
                                 <h4><a href="#" th:text="${hotRooute.routeName}"></a></h4>
                                 <div class="user clearfix pull-right">
-                                    NO.<span th:text="${iterStat}"></span>
+                                    NO.<span th:text="${iterStat.count}"></span>
                                 </div>
                                 <div class="desc" th:text="${hotRooute.routeIntroduce}"></div>
                                 <div class="attention pull-right">

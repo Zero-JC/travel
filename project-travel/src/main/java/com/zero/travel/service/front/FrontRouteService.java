@@ -40,9 +40,7 @@ public class FrontRouteService {
      * @return
      */
     public List<FavoriteDTO> selectFavorite(Integer userId) {
-
         List<FavoriteDTO> favoriteList =  routeMapper.selectFavorite(userId);
-
         return favoriteList;
     }
 
@@ -51,9 +49,7 @@ public class FrontRouteService {
      * @return
      */
     public List<HotRouteDTO> hotRoute() {
-
         List<HotRouteDTO> hotRouteList = routeMapper.selectByCount();
-
         return hotRouteList;
     }
 }
