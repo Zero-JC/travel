@@ -10,10 +10,7 @@
 
         <script type="text/javascript" th:inline="javascript">
             $(function () {
-                //关闭查看详情模态框
-                /*$(".close-details-modal").on("click", function() {
-                    $("#routeDetailsModal").modal("hide");
-                });*/
+
             });
 
             function login() {
@@ -93,7 +90,7 @@
             };
 
             /**
-             * 查看线路详情
+             * 通用查看线路详情
              * @param route
              */
             function routeDetails(route) {
@@ -107,6 +104,7 @@
                             let sellerInfo = '【商家】'+seller.sellerName+'\n'+'【联系方式】'+seller.phone+'\n'+'【地址】'+seller.address;
                             //填充信息
                             let path = route.imageUrl;
+                            $("#route-id").val(route.routeId);
                             $("#route-name").val(route.routeName);
                             $("#route-price").val(route.price);
                             $("#route-introduce").val(route.routeIntroduce);
@@ -120,7 +118,26 @@
                         }
                     }
                 );
-            }
+            };
+
+            function addFavorite() {
+                let routeId = $("#route-id").val();
+                $.post(
+                    '/front/account/addFavorite',
+                    {routeId:routeId},
+                    function (result) {
+                        if (result.code == 200){
+                            /*$(".favoriteRoute-btn").attr("disabled","disabled");*/
+                            layer.msg("收藏成功!",{
+                                time: 1500
+                            });
+                        }else {
+                            layer.alert(result.msg);
+                        }
+                    }
+                );
+            };
+
         </script>
 
 
@@ -142,10 +159,10 @@
                             <a href="myOrders.html">热门线路排行榜</a>
                         </li>
                         <li>
-                            <a href="cart.html">我的收藏</a>
+                            <a th:href="@{/front/myFavorite}">我的收藏</a>
                         </li>
                         <li>
-                            <a th:href="@{/front/account/info}">会员中心</a>
+                            <a th:href="@{/front/info}">会员中心</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -321,28 +338,28 @@
                             <h4 class="modal-title">旅游线路详情</h4>
                         </div>
                         <div class="modal-body text-center row">
-
+                            <input type="hidden" name="routeId" id="route-id">
                             <div class="col-sm-8">
                                 <div class="form-group">
-                                    <label for="route-name" class="col-sm-4 control-label">线路名称：</label>
+                                    <label class="col-sm-4 control-label">线路名称：</label>
                                     <div class="col-sm-8">
                                         <textarea form="routeDetailsForm" id="route-name" style="width: 370px" rows="1" readonly></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="route-price" class="col-sm-4 control-label">参考价格：</label>
+                                    <label class="col-sm-4 control-label">参考价格：</label>
                                     <div class="col-sm-8">
                                         <textarea form="routeDetailsForm" id="route-price" style="width: 370px" rows="1" readonly></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="update-route-introduce" class="col-sm-4 control-label">线路简介：</label>
+                                    <label class="col-sm-4 control-label">线路简介：</label>
                                     <div class="col-sm-8">
                                         <textarea form="routeDetailsForm" id="route-introduce" style="width: 370px" rows="4" readonly></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="update-strategy" class="col-sm-4 control-label">出行攻略：</label>
+                                    <label class="col-sm-4 control-label">出行攻略：</label>
                                     <div class="col-sm-8">
                                         <textarea form="routeDetailsForm" id="strategy" style="width: 370px" name="strategy"  rows="6" readonly></textarea>
                                     </div>
@@ -350,9 +367,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">商家信息：</label>
                                     <div class="col-sm-8">
-                                        <textarea form="routeDetailsForm" id="seller-info" style="width: 370px" name="strategy"  rows="3" readonly>
-
-                                        </textarea>
+                                        <textarea form="routeDetailsForm" id="seller-info" style="width: 370px" name="strategy"  rows="3" readonly></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -362,7 +377,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-warning favoriteRoute-btn" type="button">收藏</button>
+                            <button class="btn btn-warning favoriteRoute-btn" type="button" onclick="addFavorite()">收藏</button>
                             <button class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </div>

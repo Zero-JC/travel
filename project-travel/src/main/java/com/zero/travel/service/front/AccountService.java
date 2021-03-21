@@ -1,7 +1,12 @@
 package com.zero.travel.service.front;
 
+import com.zero.travel.mapper.FavoriteMapper;
+import com.zero.travel.mapper.RouteFavoriteMapper;
 import com.zero.travel.mapper.UserMapper;
 import com.zero.travel.pojo.dto.UserDTO;
+import com.zero.travel.pojo.entity.Favorite;
+import com.zero.travel.pojo.entity.FavoriteKey;
+import com.zero.travel.pojo.entity.RouteFavorite;
 import com.zero.travel.pojo.entity.User;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +28,12 @@ public class AccountService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private FavoriteMapper favoriteMapper;
+
+    @Autowired
+    private RouteFavoriteMapper routeFavoriteMapper;
 
     /**
      * 登录业务
@@ -109,5 +120,36 @@ public class AccountService {
 
         //返回用户对象，用于更新Session
         return userMapper.selectByPrimaryKey(user.getUserId());
+    }
+
+    /**
+     * 用户收藏旅游线路
+     * @param favoriteKey
+     */
+    public void addFavorite(FavoriteKey favoriteKey) throws Exception{
+
+        //TODO:判断是否有收藏记录
+        final Favorite favorite = favoriteMapper.selectByPrimaryKey(favoriteKey);
+        if (favorite != null){
+            throw new Exception("此线路已收藏");
+        }
+        //TODO: 插入收藏记录
+        Favorite favoriteParam = new Favorite();
+        BeanUtils.copyProperties(favoriteKey,favoriteParam);
+        final int row = favoriteMapper.insertSelective(favoriteParam);
+        if (row != 1){
+            throw new Exception("插入收藏记录失败");
+        }
+        //TODO: 更新线路收藏表
+        final RouteFavorite routeFavorite = routeFavoriteMapper.selectByPrimaryKey(favoriteKey.getRouteId());
+        if (routeFavorite == null){
+            throw new Exception("当前线路不在线路收藏表中");
+        }
+        routeFavorite.setCount(routeFavorite.getCount()+1);
+
+        final int num = routeFavoriteMapper.updateByPrimaryKey(routeFavorite);
+        if (num != 1){
+            throw new Exception("更新线路收藏表失败");
+        }
     }
 }

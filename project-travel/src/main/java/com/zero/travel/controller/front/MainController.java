@@ -10,6 +10,7 @@ import com.zero.travel.controller.CommonController;
 import com.zero.travel.mapper.SellerMapper;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.pojo.entity.Seller;
+import com.zero.travel.pojo.entity.User;
 import com.zero.travel.pojo.vo.RouteSearchQuery;
 import com.zero.travel.service.backend.RouteService;
 import com.zero.travel.service.backend.SellerService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -49,7 +51,13 @@ public class MainController extends CommonController {
         return sellerService.findAll();
     }
 
-
+    /**
+     * 主页
+     * @param pageNum
+     * @param routeSearchQuery
+     * @param model
+     * @return
+     */
     @RequestMapping("/search")
     public String search(Integer pageNum, RouteSearchQuery routeSearchQuery,Model model){
         try {
@@ -77,6 +85,51 @@ public class MainController extends CommonController {
         }
     }
 
+    /**
+     * 会员中心
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("/info")
+    public String userInfo(Model model, HttpSession session){
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null){
+
+            model.addAttribute("msg","请先登录！");
+            return "forward:/front/search";
+        }
+
+        model.addAttribute("currUser",currentUser);
+
+        return "front/userInfo";
+    }
+
+    /**
+     * 我的收藏
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("/myFavorite")
+    public String myFavorite(Model model,HttpSession session){
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null){
+
+            model.addAttribute("msg","请先登录！");
+            return "forward:/front/search";
+        }
+
+        model.addAttribute("currUser",currentUser);
+
+        return "front/myFavorite";
+    }
+
+    /**
+     * 查询商家信息
+     * @param sellerId
+     * @return
+     */
     @RequestMapping(value = "/sellerInfo")
     @ResponseBody
     public BaseResponse sellerInfo(Integer sellerId){

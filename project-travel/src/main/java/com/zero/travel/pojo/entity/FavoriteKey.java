@@ -1,8 +1,11 @@
 package com.zero.travel.pojo.entity;
 
+import lombok.Data;
+
 /**
  * @author LJC
  */
+@Data
 public class FavoriteKey {
     private Integer userId;
 

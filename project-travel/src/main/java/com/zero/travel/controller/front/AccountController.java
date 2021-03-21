@@ -5,6 +5,7 @@ import com.zero.travel.common.response.BaseResponse;
 import com.zero.travel.common.util.ValidateUtils;
 import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.UserDTO;
+import com.zero.travel.pojo.entity.FavoriteKey;
 import com.zero.travel.pojo.entity.User;
 import com.zero.travel.pojo.vo.UserLoginVO;
 import com.zero.travel.pojo.vo.UserModifyVO;
@@ -120,20 +121,15 @@ public class AccountController extends CommonController {
         }
     }
 
-    @RequestMapping("/info")
-    public String userInfo(Model model,HttpSession session){
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser == null){
 
-            model.addAttribute("msg","请先登录！");
-            return "forward:/front/search";
-        }
 
-        model.addAttribute("currUser",currentUser);
-
-        return "front/userInfo";
-    }
-
+    /**
+     * 会员中心-修改用户详情
+     * @param userModifyVO
+     * @param result
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/modifyUserInfo",method = RequestMethod.POST)
     @ResponseBody
     public BaseResponse modifyUserInfo(@Validated UserModifyVO userModifyVO,BindingResult result,HttpSession session){
@@ -156,5 +152,30 @@ public class AccountController extends CommonController {
             return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/addFavorite")
+    @ResponseBody
+    public BaseResponse addFavorite(Integer routeId,HttpSession session){
+        try {
+            if (ObjectUtils.isEmpty(routeId)){
+                return new BaseResponse(StatusCode.InvalidParams);
+            }
+            User currentUser = (User) session.getAttribute("currentUser");
+            if (currentUser == null){
+                return new BaseResponse(StatusCode.Fail.getCode(),"当前没有用户登录,请先登录!");
+            }
+            FavoriteKey favoriteKey = new FavoriteKey();
+            favoriteKey.setRouteId(routeId);
+            favoriteKey.setUserId(currentUser.getUserId());
+            accountService.addFavorite(favoriteKey);
+
+            return new BaseResponse(StatusCode.Success);
+        }catch (Exception e){
+            log.error(e.toString());
+            return new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
+        }
+    }
+
+
 
 }
