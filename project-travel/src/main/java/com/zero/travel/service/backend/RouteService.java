@@ -117,13 +117,6 @@ public class RouteService {
      * @param outputStream
      */
     public void getImage(String path, OutputStream outputStream) throws IOException {
-        // 这种写法在打包之后会找不到文件
-        ///String rootPath = env.getProperty("upload.root.location");
-        ///String fileName = rootPath +File.separator+path;
-        ///log.info("[加载图片]物理路径:{}",fileName);
-
-        //将图片加载到输出流中图片
-        ///StreamUtils.copy(new FileInputStream(fileName),outputStream);
 
         //TODO:通过流的方式加载资源目录下文件 success
         InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(path);

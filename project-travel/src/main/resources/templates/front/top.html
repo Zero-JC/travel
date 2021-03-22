@@ -107,7 +107,7 @@
                             $("#route-introduce").val(route.routeIntroduce);
                             $("#strategy").val(route.strategy);
                             $("#seller-info").val(sellerInfo)
-                            $("#routeImage").attr('src','/backend/route/getImage?path='+path);
+                            $("#routeImage").attr('src',path);
 
                             //打开详情模态框 增加用户收藏按钮
                             $("#routeDetailsModal").modal("show");
@@ -131,7 +131,7 @@
                 $("#route-introduce").val(favorite.routeIntroduce);
                 $("#strategy").val(favorite.strategy);
                 $("#seller-info").val(sellerInfo)
-                $("#routeImage").attr('src','/backend/route/getImage?path='+path);
+                $("#routeImage").attr('src',path);
 
                 //打开详情模态框 禁用 收藏按钮
                 $(".favoriteRoute-btn").attr("disabled","disabled");
@@ -151,7 +151,7 @@
                 $("#route-introduce").val(hotRooute.routeIntroduce);
                 $("#strategy").val(hotRooute.strategy);
                 $("#seller-info").val(sellerInfo)
-                $("#routeImage").attr('src','/backend/route/getImage?path='+path);
+                $("#routeImage").attr('src',path);
 
                 //打开详情模态框
                 $("#routeDetailsModal").modal("show");
