@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 
 /**
- * 上传服务
+ * 上传服务-本地
  * @author LJC
  * @version 1.0
  * @date 2021/3/18 14:30

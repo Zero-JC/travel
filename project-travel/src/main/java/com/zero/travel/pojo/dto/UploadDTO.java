@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class UploadDTO implements Serializable {
 
     /**
-     * 根目录
+     * 根目录 仅存储 不使用
      */
     private String rootPath;
 

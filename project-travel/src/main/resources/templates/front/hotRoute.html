@@ -45,7 +45,7 @@
                         <div class="panel-body">
                             <div class="art-back clear-back">
                                 <div class="add-padding-bottom">
-                                    <img th:src="@{/backend/route/getImage(path=${hotRooute.imageUrl})}" style="width: 101%;height: 210px;">
+                                    <img th:src="${hotRooute.imageUrl}" style="width: 101%;height: 210px;">
                                 </div>
                                 <h4><a href="#" th:text="${hotRooute.routeName}"></a></h4>
                                 <div class="user clearfix pull-right">

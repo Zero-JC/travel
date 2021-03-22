@@ -92,7 +92,7 @@
             <tr th:each="favorite:${favoriteList}">
                 <td th:text="${favorite.routeId}"></td>
                 <td th:text="${favorite.routeName}"></td>
-                <td> <img th:src="@{/backend/route/getImage(path=${favorite.imageUrl})}" alt="" width="60" height="60"></td>
+                <td> <img th:src="${favorite.imageUrl}" alt="" width="60" height="60"></td>
                 <td th:text="${favorite.price}"></td>
                 <td th:text="${#dates.format(favorite.time,'YYYY-MM-dd HH:mm:ss')}"></td>
                 <td>

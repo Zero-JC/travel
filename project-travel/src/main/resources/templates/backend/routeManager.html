@@ -226,7 +226,7 @@
             $("#update-route-price").val(route.price);
             $("#update-route-introduce").val(route.routeIntroduce);
             $("#update-strategy").val(route.strategy);
-            $("#img2").attr('src','/backend/route/getImage?path='+path);
+            $("#img2").attr('src',route.imageUrl);
             $("#update-seller-type").val(route.sellerId);
 
         };

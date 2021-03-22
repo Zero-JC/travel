@@ -166,6 +166,7 @@ public class RouteController extends CommonController {
 
     /**
      * 获取线路图片
+     * @deprecated 此接口已弃用
      * @param path
      * @param response
      */

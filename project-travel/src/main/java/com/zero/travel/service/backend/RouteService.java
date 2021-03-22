@@ -8,6 +8,7 @@ import com.zero.travel.pojo.dto.UploadDTO;
 import com.zero.travel.pojo.entity.Route;
 import com.zero.travel.pojo.entity.RouteFavorite;
 import com.zero.travel.pojo.vo.RouteVO;
+import com.zero.travel.service.common.OssService;
 import com.zero.travel.service.common.UploadService;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,6 +27,7 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -49,6 +52,12 @@ public class RouteService {
     @Autowired
     private RouteFavoriteMapper routeFavoriteMapper;
 
+    @Autowired
+    private OssService ossService;
+
+    @Value("${upload.root.location}")
+    private String rootPath;
+
     private static final Logger log = LoggerFactory.getLogger(RouteService.class);
 
     /**
@@ -60,11 +69,10 @@ public class RouteService {
         final MultipartFile file = routeDTO.getImageFile();
 
         //相对路径写法
-        ///final String rootPath = ResourceUtils.getFile("classpath:image/route/").getPath();
+        /*final String rootPath = env.getProperty("upload.root.location");*/
 
-        String rootPath = env.getProperty("upload.root.location");
-        final String fileName = "image/route/"+SystemUtils.rename(file.getOriginalFilename());
-        log.info("imageUrl:{}",fileName);
+        final String fileName = SystemUtils.rename(file.getOriginalFilename());
+        log.info("fileName:{}",fileName);
 
         UploadDTO uploadDTO = new UploadDTO();
         uploadDTO.setFile(file);
@@ -72,14 +80,14 @@ public class RouteService {
         uploadDTO.setFileName(fileName);
         //上传
         try {
-            uploadService.commonUpload(uploadDTO);
+            ossService.imageUpload(uploadDTO);
         } catch (Exception e) {
             log.error("文件上传异常:{}",e.getMessage());
             throw new FileNotFoundException("文件上传失败");
         }
 
         //TODO:记录到数据库
-        String imageUrl = fileName;
+        String imageUrl = rootPath+fileName;
         routeDTO.setImageUrl(imageUrl);
         Route route = new Route();
         BeanUtils.copyProperties(routeDTO,route);
@@ -88,6 +96,7 @@ public class RouteService {
 
         //TODO: 记录线路收藏表
         RouteFavorite routeFavorite = new RouteFavorite();
+        //根据线路名称获取线路 Id
         Route newRoute = routeMapper.selectByRouteName(routeDTO.getRouteName());
         routeFavorite.setRouteId(newRoute.getRouteId());
         routeFavoriteMapper.insertSelective(routeFavorite);
@@ -103,20 +112,25 @@ public class RouteService {
 
     /**
      * 获取线路图片
+     * @deprecated   不推荐使用此方法加载图片
      * @param path
      * @param outputStream
      */
     public void getImage(String path, OutputStream outputStream) throws IOException {
-        //相对路径写法
-        ///final String rootPath = ResourceUtils.getFile("classpath:image/route/").getPath();
-
-        String rootPath = env.getProperty("upload.root.location");
-        String fileName = rootPath +File.separator+path;
-        log.info("[加载图片]物理路径:{}",fileName);
+        // 这种写法在打包之后会找不到文件
+        ///String rootPath = env.getProperty("upload.root.location");
+        ///String fileName = rootPath +File.separator+path;
+        ///log.info("[加载图片]物理路径:{}",fileName);
 
         //将图片加载到输出流中图片
-        StreamUtils.copy(new FileInputStream(fileName),outputStream);
+        ///StreamUtils.copy(new FileInputStream(fileName),outputStream);
 
+        //TODO:通过流的方式加载资源目录下文件 success
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(path);
+        if (resourceAsStream == null){
+            log.info("<><><>文件加载失败");
+        }
+        StreamUtils.copy(resourceAsStream,outputStream);
     }
 
     /**
@@ -126,42 +140,39 @@ public class RouteService {
     public void modify(RouteDTO routeDTO) throws Exception {
         //TODO:判断图片是否修改 文件名不为空时说明图片以及更新
         final MultipartFile imageFile = routeDTO.getImageFile();
-        final String filename = "image/route/"+SystemUtils.rename(imageFile.getOriginalFilename());
+        final String filename = SystemUtils.rename(imageFile.getOriginalFilename());
 
         final Route oldRoute = routeMapper.selectByPrimaryKey(routeDTO.getRouteId());
         Route newRoute = new Route();
 
         if (imageFile.getOriginalFilename()!=null && !"".equals(imageFile.getOriginalFilename())){
             //TODO: 删除原图片
-            //相对路径写法
-            ///final String rootPath = ResourceUtils.getFile("classpath:image/route/").getPath();
-            String rootPath = env.getProperty("upload.root.location");
-            String oldImage = rootPath +File.separator+ oldRoute.getImageUrl();
-            File file = new File(oldImage);
-            System.gc();
-            boolean flag = file.delete();
-            log.info("原图片是否删除:{}",flag);
+            final String oldImageUrl = oldRoute.getImageUrl();
+            int index = oldImageUrl.lastIndexOf("travel/image/route");
+            String oldImagePath = oldImageUrl.substring(index);
+            log.info("<<删除原图片>> oldFileName:{}",oldImagePath);
+            ossService.deleteOssImage(oldImagePath);
 
             //TODO:上传图片
             UploadDTO uploadDTO = new UploadDTO();
             uploadDTO.setFile(imageFile);
             uploadDTO.setFileName(filename);
+            //仅存储 不使用
             uploadDTO.setRootPath(rootPath);
-
             try {
-                uploadService.commonUpload(uploadDTO);
+                ossService.imageUpload(uploadDTO);
             } catch (Exception e) {
                 log.error("文件上传异常:{}",e.getMessage());
                 throw new FileNotFoundException("文件上传失败");
             }
-
-
         }
         //TODO:更新数据库
         BeanUtils.copyProperties(routeDTO,newRoute);
+        //必须在对象拷贝之后
         if (imageFile.getOriginalFilename()!=null && !"".equals(imageFile.getOriginalFilename())){
             //图片发生变更时保存新的imageUrl
-            newRoute.setImageUrl(filename);
+            String newImageUrl = rootPath+filename;
+            newRoute.setImageUrl(newImageUrl);
         }
 
         int row = routeMapper.updateByPrimaryKeySelective(newRoute);
@@ -174,7 +185,7 @@ public class RouteService {
      * 删除
      * @param routeId
      */
-    public void remove(Integer routeId) {
+    public void remove(Integer routeId) throws Exception {
         //TODO: 清除数据库记录
         final Route route = routeMapper.selectByPrimaryKey(routeId);
         if (route == null){
@@ -183,15 +194,19 @@ public class RouteService {
         routeMapper.deleteByPrimaryKey(routeId);
 
         //TODO: 删除图片
-        String rootPath = env.getProperty("upload.root.location");
-        deleteImage(route.getImageUrl(),rootPath);
+        final String oldImageUrl = route.getImageUrl();
+        int index = oldImageUrl.lastIndexOf("travel/image/route");
+        String oldImagePath = oldImageUrl.substring(index);
+        ossService.deleteOssImage(oldImagePath);
 
         //TODO:删除线路收藏表记录
         routeFavoriteMapper.deleteByPrimaryKey(routeId);
     }
 
+
     /**
      * 删除图片
+     * @deprecated 弃用
      * @param imageUrl
      */
     public static void deleteImage(String imageUrl,String rootPath){
