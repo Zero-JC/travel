@@ -35,4 +35,6 @@ public class SystemConstant implements Serializable {
     public static final String SELLER = "seller";
     public static final Integer ROLE_SELLER = 3;
 
+    public static final String ROUTE = "route";
+
 }

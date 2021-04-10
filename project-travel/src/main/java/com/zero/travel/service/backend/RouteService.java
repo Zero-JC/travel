@@ -68,9 +68,6 @@ public class RouteService {
         //TODO:上传图片
         final MultipartFile file = routeDTO.getImageFile();
 
-        //相对路径写法
-        /*final String rootPath = env.getProperty("upload.root.location");*/
-
         final String fileName = SystemUtils.rename(file.getOriginalFilename());
         log.info("fileName:{}",fileName);
 

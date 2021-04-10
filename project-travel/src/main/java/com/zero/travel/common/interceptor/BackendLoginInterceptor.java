@@ -34,22 +34,31 @@ public class BackendLoginInterceptor implements HandlerInterceptor {
 
         final String requestUri = request.getRequestURI();
 
+        //系统用户管理
         if (requestUri.contains(SystemConstant.SYS_USER)){
             if (!roleId.equals(SystemConstant.ROLE_SYS_USER)){
                 throw new NoPermissionException("当前请求需要超级管理员权限");
             }
         }
-
+        //客户管理
         if (requestUri.contains(SystemConstant.USER)){
-            if (!roleId.equals(SystemConstant.ROLE_SYS_USER) || roleId.equals(SystemConstant.ROLE_USER)){
+            if (!roleId.equals(SystemConstant.ROLE_USER) && !roleId.equals(SystemConstant.ROLE_SYS_USER)){
                 throw new NoPermissionException("当前请求需要客户专员权限或超级管理员权限");
             }
         }
-        if (requestUri.contains(SystemConstant.SELLER)){
-            if (!roleId.equals(SystemConstant.ROLE_SYS_USER) || roleId.equals(SystemConstant.ROLE_SELLER)){
-                throw new NoPermissionException("当前请求需要服务商权限或超级管理员权限");
+        //旅游线路管理
+        if (requestUri.contains(SystemConstant.ROUTE)){
+            if (!roleId.equals(SystemConstant.ROLE_SELLER) && !roleId.equals(SystemConstant.ROLE_SYS_USER)){
+                throw new NoPermissionException("当前请求需要商家权限或超级管理员权限");
             }
         }
+        //商家管理
+        if (requestUri.contains(SystemConstant.SELLER)){
+            if (!roleId.equals(SystemConstant.ROLE_SYS_USER)){
+                throw new NoPermissionException("当前请求需要超级管理员权限");
+            }
+        }
+
         return true;
     }
 

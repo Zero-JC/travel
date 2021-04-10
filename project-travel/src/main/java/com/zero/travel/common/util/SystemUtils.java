@@ -57,9 +57,9 @@ public class SystemUtils {
         return flag;
     }
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
 
-        try {
+        /*try {
             RouteDTO routeDTO = new RouteDTO();
             RouteDTO dto = new RouteDTO();
             dto.setRouteName("Alice");
@@ -68,7 +68,6 @@ public class SystemUtils {
             System.out.println("dto: "+isAllFieldNull(dto));
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-    }*/
+        }*/
+    }
 }
