@@ -196,7 +196,7 @@
                             <select class="form-control" name="roleId" id="role">
                                 <option value="-1" >全部</option>
                                 <option th:selected="${sysUserDTO.getRoleId() == 1}" value="1">超级管理员</option>
-                                <option th:selected="${sysUserDTO.getRoleId() == 2}" value="2">客户专员</option>
+                                <option th:selected="${sysUserDTO.getRoleId() == 2}" value="2">客户管理员</option>
                                 <option th:selected="${sysUserDTO.getRoleId() == 3}" value="3">服务商</option>
                             </select>
                     </div>
@@ -241,7 +241,7 @@
                             <td th:text="${#dates.format(sysUser.getCreateTime(),'yyyy-MM-dd HH:mm:ss')}"></td>
 
                             <td th:if="${sysUser.getRoleId()==1}">超级管理员</td>
-                            <td th:if="${sysUser.getRoleId()==2}">客户专员</td>
+                            <td th:if="${sysUser.getRoleId()==2}">客户管理员</td>
                             <td th:if="${sysUser.getRoleId()==3}">服务商</td>
 
                             <td class="text-center">

@@ -26,15 +26,30 @@ public class SystemConstant implements Serializable {
     public static final Integer PAGE_SIZE_FRONT = 9;
 
 
+    /**
+     * 后台管理系统模块标志
+     */
     public static final String SYS_USER = "sysUser";
+    public static final String USER = "user";
+    public static final String SELLER = "seller";
+    public static final String ROUTE = "route";
+
+    //角色
+    /**
+     * 超级管理员 最高权限
+     */
     public static final Integer ROLE_SYS_USER = 1;
 
-    public static final String USER = "user";
+    /**
+     * 网站管理员  除系统用户管理以外的所有权限
+     */
     public static final Integer ROLE_USER = 2;
 
-    public static final String SELLER = "seller";
+    /**
+     * 商家 旅线路管理的查看、搜索的权限
+     */
     public static final Integer ROLE_SELLER = 3;
 
-    public static final String ROUTE = "route";
+
 
 }

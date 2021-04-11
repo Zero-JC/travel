@@ -84,6 +84,7 @@ public class SellerController extends CommonController {
     @ResponseBody
     public BaseResponse add(@Validated SellerDTO sellerDTO, BindingResult result){
         try {
+            //TODO:新增商家时必须绑定一个系统用户 字段sys_id
             if (result.hasErrors()){
                 String checkResult = ValidateUtils.checkResult(result);
 

@@ -288,7 +288,7 @@
                 </form>
             </div>
             <br>
-            <input type="button" value="添加商品" class="btn btn-primary" id="doAddRoute">
+            <input type="button" value="添加商品" class="btn btn-primary" id="doAddRoute" th:unless="${session.currentSysUser.getRoleId() == 3}">
             <br>
             <br>
             <div class="show-list">
@@ -301,7 +301,7 @@
                             <th class="text-center">所属商家</th>
                             <th class="text-center">创建时间</th>
                             <th class="text-center">查看详情</th>
-                            <th class="text-center">操作</th>
+                            <th class="text-center" th:unless="${session.currentSysUser.getRoleId() == 3}">操作</th>
                         </tr>
                     </thead>
                     <tbody id="tb">
@@ -315,7 +315,7 @@
                                 <input type="button" class="btn btn-success btn-sm" value="线路简介" th:onclick="showRouteIntroduce([[${route.getRouteIntroduce()}]])">
                                 <input type="button" class="btn btn-success btn-sm" value="出行攻略" th:onclick="showStrategy([[${route.strategy}]])">
                             </td>
-                            <td class="text-center" >
+                            <td class="text-center" th:unless="${session.currentSysUser.getRoleId() == 3}">
                                 <input type="button" class="btn btn-warning btn-sm doRouteModify" value="修改" th:onclick="showRouteInfo([[${route}]])">
                                 <input type="button" class="btn btn-danger btn-sm " value="删除" th:onclick="showRemoveModel([[${route.getRouteId()}]])">
                             </td>
