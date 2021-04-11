@@ -11,6 +11,8 @@ import com.zero.travel.mapper.SellerMapper;
 import com.zero.travel.pojo.dto.SellerDTO;
 import com.zero.travel.pojo.entity.Seller;
 import com.zero.travel.service.backend.SellerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/backend/seller")
+@Api(tags = "商家管理接口")
 public class SellerController extends CommonController {
 
     @Autowired
@@ -42,7 +45,8 @@ public class SellerController extends CommonController {
      * @param model
      * @return
      */
-    @RequestMapping("/findAll")
+    @ApiOperation("获取商家信息列表")
+    @GetMapping("/findAll")
     public String findAll(Integer pageNum,Model model){
         if (ObjectUtils.isEmpty(pageNum)){
             pageNum = SystemConstant.PAGE_NUM;
@@ -62,6 +66,7 @@ public class SellerController extends CommonController {
      * @return
      */
     @PostMapping("/findById")
+    @ApiOperation("主键查询")
     public @ResponseBody Seller findById(@RequestParam Integer sellerId){
         Seller seller = sellerMapper.selectByPrimaryKey(sellerId);
 
@@ -74,7 +79,8 @@ public class SellerController extends CommonController {
      * @param result
      * @return
      */
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @ApiOperation("add")
+    @PostMapping (value = "/add")
     @ResponseBody
     public BaseResponse add(@Validated SellerDTO sellerDTO, BindingResult result){
         try {
@@ -96,7 +102,8 @@ public class SellerController extends CommonController {
      * @param sellerDTO
      * @return
      */
-    @RequestMapping(value = "/modify",method = RequestMethod.POST)
+    @ApiOperation("modify")
+    @PostMapping(value = "/modify")
     @ResponseBody
     public BaseResponse modify(@Validated SellerDTO sellerDTO,BindingResult result){
         try {
@@ -118,7 +125,8 @@ public class SellerController extends CommonController {
      * @param sellerId
      * @return
      */
-    @RequestMapping("/remove")
+    @ApiOperation("del")
+    @PostMapping("/remove")
     @ResponseBody
     public BaseResponse remove(Integer sellerId){
         try{

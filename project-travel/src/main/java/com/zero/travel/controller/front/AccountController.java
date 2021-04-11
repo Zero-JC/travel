@@ -13,6 +13,8 @@ import com.zero.travel.pojo.vo.UserLoginVO;
 import com.zero.travel.pojo.vo.UserModifyVO;
 import com.zero.travel.pojo.vo.UserVO;
 import com.zero.travel.service.front.AccountService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ import javax.servlet.http.HttpSession;
  */
 @RestController
 @RequestMapping("/front/account")
+@Api(tags = "用户操作接口")
 public class AccountController extends CommonController {
 
     @Autowired
@@ -40,6 +43,7 @@ public class AccountController extends CommonController {
     @Autowired
     private SellerMapper sellerMapper;
 
+    @ApiOperation("login")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public BaseResponse login(@Validated UserLoginVO userLoginVO,BindingResult result, HttpSession session){
         try {
@@ -59,7 +63,8 @@ public class AccountController extends CommonController {
         }
     }
 
-    @RequestMapping(value = "/logout")
+    @PostMapping(value = "/logout")
+    @ApiOperation("logout")
     public BaseResponse logout(HttpSession session){
         try {
             session.removeAttribute("currentUser");
@@ -70,7 +75,8 @@ public class AccountController extends CommonController {
         }
     }
 
-    @RequestMapping(value = "/register")
+    @PostMapping(value = "/register")
+    @ApiOperation("register")
     public BaseResponse register(@Validated UserVO userVO,BindingResult result){
         try {
             if (result.hasErrors()){
@@ -89,7 +95,8 @@ public class AccountController extends CommonController {
         }
     }
 
-    @RequestMapping(value = "/modifyPassword")
+    @ApiOperation("修改密码")
+    @PostMapping(value = "/modifyPassword")
     public BaseResponse modifyPassword(String oldPassword,String newPasswordOne,String newPasswordTwo,HttpSession session){
         try {
             if (ObjectUtils.isEmpty(oldPassword) || ObjectUtils.isEmpty(newPasswordOne) || ObjectUtils.isEmpty(newPasswordTwo)){
@@ -128,6 +135,7 @@ public class AccountController extends CommonController {
      * @param session
      * @return
      */
+    @ApiOperation("修改用户详情")
     @RequestMapping(value = "/modifyUserInfo",method = RequestMethod.POST)
     public BaseResponse modifyUserInfo(@Validated UserModifyVO userModifyVO,BindingResult result,HttpSession session){
         try {
@@ -155,7 +163,8 @@ public class AccountController extends CommonController {
      * @param sellerId
      * @return
      */
-    @RequestMapping(value = "/sellerInfo")
+    @ApiOperation("获取商家信息")
+    @PostMapping(value = "/sellerInfo")
     @ResponseBody
     public BaseResponse sellerInfo(Integer sellerId){
         try {
@@ -176,7 +185,8 @@ public class AccountController extends CommonController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "/addFavorite")
+    @ApiOperation("添加收藏")
+    @PostMapping(value = "/addFavorite")
     public BaseResponse addFavorite(Integer routeId,HttpSession session){
         try {
             if (ObjectUtils.isEmpty(routeId)){
@@ -203,7 +213,8 @@ public class AccountController extends CommonController {
      * @param routeId
      * @return
      */
-    @RequestMapping(value = "/deleteFavorite")
+    @ApiOperation("删除收藏")
+    @PostMapping(value = "/deleteFavorite")
     public BaseResponse deleteFavorite(@RequestParam(name = "routeId") Integer routeId,HttpSession session){
         try {
             User currentUser = (User) session.getAttribute("currentUser");
@@ -224,7 +235,8 @@ public class AccountController extends CommonController {
      * 清除当前用户所有收藏
      * @return
      */
-    @RequestMapping(value = "/deleteAllFavorite")
+    @ApiOperation("清空收藏")
+    @PostMapping(value = "/deleteAllFavorite")
     public BaseResponse deleteAllFavorite(HttpSession session){
         try {
             User currentUser = (User) session.getAttribute("currentUser");

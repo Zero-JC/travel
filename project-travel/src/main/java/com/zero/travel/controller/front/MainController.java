@@ -16,6 +16,7 @@ import com.zero.travel.pojo.entity.User;
 import com.zero.travel.pojo.vo.RouteSearchQuery;
 import com.zero.travel.service.backend.SellerService;
 import com.zero.travel.service.front.FrontRouteService;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -34,6 +36,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/front")
+@ApiIgnore
 public class MainController extends CommonController {
 
 

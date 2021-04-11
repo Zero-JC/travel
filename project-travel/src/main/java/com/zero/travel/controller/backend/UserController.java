@@ -9,11 +9,14 @@ import com.zero.travel.controller.CommonController;
 import com.zero.travel.pojo.dto.UserDTO;
 import com.zero.travel.pojo.entity.User;
 import com.zero.travel.service.backend.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -27,6 +30,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/backend/user")
+@Api(tags = "客户管理接口")
 public class UserController extends CommonController {
 
     @Resource
@@ -38,7 +42,8 @@ public class UserController extends CommonController {
      * @param modelMap
      * @return
      */
-    @RequestMapping("/findAll")
+    @ApiOperation("获取客户列表")
+    @RequestMapping(value = "/findAll",method = RequestMethod.GET)
     public String findAll(Integer pageNum,ModelMap modelMap){
         if (ObjectUtils.isEmpty(pageNum)){
             pageNum = SystemConstant.PAGE_NUM;
@@ -62,7 +67,8 @@ public class UserController extends CommonController {
      * @param modelMap
      * @return
      */
-    @RequestMapping("/search")
+    @RequestMapping(value = "/search",method = RequestMethod.POST)
+    @ApiOperation("条件分页查询")
     public String search(Integer pageNum,UserDTO userDTO,ModelMap modelMap){
         if (ObjectUtils.isEmpty(pageNum)){
             pageNum = SystemConstant.PAGE_NUM;
@@ -86,6 +92,7 @@ public class UserController extends CommonController {
      */
     @PostMapping("/modifyStatus")
     @ResponseBody
+    @ApiOperation("启用禁用")
     public BaseResponse modifyStatus(Integer userId){
         try {
             if (ObjectUtils.isEmpty(userId)){
@@ -104,8 +111,9 @@ public class UserController extends CommonController {
      * @param userId
      * @return
      */
-    @RequestMapping("/retrievePassword")
+    @RequestMapping(value = "/retrievePassword",method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation("找回密码")
     public BaseResponse retrievePassword(Integer userId){
         try{
             if (ObjectUtils.isEmpty(userId)){

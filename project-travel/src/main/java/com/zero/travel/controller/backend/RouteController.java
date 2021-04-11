@@ -11,17 +11,17 @@ import com.zero.travel.pojo.entity.Seller;
 import com.zero.travel.pojo.vo.RouteVO;
 import com.zero.travel.service.backend.RouteService;
 import com.zero.travel.service.backend.SellerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +34,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/backend/route")
+@Api(tags = "旅游线路管理接口")
 public class RouteController extends CommonController {
 
     @Autowired
@@ -41,6 +42,7 @@ public class RouteController extends CommonController {
 
     @Autowired
     private RouteService routeService;
+
 
     @ModelAttribute("sellerList")
     public List<Seller> sellerList(){
@@ -54,7 +56,8 @@ public class RouteController extends CommonController {
      * @param model
      * @return
      */
-    @RequestMapping("/findAll")
+    @ApiOperation("获取旅游线路列表")
+    @GetMapping("/findAll")
     public String findAll(Model model){
         List<Route> routeList = routeService.findAll();
 
@@ -70,6 +73,7 @@ public class RouteController extends CommonController {
      * @param request
      * @return
      */
+    @ApiOperation("add")
     @RequestMapping(value = "/add",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String add(MultipartHttpServletRequest request, Model model){
         try {
@@ -94,6 +98,7 @@ public class RouteController extends CommonController {
      * @param model
      * @return
      */
+    @ApiOperation("modify")
     @RequestMapping(value = "modify",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String modify(MultipartHttpServletRequest request,Model model){
         try {
@@ -117,9 +122,10 @@ public class RouteController extends CommonController {
      * @param routeId
      * @return
      */
+    @ApiOperation("del")
     @RequestMapping(value = "/remove",method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponse remove(Integer routeId){
+    public BaseResponse remove(@RequestParam Integer routeId){
         try{
             routeService.remove(routeId);
             return new BaseResponse(StatusCode.Success);
@@ -136,7 +142,8 @@ public class RouteController extends CommonController {
      * @param model
      * @return
      */
-    @RequestMapping("/search")
+    @ApiOperation("条件搜索")
+    @PostMapping("/search")
     public String search(RouteVO routeVO,Model model){
         try {
             List<Route> routeList = null;
@@ -171,6 +178,7 @@ public class RouteController extends CommonController {
      * @param response
      */
     @RequestMapping("/getImage")
+    @ApiIgnore
     public void getImage(String path, HttpServletResponse response){
         try {
             final ServletOutputStream outputStream = response.getOutputStream();

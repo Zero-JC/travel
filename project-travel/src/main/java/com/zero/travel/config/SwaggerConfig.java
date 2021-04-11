@@ -1,6 +1,9 @@
 package com.zero.travel.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -11,7 +14,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.ArrayList;
 
 /**
- * @EnableSwagger2 启用
  * @author LJC
  * @version 1.0
  * @date 2021/3/22 16:26
@@ -27,11 +29,10 @@ public class SwaggerConfig {
      * groupName()配置api文档的分组  那就注册多个Docket实例 相当于多个分组 组名称
      * @return
      */
+    @Bean
     public Docket docket(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
-                .groupName("qlh")
-                .enable(true)
                 .select()
                 /**
                  * RequestHandlerSelectors配置扫描接口的方式
@@ -49,7 +50,7 @@ public class SwaggerConfig {
                  *      regex正则过滤
                  *      ant过滤指定路径
                  */
-                //                .paths(PathSelectors.ant("/login/**"))
+                .paths(PathSelectors.any())
                 .build();
     }
 
@@ -58,16 +59,11 @@ public class SwaggerConfig {
      * @return
      */
     public ApiInfo apiInfo(){
-        /*作者信息*/
-        Contact contact = new Contact("Zero", "", "1725088658@qq.com");
-        return new ApiInfo(
-                "XXX的API接口",
-                "company接口",
-                "V1.0",
-                "urn:toVs",
-                contact,
-                "Apache 2.0",
-                "http://www.apache.org/licenses/LICENSE-2.0",
-                new ArrayList());
+        return new ApiInfoBuilder()
+                .title("旅游网站系统api文档")
+                .description("毕业设计-旅游网站系统")
+                .termsOfServiceUrl("/")
+                .version("1.0")
+                .build();
     }
 }

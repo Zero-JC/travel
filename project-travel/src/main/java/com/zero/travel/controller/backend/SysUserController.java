@@ -12,15 +12,15 @@ import com.zero.travel.pojo.dto.LoginDTO;
 import com.zero.travel.pojo.dto.SysUserDTO;
 import com.zero.travel.pojo.entity.SysUser;
 import com.zero.travel.service.backend.SysUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -33,6 +33,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/backend/sysUser")
+@Api(tags = "系统用户管理接口")
 public class SysUserController extends CommonController {
 
     @Autowired
@@ -49,6 +50,7 @@ public class SysUserController extends CommonController {
      * @return
      */
     @PostMapping ("login")
+    @ApiOperation("后台管理系统登录")
     public String login(@Valid LoginDTO loginDTO, BindingResult bindingResult, Model modelMap, HttpSession session){
         //TODO:服务端表单校验
         if (bindingResult.hasErrors()){
@@ -72,7 +74,8 @@ public class SysUserController extends CommonController {
      * 退出登录
      * @return
      */
-    @RequestMapping("logout")
+    @ApiOperation("logout")
+    @GetMapping(value = "logout")
     public String logout(HttpSession session){
         session.removeAttribute("currentSysUser");
 
@@ -86,7 +89,8 @@ public class SysUserController extends CommonController {
      * @param model
      * @return
      */
-    @RequestMapping("/findAll")
+    @ApiOperation("系统用户信息列表展示")
+    @GetMapping("/findAll")
     public String findAll(Integer pageNum,Model model){
         if (ObjectUtils.isEmpty(pageNum)){
             pageNum = SystemConstant.PAGE_NUM;
@@ -108,9 +112,10 @@ public class SysUserController extends CommonController {
      * @param sysId
      * @return
      */
-    @RequestMapping("/findById")
+    @PostMapping("/findById")
     @ResponseBody
-    public BaseResponse findById(Integer sysId){
+    @ApiOperation("根据ID查询")
+    public BaseResponse findById( Integer sysId){
         BaseResponse response = new BaseResponse(StatusCode.Success);
 
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(sysId);
@@ -126,7 +131,8 @@ public class SysUserController extends CommonController {
      * @param modelMap
      * @return
      */
-    @RequestMapping("/search")
+    @PostMapping("/search")
+    @ApiOperation("条件搜索")
     public String search(Integer pageNum, SysUserDTO sysUserDTO, ModelMap modelMap){
         if (ObjectUtils.isEmpty(pageNum)){
             pageNum = SystemConstant.PAGE_NUM;
@@ -148,7 +154,8 @@ public class SysUserController extends CommonController {
      * @param result
      * @return
      */
-    @RequestMapping("/add")
+    @ApiOperation("新增系统用户信息")
+    @PostMapping("/add")
     @ResponseBody
     public BaseResponse add(@Valid SysUserDTO sysUserDTO,BindingResult result){
         try {
@@ -170,7 +177,8 @@ public class SysUserController extends CommonController {
      * @param result
      * @return
      */
-    @RequestMapping(value = "/modify")
+    @ApiOperation("修改系统用户信息")
+    @PostMapping(value = "/modify")
     @ResponseBody
     public BaseResponse modify(@Valid SysUserDTO sysUserDTO,BindingResult result) {
         try {
@@ -193,7 +201,8 @@ public class SysUserController extends CommonController {
      * @param sysId
      * @return
      */
-    @RequestMapping("/modifyStatus")
+    @ApiOperation("账户的启用禁用")
+    @PostMapping("/modifyStatus")
     @ResponseBody
     public BaseResponse modifyStatus(Integer sysId){
         try {

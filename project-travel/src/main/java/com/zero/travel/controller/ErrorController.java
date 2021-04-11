@@ -5,6 +5,7 @@ import com.zero.travel.common.exception.NotLoginException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Date;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  * @date 2021/3/12 9:11
  */
 @ControllerAdvice
+@ApiIgnore
 public class ErrorController extends CommonController{
 
     @ExceptionHandler(Exception.class)

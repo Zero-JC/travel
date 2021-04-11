@@ -2,9 +2,12 @@ package com.zero.travel.controller;
 
 
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,6 +29,7 @@ import java.util.Random;
  */
 @Controller
 @RequestMapping("/code")
+@Api(tags = "验证码处理接口")
 public class CodeController {
 
     @Autowired
@@ -34,7 +38,8 @@ public class CodeController {
     /**
      * 生成验证码图片
      */
-    @RequestMapping("/image")
+    @ApiOperation("生成验证码图片")
+    @GetMapping("/image")
     public void verificationCode( HttpServletResponse response,HttpServletRequest request) throws IOException {
 
         ///
@@ -100,7 +105,8 @@ public class CodeController {
      * @param code
      * @return
      */
-    @RequestMapping("/checkCode")
+    @ApiOperation("验证码校验")
+    @GetMapping("/checkCode")
     @ResponseBody
     public Map<String,Object> checkCode(String code,HttpServletRequest request){
         Map<String,Object> map = new HashMap<>(5);

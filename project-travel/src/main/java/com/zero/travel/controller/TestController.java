@@ -7,9 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -20,14 +18,14 @@ import javax.annotation.Resource;
  */
 @Controller
 @RequestMapping("/test")
-@Api(tags = "travel test Api")
+@Api(tags = "测试接口")
 public class TestController extends CommonController{
 
     @Resource
     private OssService ossService;
 
     @ApiOperation("test oss upload Api")
-    @RequestMapping(value = "/oss")
+    @GetMapping(value = "/oss")
     @ResponseBody
     public BaseResponse testOss(){
         try {
@@ -40,7 +38,7 @@ public class TestController extends CommonController{
     }
 
     @ApiOperation("test oss delete Api")
-    @RequestMapping(value = "/oss/delete")
+    @GetMapping(value = "/oss/delete")
     @ResponseBody
     public BaseResponse testDeleteOss(){
         try {
@@ -53,18 +51,18 @@ public class TestController extends CommonController{
     }
 
     @ApiOperation("test response Api one")
-    @RequestMapping(value = "/test01")
+    @PostMapping(value = "/test01/{str}")
     @ResponseBody
-    public BaseResponse test01(@RequestParam String str){
+    public BaseResponse test01(@PathVariable String str){
         BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
         baseResponse.setData(str);
         return baseResponse;
     }
 
-    @ApiOperation("test response Api one")
-    @RequestMapping(value = "/test02")
+    @ApiOperation("test response Api two")
+    @PostMapping(value = "/test02/{num}")
     @ResponseBody
-    public BaseResponse test02(@RequestParam Integer num){
+    public BaseResponse test02(@PathVariable Integer num){
         if (num < 10){
             return new BaseResponse(StatusCode.Success,"参数小于10");
         }else {
