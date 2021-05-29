@@ -22,7 +22,9 @@ import javax.servlet.http.HttpSession;
 public class BackendLoginInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) throws Exception {
         final HttpSession session = request.getSession();
         final SysUser currentUser = (SysUser) session.getAttribute("currentSysUser");
         if (currentUser == null){
@@ -41,7 +43,8 @@ public class BackendLoginInterceptor implements HandlerInterceptor {
             }
         }
         //客户管理 商家管理 需要网站管理员权限或超级管理员权限
-        if (requestUri.contains(SystemConstant.USER) || requestUri.contains(SystemConstant.SELLER)){
+        if (requestUri.contains(SystemConstant.USER) ||
+                requestUri.contains(SystemConstant.SELLER)){
             if (!roleId.equals(SystemConstant.ROLE_USER) && !roleId.equals(SystemConstant.ROLE_SYS_USER)){
                 throw new NoPermissionException("当前请求需要网站管理员权限或超级管理员权限");
             }

@@ -47,15 +47,12 @@ public class AccountService {
         if (user == null){
             throw new Exception("用户不存在");
         }
-
         if (user.getStatus() == 0){
             throw new Exception("账户已禁用,请联系管理员");
         }
-
         if (!user.getPassword().equals(userDTO.getPassword())){
             throw new Exception("密码不正确");
         }
-
         return user;
     }
 

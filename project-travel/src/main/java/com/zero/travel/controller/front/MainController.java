@@ -69,6 +69,7 @@ public class MainController extends CommonController {
             }
             log.info(routeSearchQuery.toString());
 
+            //TODO:
             List<Route> routeList = null;
             if (SystemUtils.isAllFieldNull(routeSearchQuery)){
                 PageHelper.startPage(pageNum, SystemConstant.PAGE_SIZE_FRONT);
@@ -84,6 +85,7 @@ public class MainController extends CommonController {
             return "front/main";
         } catch (Exception e) {
             e.printStackTrace();
+            model.addAttribute("msg",e.getMessage());
             return "front/main";
         }
     }

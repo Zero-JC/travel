@@ -23,5 +23,4 @@ public class UserDTO {
 
     private Integer status;
 
-    private String code;
 }

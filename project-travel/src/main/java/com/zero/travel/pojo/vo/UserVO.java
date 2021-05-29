@@ -35,6 +35,5 @@ public class UserVO implements Serializable {
 
     private Integer status;
 
-    private String code;
 
 }

@@ -110,7 +110,7 @@ public class RouteController extends CommonController {
             routeService.modify(routeDTO);
 
             model.addAttribute("msg","操作成功");
-            return "forward:findAll";
+            return "redirect:findAll";
         }catch (Exception e){
             model.addAttribute("msg","操作失败");
             return "forward:findAll";
